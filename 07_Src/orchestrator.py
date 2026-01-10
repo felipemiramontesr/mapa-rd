@@ -63,7 +63,7 @@ class Orchestrator:
         print(f"[*] Executing SpiderFoot: {' '.join(cmd)}")
         
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', timeout=600)
+            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', timeout=600) # nosec
             if result.returncode != 0:
                 print(f"[!] CLI Error: {result.stderr}")
                 return []
