@@ -590,14 +590,12 @@ Yo, **{client_name}**, manifiesto mi OPOSICIÓN al tratamiento de mis datos pers
             os.remove(printable_filepath)
             
         return final_pdf_path
-            
-        return final_pdf_path
 
     def cleanup_reports(self, client_name, current_scan_id):
         # Remove all MD/PDF reports for this client ensuring only the current one remains
         # Strategy: List all files for client, delete if not current_scan_id
-        pattern = f"REPORT_{client_name}_*"
-        files = glob.glob(os.path.join(OUTPUT_DIR, pattern))
+        pattern = f"MAPA-RD - * - {client_name} - *" 
+        files = glob.glob(os.path.join(self.reports_dir, pattern))
         
         for f in files:
             # Check if it belongs to current scan
