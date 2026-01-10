@@ -18,6 +18,38 @@ System for automated, passive OSINT analysis, risk scoring, and legal action gen
 ## Prerequisities
 - Python 3.8+
 - SpiderFoot (installed and accessible via CLI/API)
+- Pandoc & LaTeX (for PDF generation)
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    %% Nodes
+    CLI[CLI / Scheduler] -->|1. Request| ORCH{Orchestrator}
+    ORCH -->|2. Create Intake| SM[State Manager]
+    ORCH -->|3. Scan Target| SF[SpiderFoot CLI]
+    
+    subgraph "Core Processing"
+        SF -->|Raw JSON| NORM[Normalizer]
+        NORM -->|Standardized| DEDUP[Deduper]
+        DEDUP -->|Unique| SCOR[Scorer]
+    end
+    
+    SCOR -->|Risk Data| RG[Report Generator]
+    SCOR -->|High Risk| ARCO[Arco Generator]
+    
+    subgraph "Artifacts"
+        RG -->|Markdown/PDF| REP[Exec Report]
+        ARCO -->|Legal Drafts| LGL[ARCO Docs]
+    end
+    
+    REP & LGL --> QC{QC Manager}
+    
+    QC -->|Pass| NOT[Notifier]
+    QC -->|Fail| RES[Rescue Mode]
+    
+    NOT -->|Email| USER((Client))
+```
 
 ## Usage
 
