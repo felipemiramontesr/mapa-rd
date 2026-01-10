@@ -27,15 +27,26 @@
 
 ### 🚀 Hito 1: Integración Real (Sprint Actual)
 **Objetivo:** Eliminar datos simulados y conectar motores reales.
-- [ ] **INT-01**: Habilitar ejecución real de SpiderFoot (CLI/API).
-- [ ] **INT-02**: Mapear salida JSON real de SpiderFoot al Normalizador.
-- [ ] **CLI-01**: Implementar argumentos robustos en `main.py` para escaneos completos.
+- [x] **INT-01**: Habilitar ejecución real de SpiderFoot (CLI/API).
+- [x] **INT-02**: Mapear salida JSON real de SpiderFoot al Normalizador.
+- [x] **NOT-01**: Validar envío de correos SMTP en entorno productivo (Con copia a Admin).
+- [x] **CLI-01**: Implementar argumentos robustos en `main.py` para escaneos completos.
 
 ### ⚙️ Hito 2: Automatización y Escala
 **Objetivo:** Permitir operación desatendida para múltiples clientes.
-- [ ] **SCH-01**: Reparar `Scheduler` en `Orchestrator`.
-- [ ] **DATA-01**: Implementar persistencia real (SQLite/TinyDB) para estados de intake.
-- [ ] **NOT-01**: Validar envío de correos en entorno productivo.
+- [ ] **DATA-01**: Adquirir API KEY de HIBP (HaveIBeenPwned) para datos reales.
+- [ ] **SCH-01**: Automatizar escaneo recurrente validado con datos reales.
+- [ ] **UX-01**: Mejorar template de correo HTML (actualmente texto plano mejorado).
+
+---
+
+## 🛑 CHECKPOINT (2026-01-09)
+**Estado:** El sistema es funcional de punta a punta (Pipeline, PDF, Email), pero SpiderFoot gratuito entrega "0 hallazgos" para correos reales, lo que genera reportes vacíos que el QC bloquea correctamente.
+
+**Acción Requerida para Retomar:**
+1.  **FINANCIAMIENTO:** Adquirir API Key de HaveIBeenPwned ($4.50 USD). Ver `API_Investment_Plan.md`.
+2.  **CONFIGURACIÓN:** Agregar la key a SpiderFoot.
+3.  **PRUEBA FINAL:** Re-ejecutar escaneo de *Ana Flores*.
 
 ---
 
@@ -43,10 +54,9 @@
 
 | ID | Prioridad | Tarea | Estado | Owner |
 | :--- | :---: | :--- | :---: | :---: |
-| **TECH-01** | 🔥 High | Reemplazar `mock_findings` en `orchestrator.py` con llamada a `sf_cli`. | To Do | Dev |
-| **TECH-02** | ⚡ Med | Verificar manejo de errores si SpiderFoot no está instalado. | To Do | QA |
-| **DOC-01** | ℹ️ Low | Crear diagrama de flujo de datos (Mermaid) en `README.md`. | To Do | Doc |
-| **UX-01** | 🎨 Low | Mejorar template de correo HTML (actualmente texto plano/básico). | To Do | Design |
+| **DATA-01** | 🔥 High | **Comprar y Configurar API HIBP** | Blocked | User |
+| **TECH-02** | ⚡ Med | Verificar manejo de errores si SpiderFoot no está instalado. | Done | QA |
+| **DOC-01** | ℹ️ Low | Crear diagrama de flujo de datos (Mermaid) en `README.md`. | Done | Doc |
 
 ---
 
@@ -54,17 +64,16 @@
 *Preservado del reporte de análisis original para contexto.*
 
 ### Funcionalidades Completas
+*   **Pipeline Completo**: Intake -> SF (Real) -> PDF -> QC -> Email.
 *   **Generación de Reportes**: Ejecutivos y ARCO (Markdown -> PDF).
-*   **Gestión de Dependencias**: Instalación automática de Pandoc/MiKTeX.
-*   **Notificaciones**: Módulo SMTP funcional.
+*   **Notificaciones**: SMTP real configurado y probado.
 
 ### Deuda Técnica Crítica
-1.  **SpiderFoot Mock**: El orquestador usa datos fijos. No hay recolección real.
-2.  **Tests Frágiles**: Los tests dependen de rutas absolutas o mocks no actualizados.
+1.  **Falta de Datos Reales**: Se requiere inversión en APIs (HIBP) para que el motor SpiderFoot sea efectivo comercialmente.
 
 ---
 
 ## 🛠️ Recursos y Referencias
 - **Ruta del Proyecto:** `c:\Felipe\Projects\Mapa-rd`
-- **Configuración:** `03_Config/scan_profile.json`
+- **Plan de Inversión:** `06_Dev_Route/API_Investment_Plan.md`
 - **Logs:** `04_Data/tracking/persistence.json` (Estado del sistema)
