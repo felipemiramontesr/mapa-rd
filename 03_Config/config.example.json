@@ -1,0 +1,14 @@
+{
+    "spiderfoot_path": "/path/to/spiderfoot",
+    "python_exe": "python",
+    "default_profile": "all",
+    "email": {
+        "backend": "smtp",
+        "smtp_host": "smtp.example.com",
+        "smtp_port": 587,
+        "smtp_user": "user@example.com",
+        "smtp_pass": "password",
+        "smtp_tls": true,
+        "sender_email": "noreply@example.com"
+    }
+}

@@ -195,8 +195,21 @@ class Orchestrator:
             
             # 5. ENVÍO (4.2.5)
             print(f"[*] Sending report {report_id}...")
-            # success = self.notifier.send_report(...)
-            success = True # Forced for demo/implementation walk
+            client_name = client["client_name_full"]
+            
+            # Send using Notifier
+            # Note: We send to the FIRST email in the identity list as primary recipient
+            recipient_email = intake.get("identity", {}).get("emails", [""])[0]
+            if not recipient_email:
+                recipient_email = "unknown@example.com"
+                
+            success, msg_id = self.notifier.send_report(
+                [recipient_email], # Pass as list
+                artifacts["pdf_path"],
+                client_name,
+                scan_id=report_id
+            )
+            # success = True # Forced for demo/implementation walk
             
             if success:
                 self.sm.update_report_status(report_id, "EN_REVISION")

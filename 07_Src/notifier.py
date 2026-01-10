@@ -154,9 +154,12 @@ class Notifier:
         
         for attempt in range(1, max_retries + 1):
             try:
-                server = smtplib.SMTP(host, port, timeout=30)
-                if use_tls:
-                    server.starttls()
+                if port == 465:
+                    server = smtplib.SMTP_SSL(host, port, timeout=30)
+                else:
+                    server = smtplib.SMTP(host, port, timeout=30)
+                    if use_tls:
+                        server.starttls()
                 
                 if user and password:
                     server.login(user, password)

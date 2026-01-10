@@ -19,6 +19,7 @@ env/
 04_Data/reports/*.pdf
 04_Data/reports/*.json
 04_Data/arco/
+03_Config/config.json
 
 # Tools
 .vscode/
