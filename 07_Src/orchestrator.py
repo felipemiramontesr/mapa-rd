@@ -15,7 +15,7 @@ class Orchestrator:
     def __init__(self):
         self.sm = StateManager()
         self.qc = QCManager(self.sm)
-        self.rg = ReportGenerator()
+        self.rg = ReportGenerator(self.sm)
         self.notifier = Notifier()
         # Load Config
         # Load Config (Robust handling for CI/Cloud missing configs)

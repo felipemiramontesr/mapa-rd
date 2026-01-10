@@ -14,13 +14,14 @@ ARCO_ROOT = os.path.join(DATA_DIR, 'arco')
 TRACKING_DIR = os.path.join(DATA_DIR, 'tracking')
 
 class ReportGenerator:
-    def __init__(self):
+    def __init__(self, state_manager=None):
         with open(TEMPLATE_PATH, 'r', encoding='utf-8') as f:
             self.template = f.read()
         with open(RECLAMACION_TEMPLATE_PATH, 'r', encoding='utf-8') as f:
             self.reclamacion_template = f.read()
         self.pdf_converter = PdfConverter()
-        self.state_manager = StateManager()
+        # Dependency Injection: Use provided state_manager or new instance
+        self.state_manager = state_manager if state_manager else StateManager()
         self.REPORTS_DIR = REPORTS_DIR
         self.ARCO_ROOT = ARCO_ROOT
         self.QCModule = QCModule
