@@ -1,124 +1,138 @@
+"""
+MAPA-RD: Official CLI Entry Point
+---------------------------------
+Author: Antigravity AI / Senior Python standards
+Version: 2.3.0 (Pro)
+
+Purpose:
+    This is the primary interface for the MAPA-RD system. It initializes the 
+    core engine (Orchestrator), validates user input, and triggers the 
+    end-to-end intelligence lifecycle.
+
+Architecture:
+    This script acts as a 'Lightweight Wrapper'. All business logic is 
+    encapsulated within the Orchestrator to ensure the CLI remains clean 
+    and maintainable.
+"""
+
 import os
 import sys
 import argparse
-import json
+import logging
 from datetime import datetime
+from typing import Optional
 
-# Add src to path
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '07_Src'))
+# ---------------------------------------------------------
+# ENVIRONMENT SETUP
+# Ensuring the Source directory is in the system path for seamless
+# cross-module imports within the MAPA-RD ecosystem.
+# ---------------------------------------------------------
+SOURCE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '07_Src')
+sys.path.append(SOURCE_DIR)
 
-from orchestrator import Orchestrator
-from normalizer import Normalizer
-from deduper import Deduper
-from scorer import Scorer
-from responsible_resolver import ResponsibleResolver
-from arco_generator import ArcoGenerator
-from report_generator import ReportGenerator
-from notifier import Notifier
+# Core MAPA-RD Imports
+try:
+    from orchestrator import Orchestrator
+    from state_manager import StateManager
+except ImportError as e:
+    print(f"[CRITICAL] Failed to load core modules from {SOURCE_DIR}: {e}")
+    sys.exit(1)
 
-def run_production_pipeline(client_id, analysis_type="monthly"):
-    # 1. Initialization and Data Loading
-    orchestrator = Orchestrator()
-    normalizer = Normalizer()
-    deduper = Deduper()
-    scorer = Scorer()
-    resolver = ResponsibleResolver()
-    report_gen = ReportGenerator()
-
-    # Mapping backward compatibility
-    if analysis_type == "SETUP":
-        analysis_type = "baseline"
-    elif analysis_type == "MONTHLY":
-        analysis_type = "monthly"
-
-    # Load intake data to get the professional name
-    intake_path = os.path.join('04_Data', 'intake', f"{client_id}.json")
-    if not os.path.exists(intake_path):
-        print(f"[!] Error: Intake file not found at {intake_path}")
-        return
-
-    with open(intake_path, 'r', encoding='utf-8') as f:
-        intake_data = json.load(f)
+def main() -> None:
+    """Professional CLI Entry point for the MAPA-RD Intelligence Pipeline."""
     
-    full_client_name = intake_data.get('client_info', {}).get('name', client_id)
-
-    print(f"\n{'='*60}")
-    print(f" MAPA-RD EXECUTION: {full_client_name}")
-    print(f"{'='*60}\n")
-
-    try:
-        # 2. Orchestration (Scanning/Data Collection)
-        print(f"[*] Step 1: Orchestrating data collection for {client_id}...")
-        scan_id, client_dir_name = orchestrator.orchestrate(client_id, analysis_type=analysis_type)
-        
-        # 3. Load and Process Data
-        raw_path = os.path.join('04_Data', 'raw', client_dir_name, scan_id, 'spiderfoot.json')
-        
-        if not os.path.exists(raw_path):
-            print(f"[!] Error: Raw data for scan {scan_id} not found at {raw_path}")
-            return
-
-        with open(raw_path, 'r', encoding='utf-8') as f:
-            raw_data = json.load(f)
-
-        # 4. Processing Chain
-        print("[*] Step 2: Normalizing and Deduping findings...")
-        normalized = normalizer.normalize_scan(raw_data)
-        deduped = deduper.deduplicate(normalized)
-        
-        print("[*] Step 3: Resolving responsibles and Scoring risk...")
-        resolved = resolver.resolve_findings(deduped)
-        scored = scorer.score_findings(resolved)
-
-        # 5. Reporting
-        print("[*] Step 4: Generating Premium PDF Report...")
-        # Use full name for internal report content
-        report_path = report_gen.generate_report(full_client_name, scan_id, scored, report_type=analysis_type)
-        
-        pdf_path = report_path.replace(".md", ".pdf")
-        
-        print(f"\n{'-'*60}")
-        print(f"[SUCCESS] Pipeline completed.")
-        print(f"  - Markdown: {report_path}")
-        print(f"  - Final PDF: {pdf_path}")
-        print(f"{'-'*60}\n")
-
-        # 6. Notification
-        print("[*] Step 5: Sending Email Notifications...")
-        try:
-            notifier = Notifier()
-            recipients = []
-            client_email = intake_data.get('client_info', {}).get('email')
-            if client_email:
-                recipients.append(client_email)
-            
-            # Add identity emails too
-            identity_emails = intake_data.get('identity', {}).get('emails', [])
-            for em in identity_emails:
-                if em not in recipients:
-                    recipients.append(em)
-            
-            if recipients:
-                # Passing scan_id to notifier so it can extract the report number
-                notifier.send_report(recipients, pdf_path, full_client_name, scan_id=scan_id)
-            else:
-                print("[!] No recipient emails found in intake file.")
-        except Exception as e:
-            print(f"[!] Notification step failed: {e}")
-
-    except Exception as e:
-        print(f"\n[CRITICAL ERROR] Pipeline failed: {str(e)}")
-        print("Please verify the intake file exists in 'data/intake/'.")
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="MAPA-RD Production Pipeline")
-    parser.add_argument("--client", required=True, help="Client name (matches intake filename)")
-    parser.add_argument("--type", choices=["baseline", "monthly", "on_demand", "incident", "SETUP", "MONTHLY"], default="monthly", help="Analysis type")
+    # ---------------------------------------------------------
+    # ARGUMENT PARSING
+    # ---------------------------------------------------------
+    parser = argparse.ArgumentParser(
+        description="MAPA-RD: Professional Digital Intelligence & Privacy OSINT Pipeline",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     
+    parser.add_argument(
+        "--client", 
+        required=True, 
+        help="Target Client ID or slug (e.g. 'ana-flores')."
+    )
+    parser.add_argument(
+        "--type", 
+        choices=["BASELINE", "FREQUENCY", "INCIDENT", "RESCUE"], 
+        default="BASELINE", 
+        help="Strategy for intelligence gathering."
+    )
+    parser.add_argument(
+        "--debug", 
+        action="store_true", 
+        help="Enable full tracebacks and verbose debug logging."
+    )
+
     args = parser.parse_args()
     
-    # Ensure directories exist
-    os.makedirs('data/intake', exist_ok=True)
-    os.makedirs('data/reports', exist_ok=True)
-    
-    run_production_pipeline(args.client, args.type)
+    # ---------------------------------------------------------
+    # LOGGING CONFIGURATION
+    # Using the standard library logging for enterprise observability.
+    # ---------------------------------------------------------
+    log_level = logging.DEBUG if args.debug else logging.INFO
+    logging.basicConfig(
+        level=log_level,
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    logger = logging.getLogger("MAPA-RD")
+
+    # Visual Branding Header
+    print(f"\n{'='*70}")
+    print(f" MAPA-RD INTELLIGENCE SYSTEM v2.3 | SESSION: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"{'='*70}\n")
+
+    try:
+        # 1. INITIALIZE CORE ENGINE
+        # The Orchestrator manages the pipeline, while StateManager handles persistence.
+        orchestrator = Orchestrator()
+        sm = StateManager()
+        
+        # 2. CLIENT VALIDATION
+        # We allow identification by ID or by human-readable Name Slug.
+        client_id = args.client
+        client = sm.get_client(client_id)
+        
+        if not client:
+             logger.warning(f"ID '{client_id}' not found. Searching registry for matching slug...")
+             
+             # Reverse lookup in the client database
+             found_id = None
+             for cid, cdata in sm.data.get("clients", {}).items():
+                 if cdata.get("client_name_slug") == client_id:
+                     found_id = cid
+                     break
+             
+             if found_id:
+                 client_id = found_id
+                 logger.info(f"Target identified: {client_id}")
+             else:
+                 logger.error(f"Execution Aborted: No registry found for target '{args.client}'.")
+                 print("[!] Error: El cliente no existe. Registre al cliente primero en StateManager.")
+                 sys.exit(1)
+
+        # 3. TRIGGER LIFECYCLE
+        # orchestrate() is the atomic entry point for the entire backend flow.
+        logger.info(f"Starting pipeline for Client: {client_id} (Strategy: {args.type})")
+        
+        # This call handles: Intake -> Scan -> Process -> Report -> QC -> Notif
+        intake_id, _ = orchestrator.orchestrate(client_id, analysis_type=args.type)
+        
+        # SUCCESS FOOTER
+        print(f"\n{'*'*70}")
+        print(f" [SUCCESS] Lifecycle finished for Job: {intake_id}")
+        print(f" [OUTPUT] Reports saved in: 04_Data/reports/")
+        print(f"{'*'*70}\n")
+
+    except Exception as e:
+        # Critical failure catch-all
+        logger.critical(f"FATAL: Pipeline execution crashed: {str(e)}", exc_info=args.debug)
+        print(f"\n[ERROR] El sistema se detuvo debido a un error crítico: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    # Standard Python entry block
+    main()

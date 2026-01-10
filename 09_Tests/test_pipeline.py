@@ -1,10 +1,30 @@
+"""
+MAPA-RD: Integrated Pipeline Test Suite
+----------------------------------------
+Author: Antigravity AI / Senior Python standards
+Version: 1.2.0 (Pro)
+
+Purpose:
+    Performs a full end-to-end (E2E) validation of the digital intelligence 
+    pipeline. This test simulates a client intake, executes a scan, processes 
+    data through the entire chain (Normalization -> Scorer -> Resolver), 
+    and verifies artifact generation (PDF/Markdown/ARCO).
+"""
+
 import sys
 import os
 import json
+import logging
+from typing import List
 
-# Add src to path
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '07_Src'))
+# ---------------------------------------------------------
+# DYNAMIC PATH INJECTION
+# Adding the source directory to the environment to allow relative imports.
+# ---------------------------------------------------------
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(BASE_DIR, '07_Src'))
 
+# Core Pipeline Components
 from orchestrator import Orchestrator
 from normalizer import Normalizer
 from deduper import Deduper
@@ -13,25 +33,31 @@ from responsible_resolver import ResponsibleResolver
 from arco_generator import ArcoGenerator
 from report_generator import ReportGenerator
 
-def test_pipeline():
-    print("=== STARTING MAPA-RD PIPELINE TEST ===")
+def test_pipeline() -> None:
+    """Full architectural validation of the MAPA-RD intelligence flow."""
+    print(f"\n{'='*70}")
+    print(" [TEST] STARTING INTEGRATED PIPELINE VALIDATION")
+    print(f"{'='*70}\n")
     
-    # 1. Setup Intake
+    # ---------------------------------------------------------
+    # STEP 1: TEST ENVIRONMENT MOCKING
+    # We clean and prepare the required data structures for the simulation.
+    # ---------------------------------------------------------
     client_id = "test-verification-user"
     orchestrator = Orchestrator()
     
-    # Manually creating intake for test
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    intake_dir = os.path.join(base_dir, '04_Data', 'intake')
-    raw_dir = os.path.join(base_dir, '04_Data', 'raw')
-    reports_dir = os.path.join(base_dir, '04_Data', 'reports')
-    tracking_dir = os.path.join(base_dir, '04_Data', 'tracking')
-    outbox_dir = os.path.join(base_dir, '04_Data', 'outbox')
+    # Directories for mock data storage
+    data_dirs = [
+        '04_Data/intake', '04_Data/raw', '04_Data/reports', 
+        '04_Data/tracking', '04_Data/outbox'
+    ]
     
-    for d in [intake_dir, raw_dir, reports_dir, tracking_dir, outbox_dir]:
-        os.makedirs(d, exist_ok=True)
+    for d in data_dirs:
+        os.makedirs(os.path.join(BASE_DIR, d), exist_ok=True)
 
-    with open(os.path.join(intake_dir, f"{client_id}.json"), 'w') as f:
+    # 1.1 Create mock intake record
+    mock_intake_path = os.path.join(BASE_DIR, '04_Data', 'intake', f"{client_id}.json")
+    with open(mock_intake_path, 'w', encoding='utf-8') as f:
         json.dump({
             "client_id": client_id,
             "identity": {
@@ -42,87 +68,95 @@ def test_pipeline():
             "jurisdiction": "MX"
         }, f)
 
-    # 2. Orchestrate Scan
-    print("[1] Orchestrating Scan...")
+    # ---------------------------------------------------------
+    # STEP 2: ORCHESTRATION & DATA ACQUISITION
+    # ---------------------------------------------------------
+    print("[*] Orchestrating scan job...")
     scan_id, client_dir_name = orchestrator.orchestrate(client_id)
     
-    # 3. Load Raw Data
-    # Use the dir name returned by the orchestrator (slug) which might differ from ID
-    raw_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_dir_name, scan_id, 'spiderfoot.json')
-    with open(raw_path, 'r') as f:
+    # 2.1 Verify raw data persistence
+    raw_path = os.path.join(BASE_DIR, '04_Data', 'raw', client_dir_name, scan_id, 'spiderfoot.json')
+    if not os.path.exists(raw_path):
+        raise FileNotFoundError(f"Pipeline failed to persist raw data at {raw_path}")
+
+    with open(raw_path, 'r', encoding='utf-8') as f:
         raw_data = json.load(f)
-    print(f"[2] Raw Data Loaded: {len(raw_data)} events")
+    
+    # Injected Mock Finding for Report Validation
+    raw_data.append({
+        "type": "EMAILADDR_COMPROMISED",
+        "data": "hack@victim.com",
+        "module": "HIBP",
+        "confidence": 100
+    })
+    
+    print(f" [+] Raw Intelligence Loaded: {len(raw_data)} events (1 Injected).")
 
-    # 4. Normalize
-    print("[3] Normalizing...")
+    # ---------------------------------------------------------
+    # STEP 3: PROCESSING CHAIN VALIDATION
+    # ---------------------------------------------------------
+    # 3.1 Normalization (Technical to Human)
     normalizer = Normalizer()
-    normalized_data = normalizer.normalize_scan(raw_data)
+    normalized = normalizer.normalize_scan(raw_data)
     
-    # 5. Dedupe
-    print("[4] Deduping...")
-    deduper = Deduper()
-    deduped_data = deduper.deduplicate(normalized_data)
-    print(f"    - Count after dedupe: {len(deduped_data)}")
+    # 3.2 Deduplication (Noise Reduction)
+    deduped = Deduper().deduplicate(normalized)
     
-    # 6. Resolve Responsibles
-    print("[5] Resolving Responsibles...")
+    # 3.3 Legal Resolution (ARCO Entities)
     resolver = ResponsibleResolver()
-    resolved_data = resolver.resolve_findings(deduped_data)
+    resolved = resolver.resolve_findings(deduped)
 
-    # 7. Score
-    print("[6] Scoring Risk...")
+    # 3.4 Risk Scoring (Priority Logic)
     scorer = Scorer()
-    scored_data = scorer.score_findings(resolved_data)
+    scored = scorer.score_findings(resolved)
     
-    # 8. Generate Artifacts
-    print("[7] Generating Artifacts...")
+    # ---------------------------------------------------------
+    # STEP 4: ARTIFACT GENERATION & COMPLIANCE
+    # ---------------------------------------------------------
+    print("[*] Validating generation of legal & executive artifacts...")
     arco_gen = ArcoGenerator()
     report_gen = ReportGenerator()
     
-    # ARCO for high risks
-    for finding in scored_data:
+    # 4.1 ARCO Document Generation
+    for finding in scored:
         if finding.get('risk_score') in ['P0', 'P1']:
             path = arco_gen.generate_arco("Felipe Reviewer", finding)
-            print(f"    - ARCO generated: {path}")
+            if not os.path.exists(path):
+                raise AssertionError(f"ARCO draft failed to generate at {path}")
             
-    # Report
-    # Report
-    print(f"    - Generating Enterprise Report (SETUP Mode)...")
-    artifacts = report_gen.generate_report(client_id, scan_id, "R-TEST-001", scored_data, report_type="BASELINE")
+    # 4.2 Executive Intelligence Report
+    artifacts = report_gen.generate_report(client_id, scan_id, "R-AUTO-TC-1", scored, report_type="BASELINE")
     report_path = artifacts["md_path"]
-    print(f"    - Executive Report: {report_path}")
     
-    # Verify Content (Scope & Risk)
+    # ---------------------------------------------------------
+    # STEP 5: DOCUMENT CONTENT ASSESTMENT
+    # Ensuring the markdown contains all required MAPA-RD sections.
+    # ---------------------------------------------------------
     with open(report_path, "r", encoding="utf-8") as f:
-        md_content = f.read()
+        content = f.read()
     
-    required_strings = [
-        "Alcance del Análisis",
-        "Escala de Clasificación de Riesgos",
-        "Inventario de Activos",
-        "Matriz de Riesgo",
-        "Ruta de Cierre"
+    sections = [
+        "Alcance", "Escala", "Inventario", "Matriz", "Ruta de Cierre"
     ]
     
-    for req in required_strings:
-        if req in md_content:
-             print(f"    [+] Content: '{req}' confirmed.")
-        else:
-             print(f"    [!] Content: '{req}' MISSING.")
+    for section in sections:
+        assert section in content, f"Compliance Failure: Section '{section}' missing from report."
+        print(f" [+] Compliance verified: Section '{section}' found.")
 
-        
-    # PDF Verification
+    # ---------------------------------------------------------
+    # STEP 6: PDF REPRESENTATION CHECK
+    # (Soft check for environment capabilities)
+    # ---------------------------------------------------------
     pdf_path = report_path.replace(".md", ".pdf")
     if os.path.exists(pdf_path):
-        print(f"    [+] PDF Verification: File exists at {pdf_path}")
+        print(f" [+] PDF Verification: Binary artifact created at {pdf_path}")
     else:
-        # In CI environments, full LaTeX stack might be missing/heavy.
-        # We degrade gracefully to WARNING instead of FAILURE if Markdown exists.
-        print(f"    [!] WARNING: PDF Verification failed. File NOT found at {pdf_path}")
-        print("        (Check if Pandoc/LaTeX is fully configured in the environment.)")
-        # sys.exit(1) # DISABLED for CI stability. Markdown is the source of truth.
+        print(" [!] Note: PDF not found. Skipping binary check (Likely missing Pandoc in this local env).")
         
-    print("=== TEST COMPLETED SUCCESSFULLY ===")
+    print(f"\n{'='*70}")
+    print(" [PASSED] PIPELINE VALIDATION COMPLETED SUCCESSFULLY")
+    print(f"{'='*70}\n")
 
 if __name__ == "__main__":
+    # Standard local execution for manual debugging
     test_pipeline()
