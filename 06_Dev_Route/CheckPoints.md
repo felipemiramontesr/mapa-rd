@@ -19,7 +19,11 @@
     - [x] Implementación de GitHub Actions (`ci.yml`) con Linting (flake8), Seguridad (bandit) y Testing (pytest).
     - [x] Estandarización de entorno con `requirements.txt`.
 - [x] **Fase 4: Git & Privacidad (COMPLETADA):** .gitignore optimizado para proteger datos de clientes.
-- [x] **Fase 5: Professional Coding Standards (COMPLETADA):**
+- [x] **Phase 5: Professional Coding Standards** - Refactoring Core, Docstrings, and CI/CD Cleanup.
+- [x] **Phase 5.1: CI/CD Stabilization** - Fixed Flake8/Bandit compliance, removed legacy code, and greenlit Pipeline.
+- [ ] **Phase 6: External Integrations** - HIBP API & Google Search.
+- [x] **Phase 5.1: CI/CD Stabilization** - Fixed Flake8/Bandit compliance, removed legacy code, and greenlit Pipeline.
+- [ ] **Phase 6: External Integrations** - HIBP API & Google Search.
     - [x] **Refactorización Senior**: Aplicación de Type Hints, Docstrings estilo Google y manejo de excepciones robusto en todo el core.
     - [x] **Comentarización Pro**: Documentación interna detallada en `normalizer`, `deduper`, `scorer`, `test_pipeline` y `dashboard`.
     - [x] **Testing Robusto**: Suite de pruebas integral validando el ciclo de vida completo.

@@ -107,6 +107,9 @@ class Notifier:
         start_time = time.time()
         
         # 1. Routing & Safety
+        if isinstance(receiver_emails, str):
+            receiver_emails = [receiver_emails]
+
         final_to = receiver_emails
         if self.override_to:
             print(f"[LOG] EMAIL_ROUTING | override=active | to_effective={self.override_to}")
