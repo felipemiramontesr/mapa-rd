@@ -1,5 +1,6 @@
 import os
 import json
+import glob
 import unicodedata
 from datetime import datetime
 from typing import List, Dict, Any, Tuple, Optional, Union
@@ -29,16 +30,17 @@ class ReportGenerator:
         # Public path properties for integration
         self.reports_dir = os.path.join(base_dir, '04_Data', 'reports')
         self.arco_root = os.path.join(base_dir, '04_Data', 'arco')
+        self.tracking_dir = os.path.join(base_dir, '04_Data', 'tracking')
         
         self.ensure_dirs()
 
     def ensure_dirs(self) -> None:
         """Create required output directories."""
-        for d in [self.reports_dir, self.arco_root]:
+        for d in [self.reports_dir, self.arco_root, self.tracking_dir]:
             os.makedirs(d, exist_ok=True)
 
     def _get_or_create_client_id(self, client_name):
-        id_file = os.path.join(TRACKING_DIR, 'client_ids.json')
+        id_file = os.path.join(self.tracking_dir, 'client_ids.json')
         if not os.path.exists(id_file):
             data = {"last_id": 0, "clients": {}}
         else:
@@ -63,6 +65,21 @@ class ReportGenerator:
 
     def sanitize_filename(self, name):
         return name.replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U").replace("Ñ", "N")
+
+    def cleanup_reports(self, client_name, current_scan_id):
+        # Remove all MD/PDF reports for this client ensuring only the current one remains
+        # Strategy: List all files for client, delete if not current_scan_id
+        pattern = f"REPORT_{client_name}_*"
+        files = glob.glob(os.path.join(self.reports_dir, pattern))
+        
+        for f in files:
+            # Check if it belongs to current scan
+            if current_scan_id not in f:
+                try:
+                    os.remove(f)
+                    print(f"[-] Cleanup: Removed old artifact {os.path.basename(f)}")
+                except Exception as e:
+                    print(f"[!] Cleanup Error: {e}")
 
     def sanitize_text(self, text):
         if not text: return ""
