@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environments
+.env
+venv/
+env/
+
+# Data (Keep directories but ignore content if sensitive)
+# For now, we might want to keep some mock data, but usually we ignore raw/
+# 04_Data/raw/*
+# !04_Data/raw/.gitkeep
+04_Data/raw/
+04_Data/outbox/
+04_Data/intake/
+04_Data/tracking/
+04_Data/reports/*.pdf
+04_Data/reports/*.json
+04_Data/arco/
+
+# Tools
+.vscode/
+.idea/
+*.log
+
+# OS
+Thumbs.db
+Desktop.ini

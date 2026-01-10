@@ -1,0 +1,8 @@
+[
+  {
+    "category": "Data Leak",
+    "risk_score": "P0",
+    "entity": "Compromised Credentials",
+    "source_name": "sfp_citadel"
+  }
+]

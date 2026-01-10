@@ -1,0 +1,20 @@
+{
+    "provider": {
+        "name": "FELIPE DE JESÚS MIRAMONTES ROMERO",
+        "rfc": "MIRF870903MK5",
+        "tax_regime": "RESICO",
+        "fiscal_address": "Iturbide 20, Col. El Santuario, CP 99820, Teul de González Ortega, Zacatecas, México",
+        "arco_email": "info@felipemiramontesr.net",
+        "privacy_notice_url": "https://private.felipemiramontesr.net/aviso-privacidad.html",
+        "print_sensitive_ids": false
+    },
+    "defaults": {
+        "jurisdiction_state": "Zacatecas",
+        "jurisdiction_city": "Zacatecas",
+        "privacy_notice_version": "v1.0",
+        "retention_days": 180,
+        "confidentiality_months": 24,
+        "sla_incident_high": "24 horas",
+        "sla_incident_medium": "72 horas"
+    }
+}

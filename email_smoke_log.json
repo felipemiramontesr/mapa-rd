@@ -1,0 +1,2 @@
+{"timestamp": "2026-01-04T00:23:34.636814", "backend": "stub", "success": true, "result": "<176750781460.15640.11715042174348293793@Felipe>", "duration_ms": 26}
+{"timestamp": "2026-01-04T00:27:37.452748", "backend": "smtp", "success": false, "result": "Connection unexpectedly closed: timed out", "duration_ms": 30099}

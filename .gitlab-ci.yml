@@ -1,0 +1,33 @@
+image: python:3.11
+
+stages:
+  - test
+  - quality
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - python -V
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+  - pip install pytest
+
+test_pipeline:
+  stage: test
+  script:
+    - echo "Running Unit Tests..."
+    - pytest
+
+lint_check:
+  stage: quality
+  script:
+    - echo "Running Lint Checks (Placeholder)..."
+    # - pip install pylint
+    # - pylint 07_Src/
+  allow_failure: true

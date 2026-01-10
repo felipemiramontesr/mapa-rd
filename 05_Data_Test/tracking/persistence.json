@@ -1,0 +1,162 @@
+{
+    "clients": {
+        "0000001": {
+            "id": "0000001",
+            "name": "Test Client V3",
+            "email": "",
+            "client_status": "CLIENT_CREATED",
+            "intake_status": "EJECUTADO",
+            "last_valid_report": {
+                "report_id": "R-0005",
+                "report_type": "INCIDENT",
+                "report_date": "2026-01-04",
+                "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04"
+            },
+            "last_valid_report_id": "R-0005",
+            "last_valid_report_type": "INCIDENT",
+            "last_valid_report_date": "2026-01-04",
+            "incident_count_month": 2,
+            "last_incident_reset": "2026-01",
+            "reports": [
+                {
+                    "report_id": "R-0001",
+                    "report_type": "BASELINE",
+                    "date": "2026-01-04",
+                    "report_status": "GENERADO",
+                    "qc_status": "APROBADO",
+                    "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0001 - 2026-01-04",
+                    "paths": {
+                        "md": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0001 - 2026-01-04.md",
+                        "pdf": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0001 - 2026-01-04.pdf",
+                        "json": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - DATOS_TECNICOS - 0000001 - Test_Client_V3 - R-0001 - 2026-01-04.json"
+                    },
+                    "email_status": "PENDIENTE",
+                    "email_backend": null,
+                    "email_to": null,
+                    "email_message_id": null,
+                    "email_error_class": null,
+                    "email_error_message": null,
+                    "email_sent_at": null,
+                    "review_start_time": "2026-01-04T00:23:13.051903"
+                },
+                {
+                    "report_id": "R-0002",
+                    "report_type": "INCIDENT",
+                    "date": "2026-01-04",
+                    "report_status": "GENERADO",
+                    "qc_status": "APROBADO",
+                    "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0002 - 2026-01-04",
+                    "paths": {
+                        "md": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0002 - 2026-01-04.md",
+                        "pdf": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0002 - 2026-01-04.pdf",
+                        "json": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - DATOS_TECNICOS - 0000001 - Test_Client_V3 - R-0002 - 2026-01-04.json"
+                    },
+                    "email_status": "PENDIENTE",
+                    "email_backend": null,
+                    "email_to": null,
+                    "email_message_id": null,
+                    "email_error_class": null,
+                    "email_error_message": null,
+                    "email_sent_at": null,
+                    "review_start_time": "2026-01-04T00:23:15.421409"
+                },
+                {
+                    "report_id": "R-0003",
+                    "report_type": "RESCUE",
+                    "date": "2026-01-04",
+                    "report_status": "GENERADO",
+                    "qc_status": "APROBADO",
+                    "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0003 - 2026-01-04",
+                    "paths": {
+                        "md": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0003 - 2026-01-04.md",
+                        "pdf": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0003 - 2026-01-04.pdf",
+                        "json": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - DATOS_TECNICOS - 0000001 - Test_Client_V3 - R-0003 - 2026-01-04.json"
+                    },
+                    "email_status": "ENVIADO",
+                    "email_backend": "stub",
+                    "email_to": "t@t.com",
+                    "email_message_id": "<176750779777.33276.1451687213876450193@Felipe>",
+                    "email_error_class": null,
+                    "email_error_message": null,
+                    "email_sent_at": "2026-01-04T00:23:17.794908",
+                    "review_start_time": "2026-01-04T00:23:17.756995"
+                },
+                {
+                    "report_id": "R-0004",
+                    "report_type": "FREQUENCY",
+                    "date": "2026-01-04",
+                    "report_status": "GENERADO",
+                    "qc_status": "APROBADO",
+                    "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0004 - 2026-01-04",
+                    "paths": {
+                        "md": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0004 - 2026-01-04.md",
+                        "pdf": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0004 - 2026-01-04.pdf",
+                        "json": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - DATOS_TECNICOS - 0000001 - Test_Client_V3 - R-0004 - 2026-01-04.json"
+                    },
+                    "email_status": "PENDIENTE",
+                    "email_backend": null,
+                    "email_to": null,
+                    "email_message_id": null,
+                    "email_error_class": null,
+                    "email_error_message": null,
+                    "email_sent_at": null,
+                    "review_start_time": "2026-01-04T00:23:20.269573"
+                },
+                {
+                    "report_id": "R-0005",
+                    "report_type": "INCIDENT",
+                    "date": "2026-01-04",
+                    "report_status": "GENERADO",
+                    "qc_status": "APROBADO",
+                    "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04",
+                    "paths": {
+                        "md": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04.md",
+                        "pdf": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04.pdf",
+                        "json": "C:\\Users\\felip\\OneDrive\\Documentos\\felipe\\02_Proyectos_y_Clientes\\Mapa-rd\\data_test\\reports\\MAPA-RD - DATOS_TECNICOS - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04.json"
+                    },
+                    "email_status": "PENDIENTE",
+                    "email_backend": null,
+                    "email_to": null,
+                    "email_message_id": null,
+                    "email_error_class": null,
+                    "email_error_message": null,
+                    "email_sent_at": null,
+                    "review_start_time": "2026-01-04T00:23:22.807476"
+                }
+            ],
+            "report_seq": 5
+        }
+    },
+    "reports": {
+        "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0001 - 2026-01-04": {
+            "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0001 - 2026-01-04",
+            "status": "GENERADO",
+            "qc_status": "APROBADO",
+            "timestamp": "2026-01-04T00:23:13.049115"
+        },
+        "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0002 - 2026-01-04": {
+            "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0002 - 2026-01-04",
+            "status": "GENERADO",
+            "qc_status": "APROBADO",
+            "timestamp": "2026-01-04T00:23:15.417205"
+        },
+        "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0003 - 2026-01-04": {
+            "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0003 - 2026-01-04",
+            "status": "APROBADO_TACITO",
+            "qc_status": "APROBADO",
+            "timestamp": "2026-01-04T00:23:17.753611"
+        },
+        "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0004 - 2026-01-04": {
+            "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0004 - 2026-01-04",
+            "status": "GENERADO",
+            "qc_status": "APROBADO",
+            "timestamp": "2026-01-04T00:23:20.263104"
+        },
+        "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04": {
+            "base_name": "MAPA-RD - REPORTE - 0000001 - Test_Client_V3 - R-0005 - 2026-01-04",
+            "status": "GENERADO",
+            "qc_status": "APROBADO",
+            "timestamp": "2026-01-04T00:23:22.803747"
+        }
+    }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "category": "Leak",
+    "risk_score": "P0",
+    "source_name": "src",
+    "entity": "ent"
+  }
+]

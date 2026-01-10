@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "name": "MAPA_RD_STANDARD_PASSIVE",
+    "description": "Passive-only OSINT scan profile for MAPA-RD. No active scans, no brute force.",
+    "version": "1.0"
+  },
+  "modules_enabled": [
+    "sfp_abuseipdb",
+    "sfp_alienvault",
+    "sfp_archiveorg",
+    "sfp_bing",
+    "sfp_blockchain",
+    "sfp_censys",
+    "sfp_crt",
+    "sfp_dnscommonsrv",
+    "sfp_dnsdumpster",
+    "sfp_duckduckgo",
+    "sfp_github",
+    "sfp_google",
+    "sfp_haveibeenpwned",
+    "sfp_instagram",
+    "sfp_linkedin",
+    "sfp_shodan",
+    "sfp_twitter",
+    "sfp_virustotal",
+    "sfp_whois",
+    "sfp_wikipedia"
+  ],
+  "modules_disabled_explicitly": [
+    "sfp_bruteforce",
+    "sfp_portscan_tcp",
+    "sfp_spider",
+    "sfp_accounts" 
+  ],
+  "global_settings": {
+    "module.dnstwist.enable": false,
+    "module.bruteforce.enable": false
+  }
+}
