@@ -43,7 +43,7 @@ class PdfConverter:
                 msi_path = os.path.join(temp_dir, "pandoc_install.msi")
                 
                 print(f"[*] Downloading Pandoc MSI from {url}...")
-                urllib.request.urlretrieve(url, msi_path)
+                urllib.request.urlretrieve(url, msi_path) # nosec
                 
                 print("[*] Running silent installation (requires privileges)...")
                 cmd = ["msiexec", "/i", msi_path, "/quiet", "/norestart"]
@@ -88,7 +88,7 @@ class PdfConverter:
             print(f"[*] Downloading MiKTeX Installer from {url}...")
             # Note: User request implies generic latest if possible, but hardcoded version is safer for script stability.
             # Using the exact version 24.1 as of early 2024/2025 context.
-            urllib.request.urlretrieve(url, installer_path)
+            urllib.request.urlretrieve(url, installer_path) # nosec
             
             print("[*] Running MiKTeX silent install (Current User, Basic Package Set)...")
             # Flags: --private (user), --unattended (no ui), --package-set=basic

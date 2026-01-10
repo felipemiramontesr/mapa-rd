@@ -84,7 +84,6 @@ class ReportGenerator:
     def sanitize_text(self, text):
         if not text: return ""
         # 1. Normalize Unicode (NFKC) to fix compatibility characters
-        import unicodedata
         text = unicodedata.normalize('NFKC', text)
         
         # 2. Explicit character replacements
@@ -591,17 +590,3 @@ Yo, **{client_name}**, manifiesto mi OPOSICIÓN al tratamiento de mis datos pers
             
         return final_pdf_path
 
-    def cleanup_reports(self, client_name, current_scan_id):
-        # Remove all MD/PDF reports for this client ensuring only the current one remains
-        # Strategy: List all files for client, delete if not current_scan_id
-        pattern = f"MAPA-RD - * - {client_name} - *" 
-        files = glob.glob(os.path.join(self.reports_dir, pattern))
-        
-        for f in files:
-            # Check if it belongs to current scan
-            if current_scan_id not in f:
-                try:
-                    os.remove(f)
-                    print(f"[-] Cleanup: Removed old artifact {os.path.basename(f)}")
-                except Exception as e:
-                    print(f"[!] Cleanup Error: {e}")
