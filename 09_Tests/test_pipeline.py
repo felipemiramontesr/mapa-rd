@@ -136,7 +136,11 @@ def test_pipeline() -> None:
         content = f.read()
     
     sections = [
-        "Alcance", "Escala", "Inventario", "Matriz", "Ruta de Cierre"
+        "Alcance del Diagnóstico",
+        "Resumen Ejecutivo",
+        "Amenazas Reales Detectadas",
+        "Plan de Acción Consolidado",
+        "Conclusión"
     ]
     
     for section in sections:
