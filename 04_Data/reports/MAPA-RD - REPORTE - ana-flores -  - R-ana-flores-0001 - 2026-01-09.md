@@ -1,15 +1,15 @@
 ---
 title: "MAPA-RD - REPORTE DE INTELIGENCIA"
-client_name: "test-verification-user"
-report_id: "R-test-verification-user-0006"
+client_name: "Ana Flores"
+report_id: "R-ana-flores-0001"
 report_date: "9 de Enero de 2026"
 ---
 
 # MAPA-RD – Diagnóstico de Privacidad y Seguridad Digital
 
-**Titular:** test-verification-user
-**ID Cliente:** test-verification-user
-**ID Reporte:** R-test-verification-user-0006
+**Titular:** Ana Flores
+**ID Cliente:** ana-flores
+**ID Reporte:** R-ana-flores-0001
 **Fecha:** 9 de Enero de 2026
 
 *Confidencial: Este documento contiene información sensible sobre su identidad digital.*
@@ -85,7 +85,7 @@ Actualmente su nivel de exposición es significativo debido a las filtraciones d
 **Nota:** Este anexo es solo para respaldo técnico y no requiere acción directa del titular.
 
 La lista completa de registros se encuentra en el archivo `datos_tecnicos.json`.
-Se detectaron un total de 1 registros brutos analizados.
+Se detectaron un total de 0 registros brutos analizados.
 
 
 ***
@@ -93,8 +93,8 @@ Se detectaron un total de 1 registros brutos analizados.
 ## 9. Formato de Reclamación (SIEMPRE)
 # Formato de Reclamación y Aclaraciones MAPA-RD
 
-**ID de Reporte:** R-test-verification-user-0006
-**Titular:** test-verification-user
+**ID de Reporte:** R-ana-flores-0001
+**Titular:** Ana Flores
 **Fecha:** 9 de Enero de 2026
 
 ---
@@ -114,4 +114,4 @@ Por favor, liste los puntos específicos del reporte que desea revisar:
 
 ### Firma del titular
 __________________________________
-**test-verification-user**
+**Ana Flores**

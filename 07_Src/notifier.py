@@ -89,12 +89,22 @@ class Notifier:
 
         print(f"[LOG] EMAIL_PREPARED | report_id={scan_id} | backend={self.backend} | to={msg['To']} | subject={msg['Subject']}")
 
+        # Professional Email Body Template
+        current_date_str = datetime.now().strftime("%d/%m/%Y")
+        
         body_text = body if body else (
-            f"Buen día,\n\n"
-            f"Se adjunta el Reporte de Inteligencia OSINT correspondiente al análisis realizado para {client_name}.\n\n"
-            f"El documento presenta una evaluación estructurada de la huella digital identificada en fuentes abiertas.\n\n"
-            f"Atentamente,\n"
-            f"MAPA-RD\n"
+            f"Estimado(a) {client_name},\n\n"
+            f"Esperamos que este mensaje le encuentre bien.\n\n"
+            f"Adjunto encontrará su Reporte de Inteligencia MAPA-RD correspondiente al periodo actual ({current_date_str}).\n"
+            f"Este documento contiene el análisis detallado de su huella digital y el estado de exposición en fuentes abiertas.\n\n"
+            f"Detalles del Envío:\n"
+            f"• ID de Reporte: {scan_id if scan_id else 'N/A'}\n"
+            f"• Fecha de Corte: {current_date_str}\n\n"
+            f"Agradecemos profundamente su confianza en nuestros servicios para proteger su privacidad y seguridad digital.\n"
+            f"Si tiene alguna duda sobre los hallazgos o requiere asistencia para ejecutar el plan de acción, quedamos a su entera disposición.\n\n"
+            f"Atentamente,\n\n"
+            f"El Equipo de MAPA-RD\n"
+            f"Protección de Identidad Digital\n"
         )
         msg.attach(MIMEText(body_text, 'plain', 'utf-8'))
 
