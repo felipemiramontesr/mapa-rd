@@ -21,8 +21,16 @@ def test_pipeline():
     orchestrator = Orchestrator()
     
     # Manually creating intake for test
-    intake_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'intake')
-    os.makedirs(intake_dir, exist_ok=True)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    intake_dir = os.path.join(base_dir, '04_Data', 'intake')
+    raw_dir = os.path.join(base_dir, '04_Data', 'raw')
+    reports_dir = os.path.join(base_dir, '04_Data', 'reports')
+    tracking_dir = os.path.join(base_dir, '04_Data', 'tracking')
+    outbox_dir = os.path.join(base_dir, '04_Data', 'outbox')
+    
+    for d in [intake_dir, raw_dir, reports_dir, tracking_dir, outbox_dir]:
+        os.makedirs(d, exist_ok=True)
+
     with open(os.path.join(intake_dir, f"{client_id}.json"), 'w') as f:
         json.dump({
             "client_id": client_id,
