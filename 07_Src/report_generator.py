@@ -2,35 +2,40 @@ import os
 import json
 import unicodedata
 from datetime import datetime
-from pdf_converter import PdfConverter
-from state_manager import StateManager
-from qc_module import QCModule
+from typing import List, Dict, Any, Tuple, Optional, Union
 
-TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '08_Templates', 'cliente_final.md')
-RECLAMACION_TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '08_Templates', 'reclamacion.md')
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data')
-REPORTS_DIR = os.path.join(DATA_DIR, 'reports')
-ARCO_ROOT = os.path.join(DATA_DIR, 'arco')
-TRACKING_DIR = os.path.join(DATA_DIR, 'tracking')
+# Core Modules
+from state_manager import StateManager
+from pdf_converter import PdfConverter
 
 class ReportGenerator:
-    def __init__(self, state_manager=None):
-        with open(TEMPLATE_PATH, 'r', encoding='utf-8') as f:
+    """Document factory for MAPA-RD reports and ARCO files."""
+    def __init__(self, state_manager: Optional[StateManager] = None):
+        """Initialize the generator with templates and state."""
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        templates_dir = os.path.join(base_dir, '08_Templates')
+        
+        template_path = os.path.join(templates_dir, 'cliente_final.md')
+        recl_path = os.path.join(templates_dir, 'reclamacion.md')
+        
+        with open(template_path, 'r', encoding='utf-8') as f:
             self.template = f.read()
-        with open(RECLAMACION_TEMPLATE_PATH, 'r', encoding='utf-8') as f:
+        with open(recl_path, 'r', encoding='utf-8') as f:
             self.reclamacion_template = f.read()
+            
         self.pdf_converter = PdfConverter()
-        # Dependency Injection: Use provided state_manager or new instance
-        self.state_manager = state_manager if state_manager else StateManager()
-        self.REPORTS_DIR = REPORTS_DIR
-        self.ARCO_ROOT = ARCO_ROOT
-        self.QCModule = QCModule
+        self.state_manager = state_manager or StateManager()
+        
+        # Public path properties for integration
+        self.reports_dir = os.path.join(base_dir, '04_Data', 'reports')
+        self.arco_root = os.path.join(base_dir, '04_Data', 'arco')
+        
         self.ensure_dirs()
 
-    def ensure_dirs(self):
-        for d in [self.REPORTS_DIR, self.ARCO_ROOT, self.state_manager.TRACKING_DIR]:
-            if not os.path.exists(d):
-                os.makedirs(d)
+    def ensure_dirs(self) -> None:
+        """Create required output directories."""
+        for d in [self.reports_dir, self.arco_root]:
+            os.makedirs(d, exist_ok=True)
 
     def _get_or_create_client_id(self, client_name):
         id_file = os.path.join(TRACKING_DIR, 'client_ids.json')
@@ -164,7 +169,7 @@ class ReportGenerator:
         body_content += f"\n\n***\n\n## 9. Formato de Reclamación (SIEMPRE)\n{reclamacion_content}"
 
         # 6. Save Files
-        md_filepath = os.path.join(self.REPORTS_DIR, f"{base_report_name}.md")
+        md_filepath = os.path.join(self.reports_dir, f"{base_report_name}.md")
         
         frontmatter = "---\n"
         frontmatter += f'title: "MAPA-RD - REPORTE DE INTELIGENCIA"\n'
@@ -178,7 +183,7 @@ class ReportGenerator:
             
         # Technical Data Nomenclature (Spec 6)
         json_base_name = build_name("METADATA")
-        json_filepath = os.path.join(self.REPORTS_DIR, f"{json_base_name}.json")
+        json_filepath = os.path.join(self.reports_dir, f"{json_base_name}.json")
         with open(json_filepath, 'w', encoding='utf-8') as f:
             json.dump(findings, f, indent=2, ensure_ascii=False)
  
@@ -192,7 +197,7 @@ class ReportGenerator:
             "md_path": md_filepath,
             "pdf_path": final_pdf_path,
             "json_path": json_filepath,
-            "arco_dir": os.path.join(self.ARCO_ROOT, build_name("ARCO")) if arco_data else None
+            "arco_dir": os.path.join(self.arco_root, build_name("ARCO")) if arco_data else None
         }
 
 
@@ -245,7 +250,7 @@ class ReportGenerator:
             return base
 
         base_arco_name = build_name("ARCO")
-        arco_dir = os.path.join(self.ARCO_ROOT, base_arco_name)
+        arco_dir = os.path.join(self.arco_root, base_arco_name)
         if not os.path.exists(arco_dir):
             os.makedirs(arco_dir)
             
@@ -548,13 +553,13 @@ Yo, **{client_name}**, manifiesto mi OPOSICIÓN al tratamiento de mis datos pers
         full_printable = frontmatter + current_text
         
         printable_filename = f"PRINT_{base_name}.md"
-        printable_filepath = os.path.join(self.REPORTS_DIR, printable_filename)
+        printable_filepath = os.path.join(self.reports_dir, printable_filename)
         
         with open(printable_filepath, 'w', encoding='utf-8') as f:
             f.write(full_printable)
             
         success, pdf_temp_path, error = self.pdf_converter.convert_to_pdf(printable_filepath)
-        final_pdf_path = os.path.join(self.REPORTS_DIR, f"{base_name}.pdf")
+        final_pdf_path = os.path.join(self.reports_dir, f"{base_name}.pdf")
 
         if success and pdf_temp_path and os.path.exists(pdf_temp_path):
              if os.path.exists(final_pdf_path):

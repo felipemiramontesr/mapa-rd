@@ -8,18 +8,17 @@ __pycache__/
 venv/
 env/
 
-# Data (Keep directories but ignore content if sensitive)
-# For now, we might want to keep some mock data, but usually we ignore raw/
-# 04_Data/raw/*
-# !04_Data/raw/.gitkeep
+# Data & Artefactos (Strict Privacy)
 04_Data/raw/
 04_Data/outbox/
 04_Data/intake/
 04_Data/tracking/
-04_Data/reports/*.pdf
-04_Data/reports/*.json
-04_Data/arco/
+04_Data/reports/*
+!04_Data/reports/.gitkeep
+04_Data/arco/*
+!04_Data/arco/.gitkeep
 03_Config/config.json
+05_Data_Test/
 
 # Tools
 .vscode/

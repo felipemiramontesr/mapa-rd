@@ -1,35 +1,42 @@
 import pytest
 import os
+import glob
 from notifier import Notifier
 
 class TestNotifier:
     def test_stub_email_generation(self):
-        # Config for stub mode
+        """Verify that the Stub backend correctly 'sends' emails by writing JSON files."""
+        # 1. Setup with explicit 'backend' key
         config = {
-            "notification_backend": "stub",
+            "backend": "stub",
             "sender_email": "test@mapa-rd.com"
         }
         notifier = Notifier(config_dict=config)
         
+        # Clean outbox before test
+        files = glob.glob(os.path.join(notifier.outbox_dir, "*.json"))
+        for f in files:
+            try: os.remove(f)
+            except: pass
+            
         subject = "TEST EMAIL"
         body = "This is a test body."
         
-        # Send
+        # 2. Execute
         result, msg_id = notifier.send_report(
             receiver_emails=["client@example.com"],
-            report_path=None, # Optional attachment
+            report_path=None,
             client_name="Test Client",
             subject=subject,
-            body=body
+            body=body,
+            scan_id="R-TEST-001"
         )
         
+        # 3. Assertions
         assert result is True
         assert msg_id is not None
         
-        # Verify file creation in outbox
-        # We need to know where OUTBOX is. Notifier init sets it.
-        # Based on previous edits, it should be in 04_Data/outbox
-        
-        # List files in outbox to verify
-        # (This part relies on the path actually existing or being mocked)
-        pass
+        # Verify file creation
+        outbox_files = glob.glob(os.path.join(notifier.outbox_dir, "*_R-TEST-001.json"))
+        assert len(outbox_files) == 1
+        assert os.path.exists(outbox_files[0])

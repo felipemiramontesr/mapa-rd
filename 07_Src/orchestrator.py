@@ -2,8 +2,9 @@ import os
 import json
 import subprocess
 from datetime import datetime
+from typing import List, Dict, Any, Tuple, Optional
 
-# Import Internal Modules
+# Internal Core Modules
 from state_manager import StateManager
 from qc_manager import QCManager
 from normalizer import Normalizer
@@ -12,226 +13,205 @@ from report_generator import ReportGenerator
 from notifier import Notifier
 
 class Orchestrator:
+    """The central brain of MAPA-RD.
+    
+    Coordinates data collection (SpiderFoot), processing (Normalized/Scorer),
+    artifact generation, quality control gates, and notification dispatch.
+    """
+
     def __init__(self):
+        """Initialize core components and load environmental configurations."""
         self.sm = StateManager()
         self.qc = QCManager(self.sm)
         self.rg = ReportGenerator(self.sm)
         self.notifier = Notifier()
-        # Load Config
-        # Load Config (Robust handling for CI/Cloud missing configs)
-        config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '03_Config', 'config.json')
+        
+        # Default infrastructure settings
         self.spiderfoot_path = "."
         self.python_exe = "python"
+        self._load_config()
         
-        try:
-            if os.path.exists(config_path):
-                with open(config_path, 'r') as f:
+        self.sf_script = os.path.join(self.spiderfoot_path, "sf.py")
+
+    def _load_config(self) -> None:
+        """Load external tool path configurations."""
+        config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '03_Config', 'config.json')
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, 'r', encoding='utf-8') as f:
                     cfg = json.load(f)
                     self.spiderfoot_path = cfg.get("spiderfoot_path", ".")
                     self.python_exe = cfg.get("python_exe", "python")
-        except Exception as e:
-            print(f"[!] Warning: Failed to load config.json: {e}")
-            # Continue with defaults
-            
-        self.sf_script = os.path.join(self.spiderfoot_path, "sf.py")
+            except (json.JSONDecodeError, IOError) as e:
+                print(f"[!] Warning: Config loading failed: {e}")
 
-    def run_spiderfoot_scan(self, target, scan_id):
-        """
-        Executes sf.py -s <target> -o json -q
+    def run_spiderfoot_scan(self, target: str, scan_id: str) -> List[Dict[str, Any]]:
+        """Execute a SpiderFoot CLI scan or fallback to simulation.
+        
+        Args:
+            target: Domain or email to scan.
+            scan_id: Identifier for logging.
+            
+        Returns:
+            A list of SpiderFoot event dictionaries.
         """
         if not os.path.exists(self.sf_script):
-            print(f"[!] WARNING: SpiderFoot script not found at {self.sf_script}")
-            print("    -> Switching to MOCK/SIMULATION mode for CI/Test environment.")
-            # Return legacy mock data to pass pipeline tests
-            return [{"source": "sfp_citadel", "entity": "Compromised Credentials", "risk_score": "P0"}]
+            print(f"[!] MOCK MODE: SpiderFoot not found at {self.sf_script}. Returning stub data.")
+            return [{"source": "sfp_citadel", "entity": "MOCK_FINDING", "risk_score": "P0"}]
 
         cmd = [self.python_exe, self.sf_script, "-s", target, "-o", "json", "-q"]
-        print(f"    COMMAND: {' '.join(cmd)}")
+        print(f"[*] Executing SpiderFoot: {' '.join(cmd)}")
         
         try:
-            # Run scan (this might take a while, maybe we need to limit modules for speed in tests?)
-            # For now, running full default scan
-            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
-            
+            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', timeout=600)
             if result.returncode != 0:
-                print(f"[!] SpiderFoot CLI Error: {result.stderr}")
+                print(f"[!] CLI Error: {result.stderr}")
                 return []
             
-            # Parse JSON output (SF outputs multiple JSON objects, one per line usually)
             events = []
             for line in result.stdout.splitlines():
                 if line.strip():
                     try:
                         events.append(json.loads(line))
-                    except:
-                        pass
-            print(f"    [+] Scan finished. Captured {len(events)} events.")
+                    except json.JSONDecodeError:
+                        continue
             return events
-            
-        except Exception as e:
-            print(f"[!] Execution Error: {e}")
+        except (subprocess.SubprocessError, Exception) as e:
+            print(f"[!] Scan Exception: {e}")
             return []
 
-    def run_automatic_scheduler(self):
+    def orchestrate(self, client_id: str, analysis_type: str = "monthly") -> Tuple[str, str]:
+        """Ad-hoc entry point for CLI-driven scans.
+        
+        Args:
+            client_id: Target client identifier.
+            analysis_type: Report frequency/type.
+            
+        Returns:
+            A tuple of (intake_id, client_directory).
         """
-        I5 — Global Priority: RESCUE > INCIDENT > FREQUENCY > BASELINE
-        """
-        print(f"[*] Starting MAPA-RD v2.3 Scheduler...")
-        pending = self.sm.list_authorized_intakes_by_priority()
-        if not pending:
-            print("[*] No authorized intakes found.")
-            return
-
-        print(f"[+] Found {len(pending)} pending intakes. Executing in priority order.")
-        for intake in pending:
-            try:
-                self.execute_pipeline(intake["intake_id"])
-            except Exception as e:
-                print(f"[!] Critical Error in intake {intake['intake_id']}: {e}")
-                import traceback
-                traceback.print_exc()
-
-    def orchestrate(self, client_id, analysis_type="monthly"):
-        """
-        Public API entry point for main.py.
-        Creates an on-demand intake and executes it.
-        Returns: (scan_id, client_dir_name)
-        """
-        # 1. Create Ad-Hoc Intake
-        # We assume 'requested_by' is CLI/Manual for this entry point
         intake_type = analysis_type.upper() if analysis_type else "ON_DEMAND"
         
-        # Check if client exists, if not, create a stub? 
-        # For now, we assume client exists based on main.py logic.
-        if client_id not in self.sm.data.get("clients", {}):
-             # Ensure client exists in SM to avoid lookup errors
+        # Ensure client exists in state
+        if not self.sm.get_client(client_id):
              self.sm.create_client(client_id, client_id)
 
         intake_id = self.sm.create_intake(client_id, intake_type, requested_by="CLI_USER")
-        
-        # 1.1 Auto-Authorize (CLI/OnDemand skips manual authorization step)
         self.sm.update_intake(intake_id, "AUTORIZADO", actor="CLI_USER")
         
-        # 2. Execute
         self.execute_pipeline(intake_id)
         
-        # 3. Return values compatible with main.py expectation
-        # main.py expects: scan_id, client_dir_name
-        # scan_id is effectively the report_id or intake_id in this flow?
-        # looking at main.py: raw_path = os.path.join(..., client_dir_name, scan_id, ...)
-        
-        # For backward compatibility with the legacy 'scan_id' concept, 
-        # we will use the intake_id as the scan_id
-        
-        client_dir_name = self.sm.get_client(client_id).get("client_dir", client_id)
-        
-        return intake_id, client_dir_name
+        client = self.sm.get_client(client_id)
+        client_dir = client.get("client_dir", client_id) if client else client_id
+        return intake_id, client_dir
 
-    def execute_pipeline(self, intake_id):
+    def execute_pipeline(self, intake_id: str) -> None:
+        """Run the full intake-to-report lifecycle.
+        
+        Args:
+            intake_id: The ID of the authorized intake to process.
+        """
         intake = self.sm.data["intakes"].get(intake_id)
-        if not intake: return
+        if not intake:
+            return
         
         client_id = intake["client_id"]
         client = self.sm.get_client(client_id)
+        if not client:
+             return
         
-        print(f"\n{'-'*60}")
-        print(f"PIPELINE: {intake_id} ({intake['intake_type']}) for {client['client_name_full']}")
-        print(f"{'-'*60}")
+        print(f"\n[PIPELINE START] {intake_id} | Client: {client['client_name_full']}")
 
-        # 1. EJECUCIÓN (INTAKE -> EJECUTADO)
+        # 1. Start execution
         self.sm.update_intake(intake_id, "EJECUTADO")
         
-        # 2. INTEL (Real SpiderFoot Integration)
-        # Determine Target (Priority: Domain > Email > Name)
-        target = None
-        if "identity" in intake and intake["identity"].get("domains"):
-            target = intake["identity"]["domains"][0]
-        elif "identity" in intake and intake["identity"].get("emails"):
-            target = intake["identity"]["emails"][0]
-        else:
-             target = client["client_name_slug"] # Fallback
-
-        print(f"[*] Launching SpiderFoot Scan for target: {target}")
+        # 2. Intel Gathering
+        target = self._resolve_target(intake, client)
         raw_data = self.run_spiderfoot_scan(target, intake_id)
         
-        # Save Raw Data
-        client_dir_name = self.sm.get_client(client_id).get("client_dir", client_id)
-        raw_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_dir_name, intake_id)
-        os.makedirs(raw_dir, exist_ok=True)
-        with open(os.path.join(raw_dir, 'spiderfoot.json'), 'w') as f:
-            json.dump(raw_data, f)
+        # Persistence
+        raw_path = self._persist_raw_data(client["client_dir"], intake_id, raw_data)
         
-        norm_findings = Normalizer().normalize_scan(raw_data)
-        scored_findings = Scorer().score_findings(norm_findings)
+        # 3. Processing
+        print("[*] Processing intelligence...")
+        norm = Normalizer().normalize_scan(raw_data)
+        scored = Scorer().score_findings(norm)
         
-        # 3. GENERACIÓN Artefactos (4.2.3)
-        report_type = intake["intake_type"]
-        report_id = self.sm.create_report(client_id, intake_id, report_type)
+        # 4. Artifact Generation
+        report_id = self.sm.create_report(client_id, intake_id, intake["intake_type"])
+        art = self.rg.generate_report(client_id, intake_id, report_id, scored, intake["intake_type"])
         
-        artifacts = self.rg.generate_report(client_id, intake_id, report_id, scored_findings, report_type)
-        
-        # Update report with paths
-        self.sm.data["reports"][report_id]["artifacts"] = {
-            "final_pdf_path": artifacts["pdf_path"],
-            "arco_files_paths": [artifacts["arco_dir"]] if artifacts["arco_dir"] else [],
-            "qc_checklist_json_path": None # Filled next
-        }
+        self.sm.data["reports"][report_id]["artifacts"].update({
+            "final_pdf_path": art["pdf_path"],
+            "arco_files_paths": [art["arco_dir"]] if art.get("arco_dir") else []
+        })
         self.sm.save_data()
 
-        # 4. QC GATE (I2, 4.2.4)
-        qc_result = self.qc.run_qc_checklist(report_id, artifacts["pdf_path"])
-        
-        # Save QC details (Spec Nomenclature)
-        qc_base_name = artifacts["base_name"].replace("REPORTE", "QC")
-        qc_log_path = os.path.join(os.path.dirname(artifacts["pdf_path"]), f"{qc_base_name}.json")
-        os.makedirs(os.path.dirname(qc_log_path), exist_ok=True)
-        with open(qc_log_path, 'w', encoding='utf-8') as f:
-            json.dump(qc_result, f, indent=4)
-        self.sm.data["reports"][report_id]["artifacts"]["qc_checklist_json_path"] = qc_log_path
-        
-        if qc_result["qc_status"] == "APROBADO":
-            # I2: QC_STATUS is absolute gate for sending
-            self.sm.update_qc_status(report_id, "APROBADO")
-            
-            # 5. ENVÍO (4.2.5)
-            print(f"[*] Sending report {report_id}...")
-            client_name = client["client_name_full"]
-            
-            # Send using Notifier
-            # Note: We send to the client's email AND the admin copy
-            client_emails = intake.get("identity", {}).get("emails", [])
-            if not client_emails:
-                client_emails = ["unknown@example.com"]
-            
-            # Constraint: Always send copy to admin
-            admin_email = "info@felipemiramontesr.net"
-            recipients = list(client_emails)
-            if admin_email not in recipients:
-                recipients.append(admin_email)
-
-            success, msg_id = self.notifier.send_report(
-                recipients, # Pass the full list containing client + admin
-                artifacts["pdf_path"],
-                client_name,
-                scan_id=report_id
-            )
-            # success = True # Forced for demo/implementation walk
-            
-            if success:
-                self.sm.update_report_status(report_id, "EN_REVISION")
-                print(f"[+] Pipeline COMPLETED for {report_id}")
-            else:
-                print(f"[!] Failed to send {report_id}")
+        # 5. Quality Control Gate
+        if self._run_qc_gate(report_id, art):
+            self._dispatch_notification(report_id, client, intake, art["pdf_path"])
         else:
-            # I3: Hard fail on QC failure
-            print(f"[!] QC FAILURE for {report_id}. Applying Hard Fail logic (I3).")
-            self.sm.update_qc_status(report_id, "FALLIDO")
-            self.sm.update_report_status(report_id, "INVALIDADO", actor="SYSTEM", invalidated_reason="QC_FAIL")
-            
-            # Automatic RESCUE intake creation (I4)
-            rescue_id = self.sm.create_intake(client_id, "RESCUE", requested_by="SYSTEM", replaces_report_id=report_id)
-            print(f"[!] RESCUE intake created: {rescue_id}. Report NOT SENT.")
+            self._handle_qc_failure(client_id, report_id)
+
+    def _resolve_target(self, intake: Dict[str, Any], client: Dict[str, Any]) -> str:
+        """Pick the best target (Domain > Email > Slug) for scanning."""
+        ident = intake.get("identity", {})
+        if ident.get("domains"): return ident["domains"][0]
+        if ident.get("emails"): return ident["emails"][0]
+        return client["client_name_slug"]
+
+    def _persist_raw_data(self, client_dir: str, intake_id: str, data: List[Dict[str, Any]]) -> str:
+        """Save raw findings to the data directory."""
+        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_dir, intake_id)
+        os.makedirs(path, exist_ok=True)
+        full_path = os.path.join(path, 'spiderfoot.json')
+        with open(full_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f)
+        return full_path
+
+    def _run_qc_gate(self, report_id: str, artifacts: Dict[str, Any]) -> bool:
+        """Run the quality checklist and log results."""
+        res = self.qc.run_qc_checklist(report_id, artifacts["pdf_path"])
+        qc_file = artifacts["pdf_path"].replace("REPORTE", "QC").replace(".pdf", ".json")
+        with open(qc_file, 'w', encoding='utf-8') as f:
+            json.dump(res, f, indent=4)
+        
+        self.sm.update_qc_status(report_id, res["qc_status"])
+        self.sm.data["reports"][report_id]["artifacts"]["qc_checklist_json_path"] = qc_file
+        self.sm.save_data()
+        return res["qc_status"] == "APROBADO"
+
+    def _dispatch_notification(self, report_id: str, client: Dict[str, Any], intake: Dict[str, Any], pdf_path: str) -> None:
+        """Send the report to the client and admin."""
+        recipients = list(intake.get("identity", {}).get("emails", []))
+        if not recipients: recipients = ["unknown@example.com"]
+        
+        admin_copy = "info@felipemiramontesr.net"
+        if admin_copy not in recipients: recipients.append(admin_copy)
+
+        success, msg_id = self.notifier.send_report(recipients, pdf_path, client["client_name_full"], scan_id=report_id)
+        if success:
+            self.sm.update_report_status(report_id, "EN_REVISION")
+            print(f"[+] Pipeline COMPLETED for {report_id}")
+        else:
+            print(f"[!] Notification failed for {report_id}")
+
+    def _handle_qc_failure(self, client_id: str, report_id: str) -> None:
+        """Process a failed QC gate by invalidating the report and creating a rescue intake."""
+        print(f"[!] QC Failure for {report_id}. Invalidating and creating RESCUE.")
+        self.sm.update_report_status(report_id, "INVALIDADO", actor="SYSTEM", invalidated_reason="QC_FAIL")
+        rescue_id = self.sm.create_intake(client_id, "RESCUE", requested_by="SYSTEM", replaces_report_id=report_id)
+        print(f"[+] RESCUE created: {rescue_id}")
+
+    def run_automatic_scheduler(self) -> None:
+        """Scan all authorized intakes according to priority rules."""
+        pending = self.sm.list_authorized_intakes_by_priority()
+        print(f"[*] Scheduler: {len(pending)} pending tasks.")
+        for task in pending:
+            try:
+                self.execute_pipeline(task["intake_id"])
+            except Exception as e:
+                print(f"[CRITICAL] Intake {task['intake_id']} failed: {e}")
 
 if __name__ == "__main__":
-    orch = Orchestrator()
-    orch.run_automatic_scheduler()
+    Orchestrator().run_automatic_scheduler()

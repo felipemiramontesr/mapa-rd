@@ -47,7 +47,8 @@ def test_pipeline():
     scan_id, client_dir_name = orchestrator.orchestrate(client_id)
     
     # 3. Load Raw Data
-    raw_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_id, scan_id, 'spiderfoot.json')
+    # Use the dir name returned by the orchestrator (slug) which might differ from ID
+    raw_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_dir_name, scan_id, 'spiderfoot.json')
     with open(raw_path, 'r') as f:
         raw_data = json.load(f)
     print(f"[2] Raw Data Loaded: {len(raw_data)} events")
