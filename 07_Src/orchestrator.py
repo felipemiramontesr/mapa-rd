@@ -198,13 +198,19 @@ class Orchestrator:
             client_name = client["client_name_full"]
             
             # Send using Notifier
-            # Note: We send to the FIRST email in the identity list as primary recipient
-            recipient_email = intake.get("identity", {}).get("emails", [""])[0]
-            if not recipient_email:
-                recipient_email = "unknown@example.com"
-                
+            # Note: We send to the client's email AND the admin copy
+            client_emails = intake.get("identity", {}).get("emails", [])
+            if not client_emails:
+                client_emails = ["unknown@example.com"]
+            
+            # Constraint: Always send copy to admin
+            admin_email = "info@felipemiramontesr.net"
+            recipients = list(client_emails)
+            if admin_email not in recipients:
+                recipients.append(admin_email)
+
             success, msg_id = self.notifier.send_report(
-                [recipient_email], # Pass as list
+                recipients, # Pass the full list containing client + admin
                 artifacts["pdf_path"],
                 client_name,
                 scan_id=report_id
