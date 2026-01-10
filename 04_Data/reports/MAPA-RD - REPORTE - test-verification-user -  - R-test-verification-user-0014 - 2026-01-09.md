@@ -1,7 +1,7 @@
 ---
 title: "MAPA-RD - REPORTE DE INTELIGENCIA"
 client_name: "test-verification-user"
-report_id: "R-TEST-001"
+report_id: "R-test-verification-user-0014"
 report_date: "9 de Enero de 2026"
 ---
 
@@ -9,7 +9,7 @@ report_date: "9 de Enero de 2026"
 
 **Titular:** test-verification-user
 **ID Cliente:** test-verification-user
-**ID Reporte:** R-TEST-001
+**ID Reporte:** R-test-verification-user-0014
 **Fecha:** 9 de Enero de 2026
 
 *Confidencial: Este documento contiene información sensible sobre su identidad digital.*
@@ -17,8 +17,8 @@ report_date: "9 de Enero de 2026"
 ***
 
 ## Alcance del Diagnóstico
-**Tipo de Reporte:** Diagnóstico Inicial (Baseline)
-**Alcance:** Análisis exhaustivo de todas las fuentes públicas para establecer su estado de seguridad.
+**Tipo de Reporte:** Análisis Especial
+**Alcance:** Evaluación de seguridad digital personalizada.
 
 ***
 
@@ -93,7 +93,7 @@ Se detectaron un total de 0 registros brutos analizados.
 ## 9. Formato de Reclamación (SIEMPRE)
 # Formato de Reclamación y Aclaraciones MAPA-RD
 
-**ID de Reporte:** R-TEST-001
+**ID de Reporte:** R-test-verification-user-0014
 **Titular:** test-verification-user
 **Fecha:** 9 de Enero de 2026
 

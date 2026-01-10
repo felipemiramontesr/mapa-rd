@@ -17,8 +17,44 @@ class Orchestrator:
         self.qc = QCManager(self.sm)
         self.rg = ReportGenerator()
         self.notifier = Notifier()
-        self.spiderfoot_path = "C:\\Users\\felip\\spiderfoot"
-        self.python_exe = "python"
+        # Load Config
+        config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '03_Config', 'config.json')
+        with open(config_path, 'r') as f:
+            cfg = json.load(f)
+            self.spiderfoot_path = cfg.get("spiderfoot_path")
+            self.python_exe = cfg.get("python_exe", "python")
+            self.sf_script = os.path.join(self.spiderfoot_path, "sf.py")
+
+    def run_spiderfoot_scan(self, target, scan_id):
+        """
+        Executes sf.py -s <target> -o json -q
+        """
+        cmd = [self.python_exe, self.sf_script, "-s", target, "-o", "json", "-q"]
+        print(f"    COMMAND: {' '.join(cmd)}")
+        
+        try:
+            # Run scan (this might take a while, maybe we need to limit modules for speed in tests?)
+            # For now, running full default scan
+            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+            
+            if result.returncode != 0:
+                print(f"[!] SpiderFoot CLI Error: {result.stderr}")
+                return []
+            
+            # Parse JSON output (SF outputs multiple JSON objects, one per line usually)
+            events = []
+            for line in result.stdout.splitlines():
+                if line.strip():
+                    try:
+                        events.append(json.loads(line))
+                    except:
+                        pass
+            print(f"    [+] Scan finished. Captured {len(events)} events.")
+            return events
+            
+        except Exception as e:
+            print(f"[!] Execution Error: {e}")
+            return []
 
     def run_automatic_scheduler(self):
         """
@@ -89,15 +125,22 @@ class Orchestrator:
         # 1. EJECUCIÓN (INTAKE -> EJECUTADO)
         self.sm.update_intake(intake_id, "EJECUTADO")
         
-        # 2. INTEL (Mocked for now, following 4.2)
-        # Note: In a full integration, run_spiderfoot_scan would be called here.
-        scan_id = intake_id # Using intake_id as scan_id for consistency
-        raw_data = [{"source": "sfp_citadel", "entity": "Compromised Credentials", "risk_score": "P0"}]
+        # 2. INTEL (Real SpiderFoot Integration)
+        # Determine Target (Priority: Domain > Email > Name)
+        target = None
+        if "identity" in intake and intake["identity"].get("domains"):
+            target = intake["identity"]["domains"][0]
+        elif "identity" in intake and intake["identity"].get("emails"):
+            target = intake["identity"]["emails"][0]
+        else:
+             target = client["client_name_slug"] # Fallback
+
+        print(f"[*] Launching SpiderFoot Scan for target: {target}")
+        raw_data = self.run_spiderfoot_scan(target, intake_id)
         
-        # SIMULATION: Write this mock data to disk so downstream tools (and tests) find it
-        # Path: 04_Data/raw/{client_dir}/{scan_id}/spiderfoot.json
+        # Save Raw Data
         client_dir_name = self.sm.get_client(client_id).get("client_dir", client_id)
-        raw_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_dir_name, scan_id)
+        raw_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '04_Data', 'raw', client_dir_name, intake_id)
         os.makedirs(raw_dir, exist_ok=True)
         with open(os.path.join(raw_dir, 'spiderfoot.json'), 'w') as f:
             json.dump(raw_data, f)

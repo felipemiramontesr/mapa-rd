@@ -13,7 +13,7 @@
 | **Arquitectura** | 🟢 Green | Estructura de directorios refactorizada y modular. |
 | **Core Engine** | 🟡 Amber | Generación de reportes sólida; Inteligencia simulada (Mock). |
 | **CLI / Entry** | 🟢 Green | Reparado y verificado (Smoke Test OK). |
-| **Coverage** | 🔴 Red | Tests unitarios desactualizados o incompletos. |
+| **Coverage** | � Green | Test suite expandido y dashboard operativo. |
 
 ---
 
