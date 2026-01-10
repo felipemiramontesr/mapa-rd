@@ -44,9 +44,18 @@
 **Estado:** El sistema es funcional de punta a punta (Pipeline, PDF, Email), pero SpiderFoot gratuito entrega "0 hallazgos" para correos reales, lo que genera reportes vacíos que el QC bloquea correctamente.
 
 **Acción Requerida para Retomar:**
-1.  **FINANCIAMIENTO:** Adquirir API Key de HaveIBeenPwned ($4.50 USD). Ver `API_Investment_Plan.md`.
+1.  **FINANCIAMIENTO:** Adquirir API Key de HaveIBeenPwned ($4.50 USD).
 2.  **CONFIGURACIÓN:** Agregar la key a SpiderFoot.
 3.  **PRUEBA FINAL:** Re-ejecutar escaneo de *Ana Flores*.
+
+**Lista Prioritaria de Módulos (Orden de Impacto):**
+Esta lista define en qué gastar para maximizar el valor del reporte (Detalles en `API_Investment_Plan.md`):
+
+1.  🥇 **HaveIBeenPwned (HIBP)** | ~$4.50/mes | *CRÍTICO para detectar leaks de contraseñas.*
+2.  🥈 **Google Custom Search API** | Freemium | *Crucial para búsquedas de nombres/redes sociales.*
+3.  🥉 **DeHashed** | ~$5/semana | *Alto valor: muestra las contraseñas reales (no solo el aviso).*
+4.  **Shodan** | ~$49/mes | *Infraestructura (IPs/Cámaras). Prioridad baja para Personas Físicas.*
+5.  **Hunter.io** | Freemium | *Corporativo. Útil para empresas, no para personales.*
 
 ---
 
