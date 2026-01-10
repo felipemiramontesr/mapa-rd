@@ -160,13 +160,41 @@ class Notifier:
 
         # Body Template
         date_str = datetime.now().strftime("%d/%m/%Y")
-        content = body or (
+        
+        # Body Container (Alternative: Text vs HTML)
+        body_part = MIMEMultipart('alternative')
+        
+        # 1. Plain Text Fallback
+        text_content = body or (
             f"Estimado(a) {client_name},\n\n"
             f"Adjunto encontrará su Reporte de Inteligencia MAPA-RD ({date_str}).\n"
             f"ID de Reporte: {scan_id or 'N/A'}\n\n"
             "Atentamente,\nEl Equipo de MAPA-RD"
         )
-        msg.attach(MIMEText(content, 'plain', 'utf-8'))
+        body_part.attach(MIMEText(text_content, 'plain', 'utf-8'))
+
+        # 2. HTML Version (Premium)
+        try:
+            template_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "08_Templates", "email_notification.html")
+            if os.path.exists(template_path):
+                with open(template_path, 'r', encoding='utf-8') as f:
+                    html_template = f.read()
+                
+                # Simple replacement
+                html_content = html_template.replace("{client_name}", client_name)\
+                                            .replace("{scan_id}", scan_id or "N/A")\
+                                            .replace("{date_str}", date_str)\
+                                            .replace("{year}", datetime.now().strftime("%Y"))
+                
+                body_part.attach(MIMEText(html_content, 'html', 'utf-8'))
+            else:
+                print(f"[LOG] HTML Template not found at {template_path}. using text only.")
+        except Exception as e:
+            print(f"[!] HTML rendering failed: {e}. using text only.")
+
+        # Attach the Body container to the Main (Mixed) container
+        msg.attach(body_part)
+
         return msg
 
     def _attach_file(self, msg: MIMEMultipart, path: str) -> None:

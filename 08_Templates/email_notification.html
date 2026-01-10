@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPA-RD Intelligence Report</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0a0e27; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e8e8e8;">
+    
+    <!-- Outlook specific background fix -->
+    <!--[if (gte mso 9)|(IE)]>
+    <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0e27">
+        <tr>
+            <td>
+    <![endif]-->
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%); background-color: #0a0e27;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <!-- Main Container -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(74, 85, 120, 0.55); border-radius: 4px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 0 20px 0;">
+                            <!-- Lock Icon Simulation (Ascii/Text or Hosted Image). Using styled text for safety -->
+                            <div style="font-size: 24px; color: #cfd6ea; margin-bottom: 10px;">🔒</div>
+                            <div style="display: inline-block; padding: 8px 16px; border: 1px solid #4a5578; border-radius: 2px; color: #8892b4; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">
+                                MAPA-RD | OSINT
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Divider -->
+                    <tr>
+                        <td align="center">
+                            <div style="width: 60px; height: 1px; background-color: #4a5578; margin: 0 auto;"></div>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px 40px 30px 40px; text-align: left;">
+                            <h1 style="margin: 0 0 20px 0; font-size: 24px; font-weight: 300; color: #ffffff; letter-spacing: -0.02em; text-align: center;">
+                                Reporte de Inteligencia Disponible
+                            </h1>
+                            
+                            <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #c5cae0; font-weight: 300;">
+                                Estimado(a) <strong>{client_name}</strong>,
+                            </p>
+                            
+                            <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.7; color: #c5cae0; font-weight: 300;">
+                                Se ha generado un nuevo reporte de inteligencia para su organización. Este documento contiene el análisis de huella digital, exposición y riesgos detectados en el periodo actual.
+                            </p>
+
+                            <!-- Metadata Box -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="15" style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid #4a5578; margin-bottom: 30px;">
+                                <tr>
+                                    <td style="color: #a8adc7; font-size: 13px; border-bottom: 1px solid rgba(74, 85, 120, 0.3);">ID de Reporte</td>
+                                    <td style="color: #ffffff; font-size: 13px; font-weight: 600; text-align: right; border-bottom: 1px solid rgba(74, 85, 120, 0.3);">{scan_id}</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #a8adc7; font-size: 13px;">Fecha de Emisión</td>
+                                    <td style="color: #ffffff; font-size: 13px; font-weight: 600; text-align: right;">{date_str}</td>
+                                </tr>
+                            </table>
+
+                            <p style="margin: 0 0 30px 0; font-size: 15px; line-height: 1.7; color: #c5cae0; font-weight: 300; text-align: center;">
+                                El archivo <strong>PDF</strong> se encuentra adjunto a este correo.
+                            </p>
+
+                            <!-- Button (Visual Anchor) -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="center">
+                                        <div style="display: inline-block; padding: 14px 30px; background-color: #5a6fa0; border: 1px solid #5a6fa0; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 0; text-transform: uppercase; letter-spacing: 1px;">
+                                            REVISE EL ADJUNTO
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 30px 40px; background-color: rgba(10, 14, 39, 0.5); border-top: 1px solid rgba(74, 85, 120, 0.35);">
+                            <p style="margin: 0 0 10px 0; font-size: 12px; color: #6b7490; font-weight: 300;">
+                                Protegiendo la información que importa.
+                            </p>
+                            <p style="margin: 0; font-size: 11px; color: #4a5578;">
+                                Este mensaje contiene información confidencial. Si usted no es el destinatario, por favor elimínelo.<br>
+                                &copy; {year} MAPA-RD. Todos los derechos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                
+                <!-- Spacer -->
+                <div style="height: 40px;"></div>
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- Outlook specific background fix end -->
+    <!--[if (gte mso 9)|(IE)]>
+            </td>
+        </tr>
+    </table>
+    <![endif]-->
+</body>
+</html>
