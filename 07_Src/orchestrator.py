@@ -18,12 +18,22 @@ class Orchestrator:
         self.rg = ReportGenerator()
         self.notifier = Notifier()
         # Load Config
+        # Load Config (Robust handling for CI/Cloud missing configs)
         config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '03_Config', 'config.json')
-        with open(config_path, 'r') as f:
-            cfg = json.load(f)
-            self.spiderfoot_path = cfg.get("spiderfoot_path")
-            self.python_exe = cfg.get("python_exe", "python")
-            self.sf_script = os.path.join(self.spiderfoot_path, "sf.py")
+        self.spiderfoot_path = "."
+        self.python_exe = "python"
+        
+        try:
+            if os.path.exists(config_path):
+                with open(config_path, 'r') as f:
+                    cfg = json.load(f)
+                    self.spiderfoot_path = cfg.get("spiderfoot_path", ".")
+                    self.python_exe = cfg.get("python_exe", "python")
+        except Exception as e:
+            print(f"[!] Warning: Failed to load config.json: {e}")
+            # Continue with defaults
+            
+        self.sf_script = os.path.join(self.spiderfoot_path, "sf.py")
 
     def run_spiderfoot_scan(self, target, scan_id):
         """
