@@ -25,24 +25,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
-    - name: Lint with flake8
+    - name: Run CI Pipeline (Syntax + Tests)
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --statistics
-    
-    - name: Security scan with bandit
-      run: |
-        bandit -r 07_Src -ll
-    
-    - name: Install System Dependencies (Pandoc/LaTeX)
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
-    
-    - name: Run Tests with pytest
-      run: |
-        pytest
+        python 10_Tools/run_ci.py

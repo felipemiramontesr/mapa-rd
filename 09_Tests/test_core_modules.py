@@ -3,6 +3,9 @@ import sys
 import os
 
 # Pytest automatically adds 07_Src to path via pytest.ini, but explicit imports for clarity
+# Add src to path explicitly to avoid ModuleNotFoundError if pytest.ini is missing/incorrect
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '07_Src'))
+
 from normalizer import Normalizer
 from deduper import Deduper
 from scorer import Scorer

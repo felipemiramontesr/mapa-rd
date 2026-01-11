@@ -1,6 +1,9 @@
 import pytest
 import os
 import glob
+import sys
+# Add src to path
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '07_Src'))
 from notifier import Notifier
 
 class TestNotifier:

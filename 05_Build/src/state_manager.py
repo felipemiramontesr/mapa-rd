@@ -157,24 +157,6 @@ class StateManager:
         self.data["clients"][client_id].update(kwargs)
         self.save_data()
 
-    def _get_or_create_client_id(self, client_name: str) -> str:
-        """Helper to retrieve ID by name or generate new one."""
-        # 1. Search existing
-        for cid, data in self.data["clients"].items():
-            if data.get("client_name_full") == client_name:
-                return cid
-        
-        # 2. Generate new deterministic ID
-        import hashlib
-        # Use first 7 chars of hash for a short, readable ID
-        new_id = hashlib.sha256(client_name.encode('utf-8')).hexdigest()[:7].upper()
-        
-        # Collision handling (unlikely but safe)
-        while new_id in self.data["clients"]:
-             new_id = hashlib.sha256((client_name + new_id).encode('utf-8')).hexdigest()[:7].upper()
-             
-        return new_id
-
     # --- Intake Management ---
 
     def create_intake(

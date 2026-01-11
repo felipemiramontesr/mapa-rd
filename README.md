@@ -73,7 +73,7 @@ Create a JSON file in `data/intake/{client_id}.json`:
 ```bash
 python src/orchestrator.py
 ```
-*Note: The current `orchestrator.py` contains a mock SpiderFoot execution for demonstration.*
+
 
 ## Configuration
 - **Scan Profile**: Modify `config/scan_profile.json` to enable/disable specific SpiderFoot modules.

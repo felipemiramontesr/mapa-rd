@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{hyperref}
+
+% Minimal Definitions to support injected environments
+\newenvironment{execsummary}{\par\vspace{1em}\hrule\vspace{0.5em}\textbf{Executive Summary}\par\itshape}{\par\vspace{0.5em}\hrule\par}
+\renewenvironment{quote}{\par\vspace{0.5em}\itshape}{\par}
+\newcommand{\sectionseparator}{\par\vspace{1em}\hrule\vspace{1em}}
+
+% Pandoc Compat
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0} % Disable auto-numbering
+
+\begin{document}
+$body$
+\end{document}
