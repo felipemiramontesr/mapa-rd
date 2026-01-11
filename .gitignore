@@ -20,6 +20,8 @@ env/
 03_Config/config.json
 03_Config/secrets.json
 05_Data_Test/
+05_Build/
+*_log.json
 
 # Tools
 .vscode/
