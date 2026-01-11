@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Inteligencia | MAPA-RD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.4);
+            --warning: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        /* --- GLOBAL & TYPOGRAPHY --- */
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 600px;
+            /* Mobile First constrained width for "App" feel */
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- HEADER HERO --- */
+        .hero {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .score-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid #1e293b;
+            border-top-color: var(--danger);
+            box-shadow: 0 0 30px var(--danger-glow);
+            animation: spin-pulse 3s infinite alternate;
+        }
+
+        .score-text {
+            position: absolute;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .score-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-top: -10px;
+            display: block;
+        }
+
+        /* --- CARDS (GLASSMORPHISM) --- */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-critical {
+            border-left: 4px solid var(--danger);
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.05) 0%, rgba(30, 41, 59, 0.8) 100%);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .icon-critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .icon-action {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .badge-critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        /* --- CONTENT TYPOGRAPHY --- */
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 13px;
+        }
+
+        strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            color: #fca5a5;
+        }
+
+        .text-primary {
+            color: #93c5fd;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* --- ACTION BUTTONS --- */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+            border: none;
+        }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            border-left: 2px solid #334155;
+            margin-left: 10px;
+            padding-left: 25px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -31px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #475569;
+            border: 2px solid var(--bg-deep);
+        }
+
+        .timeline-dot.active {
+            background: var(--danger);
+            box-shadow: 0 0 10px var(--danger);
+        }
+
+        .year {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* --- DETAILS ACCORDION --- */
+        details {
+            margin-top: 10px;
+        }
+
+        summary {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 12px;
+            user-select: none;
+        }
+
+        summary:hover {
+            color: white;
+        }
+
+        /* --- TABLE --- */
+        .market-table {
+            width: 100%;
+            font-size: 13px;
+            border-spacing: 0;
+        }
+
+        .market-table th {
+            text-align: left;
+            opacity: 0.5;
+            padding-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .market-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .price-tag {
+            font-family: monospace;
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        @keyframes spin-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.02);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- HERO -->
+        <div class="hero">
+            <div class="logo">MAPA-RD</div>
+            <div class="score-container">
+                <div class="score-circle"></div>
+                <div class="score-text">12/100</div>
+            </div>
+            <span class="score-label">ÍNDICE DE SEGURIDAD: CRÍTICO</span>
+            <p style="margin-top: 10px; font-size: 14px;">Reporte Generado: <strong>$report_date</strong></p>
+            <p>ID: $scan_id</p>
+        </div>
+
+        <!-- CONTENT INJECTION -->
+        $body
+
+        <!-- TECHNICAL FOOTER -->
+        <div style="text-align: center; margin-top: 60px; opacity: 0.3; font-size: 10px;">
+            <p>SISTEMA CORTEX v2.5 | END-TO-END ENCRYPTION</p>
+            <p>Este reporte contiene información confidencial para <strong>$client_name</strong>.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

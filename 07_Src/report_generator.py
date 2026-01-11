@@ -1,592 +1,582 @@
 import os
 import json
-import glob
+import logging
 import unicodedata
 from datetime import datetime
-from typing import List, Dict, Any, Tuple, Optional, Union
+from typing import Optional
 
-# Core Modules
 from state_manager import StateManager
 from pdf_converter import PdfConverter
 
 class ReportGenerator:
-    """Document factory for MAPA-RD reports and ARCO files."""
+    """
+    v89: IMPACT SECTIONS + DYNAMIC MITIGATION + SPANISH + PREMIUM STYLE.
+    """
     def __init__(self, state_manager: Optional[StateManager] = None):
-        """Initialize the generator with templates and state."""
+        self.logger = logging.getLogger("ReportGenerator")
+        logging.basicConfig(level=logging.INFO)
+        
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        templates_dir = os.path.join(base_dir, '08_Templates')
-        
-        template_path = os.path.join(templates_dir, 'cliente_final.md')
-        recl_path = os.path.join(templates_dir, 'reclamacion.md')
-        
-        with open(template_path, 'r', encoding='utf-8') as f:
-            self.template = f.read()
-        with open(recl_path, 'r', encoding='utf-8') as f:
-            self.reclamacion_template = f.read()
-            
-        self.pdf_converter = PdfConverter()
-        self.state_manager = state_manager or StateManager()
-        
-        # Public path properties for integration
+        self.templates_dir = os.path.join(base_dir, '08_Templates')
         self.reports_dir = os.path.join(base_dir, '04_Data', 'reports')
-        self.arco_root = os.path.join(base_dir, '04_Data', 'arco')
         self.tracking_dir = os.path.join(base_dir, '04_Data', 'tracking')
+        self.arco_root = os.path.join(base_dir, '04_Data', 'arco')
         
         self.ensure_dirs()
+        self.pdf_converter = PdfConverter()
+        self.state_manager = state_manager or StateManager()
 
-    def ensure_dirs(self) -> None:
-        """Create required output directories."""
+    def ensure_dirs(self):
         for d in [self.reports_dir, self.arco_root, self.tracking_dir]:
             os.makedirs(d, exist_ok=True)
 
-    def _get_or_create_client_id(self, client_name):
-        id_file = os.path.join(self.tracking_dir, 'client_ids.json')
-        if not os.path.exists(id_file):
-            data = {"last_id": 0, "clients": {}}
-        else:
-            with open(id_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-        
-        # Normalize name for lookup
-        norm_name = self.sanitize_filename(client_name).lower()
-        if norm_name in data.get("clients", {}):
-            return data["clients"][norm_name]
-        
-        # Create new ID
-        new_id = data.get("last_id", 0) + 1
-        data["last_id"] = new_id
-        if "clients" not in data: data["clients"] = {}
-        data["clients"][norm_name] = f"{new_id:07d}"
-        
-        with open(id_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4)
-        
-        return f"{new_id:07d}"
-
     def sanitize_filename(self, name):
-        return name.replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U").replace("Ñ", "N")
+        return name.replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n")
 
-    def cleanup_reports(self, client_name, current_scan_id):
-        # Remove all MD/PDF reports for this client ensuring only the current one remains
-        # Strategy: List all files for client, delete if not current_scan_id
-        pattern = f"REPORT_{client_name}_*"
-        files = glob.glob(os.path.join(self.reports_dir, pattern))
-        
-        for f in files:
-            # Check if it belongs to current scan
-            if current_scan_id not in f:
-                try:
-                    os.remove(f)
-                    print(f"[-] Cleanup: Removed old artifact {os.path.basename(f)}")
-                except Exception as e:
-                    print(f"[!] Cleanup Error: {e}")
-
-    def sanitize_text(self, text):
-        if not text: return ""
-        # 1. Normalize Unicode (NFKC) to fix compatibility characters
-        text = unicodedata.normalize('NFKC', text)
-        
-        # 2. Explicit character replacements
-        replacements = {
-            "\u2013": "-", "\u2014": "-", "\u2011": "-", # Dashes
-            "\u200b": "", "\ufeff": "", "\u2060": "",    # Zero width / BOM
-            "\u00a0": " "                                # Non-breaking space
-        }
-        for old, new in replacements.items():
-            text = text.replace(old, new)
-            
-        # 3. Strip Control Characters (0x00-0x1F except newline/tab)
-        text = "".join(ch for ch in text if unicodedata.category(ch)[0] != "C" or ch in ["\n", "\t"])
-        
-        return text
-
-    def generate_report(self, client_id, intake_id, report_id, findings, report_type="BASELINE"):
-        # 1. Validation and Metadata
-        client = self.state_manager.get_client(client_id)
-        if not client: raise ValueError(f"Client {client_id} not found.")
-
-        report_type = report_type.upper()
-        if report_type not in self.state_manager.REPORT_TYPES:
-            raise ValueError(f"Tipo de reporte invalido: {report_type}")
-
-        now = datetime.now()
-        report_date_str = now.strftime("%Y-%m-%d")
-        
-        # 2. Build nomenclature metadata
-        client_name = client["client_name_full"]
-        client_slug = client["client_name_slug"]
-        
-        # BASE nomenclature: MAPA-RD - TIPO_ARCHIVO - IDCLIENTE - NOMBRE_COMPLETO_CLIENTE - IDREPORTE - FECHA
-        def build_name(tipo_archivo):
-            return f"MAPA-RD - {tipo_archivo} - {client_id} - {client_slug} - {report_id} - {report_date_str}"
-
-        base_report_name = build_name("REPORTE")
-        
-        # 4. Prepare Sections
-        months_es = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-        nice_date = f"{now.day} de {months_es[now.month]} de {now.year}"
-        
-        is_rescue = (report_type == "RESCUE")
-        exec_summary = self.sanitize_text(self._generate_executive_summary(findings, is_rescue))
-        threat_narrative = self.sanitize_text(self._generate_threat_narrative(findings))
-        action_plan = self.sanitize_text(self._generate_action_plan(findings))
-        
-        # ARCO Logic
-        arco_data = self._classify_arco_findings(findings)
-        arco_expl = self.sanitize_text(self._generate_arco_explanation())
-        arco_cases = self.sanitize_text(self._generate_arco_cases(arco_data))
-        
-        telecom_section = self.sanitize_text(self._generate_telecom_section(findings))
-        conclusion = self.sanitize_text(self._generate_conclusion(findings))
-        
-        # Generate individual ARCO files
-        arco_annexes_content = self._generate_arco_documents(client_name, client_id, report_id, report_date_str, arco_data)
-
-        # Reclamación Section
-        reclamacion_content = self.reclamacion_template.format(
-            client_name=client_name,
-            scan_id=report_id,
-            date=nice_date
-        )
-
-        # Define Types and Scopes
-        # Define Types and Scopes
-        type_map = {
-            "BASELINE": ("Diagnóstico Inicial (Baseline)", "Análisis exhaustivo de todas las fuentes públicas para establecer su estado de seguridad."),
-            "FREQUENCY": ("Monitoreo Periódico (Frequency)", "Seguimiento de hallazgos detectados en el último diagnóstico para verificar su cierre o persistencia."),
-            "INCIDENT": ("Análisis de Incidente", "Estudio focalizado sobre un evento anómalo de exposición reportado recientemente."),
-            "RESCUE": ("Diagnóstico de Rescate", "Reconstrucción oficial de un diagnóstico previo para recuperar el estado de seguridad.")
-        }
-        
-        type_name, scope_desc = type_map.get(report_type, ("Análisis Especial", "Evaluación de seguridad digital personalizada."))
-        if is_rescue:
-            type_name += " (Modo Rescate)"
-
-        # 5. Fill Template
-        body_content = self.template.format(
-            client_name=client_name,
-            client_id_field=client_id,
-            scan_id=report_id,
-            date=nice_date,
-            report_type_description=type_name,
-            report_scope_description=scope_desc,
-            executive_summary_content=exec_summary,
-            threat_narrative_section=threat_narrative,
-            action_plan_section=action_plan,
-            arco_explanation=arco_expl,
-            arco_cases=arco_cases,
-            telecom_section=telecom_section,
-            conclusion_section=conclusion,
-            arco_formats=arco_annexes_content,
-            technical_annex_summary=f"Se detectaron un total de {len(findings)} registros brutos analizados."
-        )
-        
-        # Add Reclamación at the very end as Section 9 (Implicitly after Section 8)
-        body_content += f"\n\n***\n\n## 9. Formato de Reclamación (SIEMPRE)\n{reclamacion_content}"
-
-        # 6. Save Files
-        md_filepath = os.path.join(self.reports_dir, f"{base_report_name}.md")
-        
-        frontmatter = "---\n"
-        frontmatter += f'title: "MAPA-RD - REPORTE DE INTELIGENCIA"\n'
-        frontmatter += f'client_name: "{client_name}"\n'
-        frontmatter += f'report_id: "{report_id}"\n'
-        frontmatter += f'report_date: "{nice_date}"\n'
-        frontmatter += "---\n\n"
-        
-        with open(md_filepath, 'w', encoding='utf-8') as f:
-            f.write(frontmatter + body_content)
-            
-        # Technical Data Nomenclature (Spec 6)
-        json_base_name = build_name("METADATA")
-        json_filepath = os.path.join(self.reports_dir, f"{json_base_name}.json")
-        with open(json_filepath, 'w', encoding='utf-8') as f:
-            json.dump(findings, f, indent=2, ensure_ascii=False)
- 
-        # 7. PDF Generation
-        self.pdf_converter.template_name = "report_intel.tex"
-        final_pdf_path = self._generate_pdf_version(client_name, report_id, frontmatter, body_content, md_filepath, base_report_name)
-        
-        return {
-            "report_id": report_id,
-            "base_name": base_report_name,
-            "md_path": md_filepath,
-            "pdf_path": final_pdf_path,
-            "json_path": json_filepath,
-            "arco_dir": os.path.join(self.arco_root, build_name("ARCO")) if arco_data else None
-        }
-
-
-        return md_filepath
-
-    def _classify_arco_findings(self, findings):
-        # Returns dict: { (provider, right): [findings] }
-        classified = {}
-        
-        source_map = {
-            "sfp_citadel": "Bases de Datos de Filtraciones",
-            "sfp_intfiles": "Servidores de Archivos Públicos",
-            "sfp_accounts": "Redes Sociales y Foros",
-            "sfp_googlesearch": "Google",
-            "sfp_bingsearch": "Bing",
-            "sfp_filemeta": "Repositorios de Documentos",
-            "sfp_dnsresolve": "Registros de Internet"
-        }
-
-        for f in findings:
-            category = f.get('category', 'Other')
-            source_raw = f.get('source_name', 'Terceros')
-            if source_raw in ['Internal', 'SpiderFoot UI']: continue
-            
-            provider = source_map.get(source_raw, "Proveedor Externo")
-            
-            # Simplified classification logic
-            right = "NO_ARCO"
-            if category in ['Identity', 'Contact']:
-                right = "CANCELACION"
-            elif category == 'Social Footprint':
-                right = "OPOSICION"
-            elif category == 'Data Leak' and f.get('risk_score') == 'P0':
-                right = "ACCESO"
-            
-            if right != "NO_ARCO":
-                key = (provider, right)
-                if key not in classified: classified[key] = []
-                classified[key].append(f)
-                
-        return classified
-
-    def _generate_arco_documents(self, client_name, client_id, id_reporte, report_date_str, arco_data):
-        if not arco_data:
-            return ""
-            
-        def build_name(tipo_archivo, extra=""):
-            base = f"MAPA-RD - {tipo_archivo} - {client_id} - {self.sanitize_filename(client_name)} - {id_reporte} - {report_date_str}"
-            if extra: base += f" - {extra}"
-            return base
-
-        base_arco_name = build_name("ARCO")
-        arco_dir = os.path.join(self.arco_root, base_arco_name)
-        if not os.path.exists(arco_dir):
-            os.makedirs(arco_dir)
-            
-        annexes_text = ""
-        
-        for (provider, right), findings in arco_data.items():
-            safe_provider = self.sanitize_filename(provider)
-            # Naming for individual ARCO: MAPA-RD - ARCO - IDCLIENTE - NOMBRE - IDREPORTE - FECHA - DERECHO - PROVEEDOR
-            arco_md_name = f"{base_arco_name} - {right} - {safe_provider}.md"
-            arco_path = os.path.join(arco_dir, arco_md_name)
-            
-            content = f"# Solicitud de Derecho de {right}\n\n"
-            content += f"Yo, **{client_name}**, actuando bajo mi propio derecho, solicito formalmente el ejercicio de mi derecho de **{right}** ante **{provider}**.\n\n"
-            content += "Fundamento legal: Ley Federal de Protección de Datos Personales en Posesión de los Particulares.\n\n"
-            content += "Detalle de hallazgos:\n"
-            for f in findings[:5]:
-                content += f"- {f.get('entity', 'Dato')} detectado en {f.get('source_name')}\n"
-            
-            with open(arco_path, 'w', encoding='utf-8') as f:
-                f.write(content)
-            
-            self.pdf_converter.convert_to_pdf(arco_path)
-            os.remove(arco_path)
-            
-            annexes_text += f"\n### Anexo: Solicitud de {right} ({provider})\n{content}\n"
-
-        # 2. Generate ARCO_GUIA
-        guia_name = build_name("ARCO_GUIA")
-        guia_path = os.path.join(arco_dir, f"{guia_name}.md")
-        guia_content = "# Guía de Gestión de Derechos ARCO\n\n"
-        guia_content += f"Se han generado {len(arco_data)} solicitudes individuales para su gestión.\n\n"
-        guia_content += "| Proveedor | Derecho | Objetivo |\n|---|---|---|\n"
-        for (provider, right) in arco_data.keys():
-            guia_content += f"| {provider} | {right} | Recuperar control de información |\n"
-            
-        guia_content += "\n**Servicio Adicional:** MAPA-RD puede gestionar estas solicitudes por usted bajo autorización expresa."
-        
-        with open(guia_path, 'w', encoding='utf-8') as f:
-            f.write(guia_content)
-        self.pdf_converter.convert_to_pdf(guia_path)
-        os.remove(guia_path)
-        
-        return annexes_text
-
-    def _generate_executive_summary(self, findings, is_rescue=False):
-        p0_len = len([f for f in findings if f.get('risk_score') == 'P0'])
-        
-        level = "CRÍTICO" if p0_len > 0 else "MEDIO"
-        summary = ""
-        
-        if is_rescue:
-            summary += "> **NOTA DE RESCATE:** Este documento es una reconstrucción oficial de un diagnóstico previo para asegurar la integridad de su información.\n\n"
-            
-        summary += f"**Estado General de Riesgo:** {level}\n\n"
-        
-        summary += "Tras un análisis exhaustivo, hemos determinado que su identidad digital presenta vulnerabilidades que requieren atención. "
-        
-        if p0_len > 0:
-            summary += "Se detectaron filtraciones de credenciales en servicios externos, lo que genera un riesgo real de suplantación de identidad y fraude financiero si no se actúa de inmediato.\n\n"
-            summary += "### Principales Hallazgos:\n"
-            summary += "1. **Filtración de Accesos:** Sus claves han sido expuestas en brechas de seguridad de terceros (Urgencia: Inmediata).\n"
-            summary += "2. **Exposición de Documentos:** Existen archivos con sus datos personales accesibles para descarga (Urgencia: Inmediata).\n"
-            summary += "3. **Rastreo Telefónico:** Su número celular es público y vulnerable a estafas (Urgencia: Media).\n"
-        else:
-            summary += "No se detectaron filtraciones críticas recientes, pero su huella digital permite un rastreo personal que escala su nivel de riesgo a Medio.\n"
-            
-        return summary
-
-    def _generate_threat_narrative(self, findings):
-        # Human-friendly source map
-        source_map = {
-            "sfp_citadel": "Bases de Datos de Filtraciones",
-            "sfp_intfiles": "Servidores de Archivos Públicos",
-            "sfp_accounts": "Redes Sociales y Foros",
-            "sfp_googlesearch": "Motor de Búsqueda (Google)",
-            "sfp_bingsearch": "Motor de Búsqueda (Bing)",
-            "sfp_filemeta": "Repositorios de Documentos",
-            "sfp_dnsresolve": "Registros de Infraestructura",
-            "Internal": "Fuentes Propias Analizadas"
-        }
-
-        # Human-friendly entity map
-        entity_map = {
-            "Compromised Credentials": "Claves de Acceso Filtradas",
-            "Sensitive File Exposed": "Documentos Privados Expuestos",
-            "Document Metadata": "Rastros en Archivos Digitales",
-            "Full Name": "Nombre y Apellidos",
-            "Phone": "Número Telefónico Personal",
-            "Email": "Correo Electrónico Privado",
-            "Handle/User": "Nombre de Usuario",
-            "External Account": "Cuenta en Plataformas Externas"
-        }
-
-        # Consolidation into a few high-impact threat units
-        threat_blocks = []
-        
-        # Case A: Credentials
-        creds = [f for f in findings if f.get('risk_score') == 'P0']
-        if creds:
-            for f in creds[:3]: # Take unique high-value ones
-                threat_blocks.append({
-                    "nombre": "Fraude Financiero y Acceso Ilegal",
-                    "donde": f"Plataforma: {source_map.get(f.get('source_name'), 'Filtraciones Masivas')}\nTipo: Filtración de seguridad\nEstado: Activo (Riesgo de reutilización)",
-                    "que": entity_map.get(f.get('entity'), 'Información de Acceso'),
-                    "riesgo_real": "Un atacante puede probar estas claves en sus cuentas actuales o servicios bancarios para sustraer fondos o información confidencial.",
-                    "nivel": "ALTO",
-                    "accion": "Cambio inmediato de contraseñas y activación de Verificación en 2 Pasos (2FA)."
-                })
-
-        # Case B: Identity/Files
-        files = [f for f in findings if f.get('category') == 'Identity' or f.get('category') == 'Data Leak' and f.get('risk_score') != 'P0']
-        if files:
-            for f in files[:2]:
-                threat_blocks.append({
-                    "nombre": "Suplantación de Identidad",
-                    "donde": f"Sitio: {source_map.get(f.get('source_name'), 'Internet Abierta')}\nTipo: Indexación pública de documentos\nEstado: Activo",
-                    "que": entity_map.get(f.get('entity'), 'Datos de Identidad'),
-                    "riesgo_real": "Extranjeros pueden usar sus documentos o datos para realizar trámites legales o comerciales en su nombre.",
-                    "nivel": "ALTO",
-                    "accion": "Solicitud de retiro (ARCO) y monitoreo de estados bancarios."
-                })
-
-        # Case C: Contact
-        phones = [f for f in findings if f.get('category') == 'Contact']
-        if phones:
-            threat_blocks.append({
-                "nombre": "Extorsión o Estafas Telefónicas",
-                "donde": "Plataforma: Directorios Públicos / Foros\nTipo: Registro abierto\nEstado: Activo",
-                "que": "Número telefónico y correo personal",
-                "riesgo_real": "Su información personal es el insumo principal para guiones de estafa o llamadas de extorsión dirigidas (Phishing).",
-                "nivel": "MEDIO",
-                "accion": "Registro en listas de exclusión (REPEP) y reducción de visibilidad en redes sociales."
-            })
-
-        # Render MD blocks
-        content = ""
-        for i, t in enumerate(threat_blocks[:8]):
-            content += f"### 2.{i+1} {t['nombre']}\n"
-            content += f"**¿Dónde ocurrió?**\n{t['donde']}\n\n"
-            content += f"**Información comprometida:** {t['que']}\n\n"
-            content += f"**Riesgo real:** {t['riesgo_real']}\n\n"
-            content += f"**Nivel de riesgo:** {t['nivel']}\n\n"
-            content += f"**Qué debe hacer:** {t['accion']}\n\n***\n"
-            
-        return content
-
-    def _generate_exposure_details(self, findings):
-        leaks = [f for f in findings if f.get('risk_score') == 'P0']
-        if not leaks:
-            return "No se encontraron sus datos en filtraciones masivas recientes."
-            
-        content = "Hemos detectado los siguientes tipos de datos expuestos en la red:\n\n"
-        content += "| Dato Expuesto | Gravedad de la Amenaza |\n|---|---|\n"
-        
-        # Map technical internal types to plain Spanish
-        etype_map = {
-            "Compromised Credentials": "Contraseñas y Accesos Filtrados",
-            "Sensitive File Exposed": "Documentos Privados Expuestos",
-            "Document Metadata": "Rastros en Archivos Digitales",
-            "Full Name": "Identidad Completa",
-            "Phone": "Número Telefónico Privado"
-        }
-        
-        processed = set()
-        for l in leaks[:15]:
-            raw_etype = l.get('entity', 'Dato Personal')
-            etype = etype_map.get(raw_etype, raw_etype)
-            if etype in processed: continue
-            content += f"| {etype} | ALTA |\n"
-            processed.add(etype)
-            
-        return content
-
-    def _generate_action_plan(self, findings):
-        content = "| Caso Detectado | Acción Concreta | Quién Ejecuta | Tiempo | Resultado Esperado |\n"
-        content += "|---|---|---|---|---|\n"
-        
-        if any(f.get('risk_score') == 'P0' for f in findings):
-            content += "| Filtración de Claves | Cambio de contraseña + 2FA | Titular | 15 min | Evita el ingreso de extraños |\n"
-        
-        if any(f.get('category') == 'Identity' for f in findings):
-            content += "| Datos Expuestos | Solicitud de Borrado (ARCO) | MAPA-RD | 3 días | Elimina el rastro público |\n"
-            
-        if any(f.get('category') == 'Contact' for f in findings):
-            content += "| Teléfono Público | Registro en REPEP | Titular | 5 min | Reduce llamadas de spam/estafa |\n"
-            
-        content += "| Gestión de Riesgos | Monitoreo Mensual | MAPA-RD | Continuo | Alerta temprana de nuevas brechas |\n"
-        
-        return content
-
-    def _generate_privacy_rights(self, findings):
-        candidates = [f for f in findings if f.get('category') in ['Identity', 'Social Footprint', 'Contact']]
-        
-        if not candidates:
-            return "En este análisis no se detectaron sitios externos que requieran un ejercicio formal de Derechos ARCO bajo su titularidad."
-
-        content = "Usted tiene el derecho legal de exigir que su información privada sea borrada o bloqueada de sitios que no deberían tenerla:\n\n"
-        
-        # Map technical internal types to plain Spanish categories
-        source_map = {
-            "sfp_citadel": "Bases de Datos de Filtraciones",
-            "sfp_intfiles": "Servidores de Archivos Públicos",
-            "sfp_accounts": "Redes Sociales y Foros Externos",
-            "sfp_bingsearch": "Motores de Búsqueda Públicos",
-            "sfp_googlesearch": "Motores de Búsqueda Públicos",
-            "sfp_filemeta": "Repositorios de Documentos",
-            "sfp_dnsresolve": "Registros de Infraestructura de Internet"
-        }
-
-        seen_sources = set()
-        for f in candidates:
-            raw_src = f.get('source_name', 'Bases de Datos Externas')
-            if raw_src == 'Internal' or raw_src == 'SpiderFoot UI': continue
-            
-            clean_src = source_map.get(raw_src, "Bases de Datos de Información Pública")
-            if clean_src in seen_sources: continue
-            
-            content += f"- En **{clean_src}**: Recomendamos ejercer su derecho de **CANCELACIÓN** u **OPOSICIÓN**.\n"
-            seen_sources.add(clean_src)
-            if len(seen_sources) >= 3: break
-        
-        content += "\n**Acción:** Hemos preparado para usted los formatos de solicitud legal necesarios. Solo requieren su firma para proceder con la eliminación de estos rastros."
-        return content
-
-    def _generate_legal_disclaimer(self):
-        return "Este análisis se realizó bajo un entorno controlado y ético, utilizando únicamente información que ya es pública en internet."
-
-    def _generate_arco_explanation(self):
-        return """Los derechos **ARCO** son su herramienta legal para recuperar el control de su información en internet:
-1. **Acceso:** Saber quién tiene sus datos.
-2. **Rectificación:** Corregir datos erróneos.
-3. **Cancelación:** Solicitar que borren su información definitivamente.
-4. **Oposición:** Exigir que dejen de usar sus datos para fines que usted no autorizó.
-
-Al ejercer estos derechos, obligamos a las empresas y motores de búsqueda a retirar su información de la vista pública."""
-
-    def _generate_arco_cases(self, arco_data):
-        if not arco_data:
-            return "No se detectaron casos que ameriten ARCO actualmente."
-            
-        content = "Hemos identificado los siguientes puntos donde aplica la intervención legal:\n\n"
-        content += "| Derecho Aplicable | Proveedor | Objetivo |\n|---|---|---|\n"
-        
-        for (provider, right) in arco_data.keys():
-            content += f"| {right} | {provider} | Recuperar control de información |\n"
-            
-        return content
-
-    def _generate_telecom_section(self, findings):
-        return """La exposición de su número telefónico genera riesgos críticos de **Spam**, **Fraudes vía WhatsApp** y **Extorsiones**. 
-
-**Acciones recomendadas:**
-1. **REPEP:** Inscribirse en el Registro Público para Evitar Publicidad.
-2. **Privacidad Biométrica:** Nunca autorice el uso de su voz en llamadas sospechosas.
-3. **Servicio MAPA-RD:** Podemos encargarnos de la gestión completa de estas solicitudes para limpiar su historial en directorios comerciales con un costo adicional."""
-
-    def _generate_conclusion(self, findings):
-        return """Actualmente su nivel de exposición es significativo debido a las filtraciones de seguridad detectadas. Al ejecutar el **Plan de Acción**, reduciremos su superficie de ataque en un 80%, protegiendo su patrimonio y su tranquilidad.
-
-**Próximos Pasos con MAPA-RD:**
-- Firmar los anexos ARCO adjuntos.
-- Iniciar el monitoreo continuo para detectar nuevas filtraciones antes de que sean explotadas."""
-
-    def _generate_arco_formats(self, client_name):
-        acc = f"""### Anexo A: Formato ARCO – ACCESO
-Yo, **{client_name}**, solicito el ACCESO a todos mis datos personales almacenados en sus sistemas conforme a la ley vigente."""
-        can = f"""### Anexo B: Formato ARCO – CANCELACIÓN
-Yo, **{client_name}**, solicito la CANCELACIÓN de mis registros y el borrado inmediato de toda información vinculada a mi identidad."""
-        opo = f"""### Anexo C: Formato ARCO – OPOSICIÓN
-Yo, **{client_name}**, manifiesto mi OPOSICIÓN al tratamiento de mis datos personales para fines publicitarios o de indexación pública."""
-        
-        return acc + "\n\n" + can + "\n\n" + opo + "\n\n### Anexo D: Guía de Envío\n1. Firme el formato correspondiente.\n2. Adjunte copia de su INE/Pasaporte.\n3. Envíe por correo electrónico al área de privacidad del sitio indicado."
-
-    def _generate_pdf_version(self, client_name, scan_id, frontmatter, body_content, original_md_path, base_name):
-        # Inject LaTeX for Printing
-        body_content = body_content.replace("\n---\n", "\n***\n")
-        lines = body_content.split('\n')
-        
+    def _build_report_name(self, file_type, client_id, client_name, report_id, date_str):
         try:
-             exec_sum_index = next(i for i, line in enumerate(lines) if line.strip().startswith("## 1."))
-             lines = lines[exec_sum_index:]
-        except StopIteration:
-             pass
-
-        current_text = "\n".join(lines)
+            clean_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%d%m%Y")
+        except:
+            clean_date = date_str.replace("-", "")
         
-        if "## 1." in current_text and "## 2." in current_text:
-             parts = current_text.split("## 2.")
-             header_line = parts[0].split("\n", 1)[0]
-             content_block = parts[0].split("\n", 1)[1].strip()
-             wrapped_1 = f"{header_line}\n\n::: execsummary\n{content_block}\n:::\n\n"
-             current_text = wrapped_1 + "## 2." + parts[1]
+        r_num = report_id.split('-')[-1] if '-' in report_id else "001"
+        safe_name = self.sanitize_filename(client_name)
+        return f"MAPA-RD_{client_id}_{safe_name}_{clean_date}_{r_num}"
 
-        if "## 8. Anexo Técnico" in current_text:
-            parts = current_text.split("## 8. Anexo Técnico")
-            header = "## 8. Anexo Técnico (Información de Respaldo)"
-            content = parts[1].strip()
-            current_text = parts[0] + f"{header}\n\n::: legalnotice\n{content}\n:::\n\n"
+    def generate_report(self, client_name, report_id, client_id, findings, arco_data=None, is_rescue=False, report_type="BASELINE"):
+        self.logger.info(f"[*] Generating Report V89 (Impact & Timeline) for {client_name}...")
+        nice_date = datetime.now().strftime("%Y-%m-%d")
 
-        full_printable = frontmatter + current_text
+        full_html = self._assemble_full_html(client_name, report_id, nice_date, findings)
+
+        base_name = self._build_report_name("REPORTE", client_id, client_name, report_id, nice_date)
+        html_path = os.path.join(self.reports_dir, f"{base_name}.html")
         
-        printable_filename = f"PRINT_{base_name}.md"
-        printable_filepath = os.path.join(self.reports_dir, printable_filename)
+        with open(html_path, 'w', encoding='utf-8') as f:
+            f.write(full_html)
+
+        json_path = os.path.join(self.reports_dir, f"{base_name}.json")
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(findings, f, indent=2)
+
+        return {"md_path": html_path, "pdf_path": html_path}
+
+    def _get_premium_style(self):
+        return """
+        /* --- PREMIUM V89: PIXEL PERFECT STYLE + IMPACT SECTIONS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: radial-gradient(circle at top right, #1a234a 0%, #0a0e27 100%); color: #e8e8e8; min-height: 100vh; display: flex; align-items: center; flex-direction: column; padding: 3rem 1.25rem; }
+        .container { width: 100%; max-width: 980px; text-align: center; }
+        .hero-top { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; margin: 0 auto 2rem; }
+        .lock-icon { display: block; width: 62px; height: 62px; color: #8a9fca; opacity: 0.9; filter: drop-shadow(0 0 10px rgba(138, 159, 202, 0.3)); }
+        .tag { display: inline-flex; align-items: center; justify-content: center; padding: .55rem 1.15rem; border: 1px solid rgba(138, 159, 202, 0.2); background: rgba(138, 159, 202, 0.05); border-radius: 4px; font-size: .72rem; letter-spacing: .2em; color: #8a9fca; font-weight: 600; text-transform: uppercase; }
+        h1 { font-size: 2rem; font-weight: 300; letter-spacing: -0.01em; margin-bottom: 1.2rem; color: #fff; line-height: 1.2; background: linear-gradient(180deg, #fff 0%, #a8adc7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { font-size: 1.05rem; color: #a8adc7; font-weight: 300; margin: 0 auto 1.5rem; letter-spacing: -0.01em; line-height: 1.7; max-width: 760px; }
+        .description { font-size: .95rem; color: #8892b4; max-width: 760px; margin: 0 auto 3rem; line-height: 1.8; font-weight: 300; }
         
-        with open(printable_filepath, 'w', encoding='utf-8') as f:
-            f.write(full_printable)
+        .section { text-align: left; margin-top: 4.0rem; padding-top: 3rem; border-top: 1px solid rgba(74, 85, 120, .15); }
+        .section h2 { text-align:center; font-size: 1rem; font-weight: 600; color: #fff; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        
+        /* CARD DESIGN */
+        .card { 
+            background: rgba(13, 17, 33, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 8px; 
+            padding: 2rem; 
+            text-align: left; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        /* Specific Risk Borders */
+        .card.risk-critical { border: 1px solid rgba(163, 73, 255, 0.3); box-shadow: 0 0 20px rgba(163, 73, 255, 0.05); }
+        .card.risk-high { border: 1px solid rgba(255, 42, 42, 0.3); box-shadow: 0 0 20px rgba(255, 42, 42, 0.05); }
+        .card.risk-medium { border: 1px solid rgba(255, 184, 0, 0.3); box-shadow: 0 0 20px rgba(255, 184, 0, 0.05); }
+        .card.risk-low { border: 1px solid rgba(0, 163, 255, 0.3); box-shadow: 0 0 20px rgba(0, 163, 255, 0.05); }
+
+        /* Left Accent Line */
+        .card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+        .card.risk-critical::before { background: #a349ff; box-shadow: 0 0 10px #a349ff; }
+        .card.risk-high::before { background: #ff2a2a; box-shadow: 0 0 10px #ff2a2a; }
+        .card.risk-medium::before { background: #ffb800; box-shadow: 0 0 10px #ffb800; }
+        .card.risk-low::before { background: #00a3ff; box-shadow: 0 0 10px #00a3ff; }
+
+        /* Top Right Icon */
+        .card-icon { position: absolute; top: 2rem; right: 2rem; font-size: 1.5rem; }
+        .risk-critical .card-icon { color: #a349ff; filter: drop-shadow(0 0 5px #a349ff); }
+        .risk-high .card-icon { color: #ff2a2a; filter: drop-shadow(0 0 5px #ff2a2a); }
+        .risk-medium .card-icon { color: #ffb800; filter: drop-shadow(0 0 5px #ffb800); }
+        .risk-low .card-icon { color: #00a3ff; filter: drop-shadow(0 0 5px #00a3ff); }
+
+        /* Header */
+        .card h3 { font-size: 1.2rem; margin-bottom: 0.3rem; color: #fff; font-weight: 700; }
+        .type-label { font-size: 0.85rem; color: #8892b4; display: block; margin-bottom: 2rem; }
+
+        /* Highlight Box (Risk Justification) */
+        .risk-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 2rem;
+            border-left-width: 3px;
+            border-left-style: solid;
+            font-size: 0.85rem;
+        }
+        .risk-critical .risk-box { border-left-color: #a349ff; color: #dcb3ff; }
+        .risk-high .risk-box { border-left-color: #ff2a2a; color: #ff8080; }
+        .risk-medium .risk-box { border-left-color: #ffb800; color: #ffdb80; }
+        .risk-low .risk-box { border-left-color: #00a3ff; color: #80d1ff; }
+
+        /* Labels */
+        .label-kpi {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #5c6da0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .description-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #a8adc7;
+            margin-bottom: 2rem;
+        }
+
+        /* List Items */
+        .mitigation-list { list-style: none; margin: 0; padding: 0; }
+        .mitigation-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #c5cae0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .mitigation-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #5c6da0;
+            font-weight: 400;
+        }
+        .mitigation-list li strong { color: #fff; font-weight: 600; margin-right: 4px; }
+
+        /* --- MASTER SCORE CARD CSS --- */
+        .master-score-card { background: rgba(10, 15, 30, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 2.5rem 3rem; position: relative; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7); overflow: hidden; margin-bottom: 5rem; line-height: 1.6; }
+        .master-score-header { text-align: center; margin-bottom: 3.5rem; }
+        .main-score { font-size: 11rem; font-weight: 100 !important; margin: 3rem 0; letter-spacing: -10px; line-height: 0.7; text-shadow: 0 15px 70px rgba(255, 255, 255, 0.05); }
+        .score-label { font-size: 0.95rem; font-weight: 700; color: #8a9fca; margin-bottom: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase; }
+        .thermometer-container { width: 100%; max-width: 850px; margin: 3.5rem auto; height: 14px; background: rgba(255, 255, 255, 0.05); border-radius: 100px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5); }
+        .thermometer-fill { height: 100%; border-radius: 100px; width: 0%; animation: thermometer-load 3s forwards ease-out; background: linear-gradient(90deg, #00ff85 0%, #00a3ff 20%, #ffb800 45%, #ff2a2a 75%, #a349ff 100%); background-size: 850px 14px; position: relative; }
+        .thermometer-icon { position: absolute; top: 50%; right: -16px; transform: translate(0, -50%); width: 32px; height: 32px; background: #0f172a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 2px solid currentColor; box-shadow: 0 0 15px currentColor; z-index: 10; }
+        
+        .glossary-container { background: rgba(10, 15, 30, 0.6); border-radius: 12px; padding: 2.5rem; max-width: 850px; margin: 0 auto; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
+        .glossary-title { color: #fff; font-size: 0.95rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; margin-bottom: 1.5rem; display: block; }
+        .glossary-desc { color: #8a9fca; font-size: 0.95rem; margin-bottom: 2.5rem; font-weight: 300; }
+        .calc-box { background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 2rem; font-family: 'Courier New', monospace; text-align: right; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 1rem; color: #8a9fca; }
+        .calc-row strong { font-weight: 700; }
+        .calc-last { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem; margin-top: 1rem; font-size: 1.2rem; align-items: center; }
+
+        .text-critico { color: #a349ff; } .text-alto { color: #ff2a2a; } .text-medio { color: #ffb800; } .text-bajo { color: #00a3ff; } .text-nulo { color: #00ff85; }
+        .color-cycle-alto { animation: cycle-alto 4s forwards; }
+        @keyframes cycle-alto { 0% { color: #00ff85; text-shadow: 0 0 20px rgba(0,255,133,0.4); } 100% { color: #ff2a2a; text-shadow: 0 0 20px rgba(255,42,42,0.4); } }
+        @keyframes thermometer-load { from { width: 0%; } to { width: var(--target-score); } }
+
+        /* --- IMPACT SECTIONS CSS (V89) --- */
+        .impact-card { background: rgba(255, 42, 42, 0.05); border: 1px solid rgba(255, 42, 42, 0.2); border-radius: 8px; padding: 2rem; text-align: center; margin-bottom: 2rem; }
+        .price-tag { font-size: 3rem; font-weight: 800; color: #fff; text-shadow: 0 0 20px rgba(255, 42, 42, 0.5); display:block; margin: 1rem 0; }
+        .impact-note { color: #ff8080; font-size: 0.9rem; }
+        
+        .market-table { width: 100%; border-collapse: collapse; margin-top: 1rem; color: #c5cae0; font-size: 0.9rem; }
+        .market-table th { text-align: left; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: #8a9fca; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.8rem; }
+        .market-table td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .market-table tr:last-child td { border-bottom: none; }
+        .market-highlight { color: #fff; font-weight: 600; }
+        .market-price { color: #ff2a2a; font-family: 'Courier New', monospace; font-weight: 700; }
+        
+        .timeline { position: relative; max-width: 800px; margin: 3rem auto; padding-left: 2rem; border-left: 2px solid rgba(255,255,255,0.1); }
+        .timeline-item { position: relative; margin-bottom: 2.5rem; padding-left: 1.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2.6rem; top: 0.4rem; width: 14px; height: 14px; background: #111625; border: 2px solid #5c6da0; border-radius: 50%; }
+        .timeline-date { font-size: 0.8em; letter-spacing: 0.1em; color: #5c6da0; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+        .timeline-title { color: #fff; font-weight: 600; font-size: 1.1rem; }
+        
+        .hacker-path { background: rgba(10, 15, 30, 0.6); padding: 2rem; border-radius: 12px; border: 1px dashed rgba(255, 255, 255, 0.1); max-width: 800px; margin: 0 auto; }
+        .step { display:flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+        .step-num { flex-shrink:0; width: 30px; height: 30px; background: #00a3ff; color: #000; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .step-text { color: #c5cae0; font-size: 0.95rem; line-height: 1.6; }
+        
+        @media (min-width: 901px) {
+            .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+            .grid > * { grid-column: span 12; }
+            .cols-2 > * { grid-column: span 6; }
+            h1 { font-size: 3rem; }
+        }
+        """
+
+    def _assemble_full_html(self, client_name, report_id, date, findings):
+        # 0. Sort by Criticality
+        risk_map = {'P0': 0, 'P1': 1, 'P2': 2, 'P3': 3}
+        findings.sort(key=lambda x: risk_map.get(x.get('risk_score', 'P3'), 99))
+
+        # 1. Logic (V79)
+        scores = []
+        for f in findings:
+            p = f.get('risk_score', 'P3')
+            if p == 'P0':   e, c, v = 100, 100, 100
+            elif p == 'P1': e, c, v = 100, 80, 100
+            elif p == 'P2': e, c, v = 50, 50, 100
+            else:           e, c, v = 50, 50, 50
+            scores.append((e + c + v) / 3)
+
+        n = len(scores) if scores else 1
+        total = sum(scores)
+        final_score = min(round(total / n), 100)
+
+        # 2. Vis Logic
+        if final_score >= 86:   cls, ico, txt = "risk-critical", "fa-biohazard", "critico"
+        elif final_score >= 61: cls, ico, txt = "risk-high", "fa-radiation", "alto"
+        elif final_score >= 31: cls, ico, txt = "risk-medium", "fa-shield-halved", "medio"
+        else:                   cls, ico, txt = "risk-low", "fa-user-shield", "bajo"
+        
+        color_class = f"text-{txt}"
+        anim_class = f"color-cycle-{txt}"
+        
+        # 3. Dynamic Cards & Market Logic
+        cards_html = ""
+        timeline_events = []
+        
+        # Market Counters
+        market_counts = {
+            'banco': 0, 'card': 0, 'id': 0, 'pass': 0, 'email': 0
+        }
+
+        for i, f in enumerate(findings):
+            default_name = f.get('data', 'Desconocido').replace('Breach: ', '')
+            name = f.get('breach_title', default_name)
+            data_classes = f.get('breach_classes', [])
+            b_date = f.get('breach_date', 'Fecha Desconocida')
             
-        success, pdf_temp_path, error = self.pdf_converter.convert_to_pdf(printable_filepath)
-        final_pdf_path = os.path.join(self.reports_dir, f"{base_name}.pdf")
+            # --- Timeline Data ---
+            if b_date and b_date != 'Fecha Desconocida':
+                timeline_events.append({'date': b_date, 'name': name, 'desc': f.get('description', '')})
+            
+            # --- Market Value Accumulation ---
+            if 'Saldos de cuenta' in data_classes or 'Números de cuenta bancaria' in data_classes: market_counts['banco'] += 1
+            elif 'Información de tarjeta de crédito' in data_classes: market_counts['card'] += 1
+            elif 'Identificaciones gubernamentales' in data_classes or 'Direcciones físicas' in data_classes: market_counts['id'] += 1
+            elif 'Contraseñas' in data_classes: market_counts['pass'] += 1
+            else: market_counts['email'] += 1 # Base entry fallthrough
 
-        if success and pdf_temp_path and os.path.exists(pdf_temp_path):
-             if os.path.exists(final_pdf_path):
-                 os.remove(final_pdf_path)
-             os.rename(pdf_temp_path, final_pdf_path)
-             print(f"[+] PDF Report generated: {final_pdf_path}")
+            # Subtitle Logic
+            if "Telegram" in name: type_lbl = "Venta de Identidades en la Dark Web"
+            elif "Banorte" in name: type_lbl = "Institución Bancaria"
+            elif "Círculo" in name or "Buró" in name: type_lbl = "Sociedad de Información Crediticia"
+            elif "Ine" in name or "Gob" in name: type_lbl = "Entidad Gubernamental"
+            else: type_lbl = "Filtración de Base de Datos"
+
+            fscore = f.get('risk_score', 'P3')
+            
+            # --- RISK VISUALS ---
+            if fscore == 'P0': 
+                c_cls, c_ico = "risk-critical", "fa-biohazard"
+                justif = "Crítico: Compromiso directo de credenciales o identidad."
+            elif fscore == 'P1': 
+                c_cls, c_ico = "risk-high", "fa-radiation"
+                justif = "Alto: Impacto financiero probable o herramientas de ataque."
+            elif fscore == 'P2': 
+                c_cls, c_ico = "risk-medium", "fa-shield"
+                justif = "Medio: Filtraciones confirmadas de credenciales."
+            else: 
+                c_cls, c_ico = "risk-low", "fa-shield-halved"
+                justif = "Bajo: Exposición en servicios antiguos o de menor impacto."
+
+            # --- DYNAMIC MITIGATION LOGIC (V85) ---
+            steps = []
+            
+            pwd_tips = [
+                f"<strong>Gestor de Contraseñas:</strong> Deja de reciclar claves. Usa 1Password o Bitwarden para proteger <em>{name}</em>.",
+                f"<strong>Frase de Paso:</strong> En lugar de una palabra, usa una frase de 4 palabras aleatorias para tu cuenta de <em>{name}</em>.",
+                f"<strong>Auditoría de Reutilización:</strong> Si usaste la clave de <em>{name}</em> en otro lado, cámbiala allá también."
+            ]
+            mfa_tips = [
+                f"<strong>MFA Obligatorio:</strong> Activa autenticación de 2 pasos en <em>{name}</em> inmediatmente.",
+                "<strong>Llave de Seguridad:</strong> Si es posible, usa una YubiKey o Passkey en lugar de SMS.",
+                "<strong>Revisión de Accesos:</strong> Verifica en la configuración de seguridad qué dispositivos están conectados."
+            ]
+            
+            if any(x in data_classes for x in ['Información de tarjeta de crédito', 'Números de cuenta bancaria', 'Saldos de cuenta']):
+                steps.append("<strong>Bloqueo Financiero:</strong> Contacta a tu banco y solicita reposición de plásticos.")
+                steps.append("<strong>Alerta de Fraude:</strong> Activa notificaciones SMS para cada retiro.")
+
+            if 'Contraseñas' in data_classes:
+                steps.append(pwd_tips[i % len(pwd_tips)])
+                steps.append(mfa_tips[i % len(mfa_tips)])
+            elif 'Pistas de contraseña' in data_classes:
+                 steps.append("<strong>Cambia tus Preguntas:</strong> Las respuestas de seguridad 'madre/mascota' ya son públicas.")
+
+            if 'Números de teléfono' in data_classes:
+                steps.append("<strong>Anti-Smishing:</strong> Desconfía de SMS urgentes de supuestos bancos.")
+            
+            if 'Perfiles de redes sociales' in data_classes:
+                steps.append("<strong>Privacidad:</strong> Revisa qué apps de terceros tienen acceso a tu perfil.")
+            
+            if 'Direcciones físicas' in data_classes:
+                steps.append("<strong>Entorno Físico:</strong> Ten cuidado con correspondencia o visitas no solicitadas.")
+            
+            if not steps:
+                steps.append("<strong>Rotación Preventiva:</strong> Cambia la clave por precaución.")
+                steps.append("<strong>Sesiones Activas:</strong> Cierra sesión en todos los dispositivos.")
+
+            steps = steps[:3]
+            if len(steps) < 2:
+                steps.append("<strong>Higiene Digital:</strong> Monitorea tu correo en busca de actividad inusual.")
+
+            raw_desc = f.get('breach_desc', '')
+            if not raw_desc:
+                raw_desc = f"Exposición detectada en {name}. Los datos incluyen: {', '.join(f.get('breach_classes', ['Datos Generales']))}."
+            
+            steps_html = "".join([f"<li>{s}</li>" for s in steps])
+
+            cards_html += f"""
+            <div class="card {c_cls}">
+                <i class="card-icon fas {c_ico}"></i>
+                <h3>{name}</h3>
+                <span class="type-label">{type_lbl}</span>
+                <div class="risk-box">{justif}</div>
+                <span class="label-kpi">DETALLES DE LA AMENAZA</span>
+                <p class="description-text">{raw_desc}</p>
+                <span class="label-kpi">PASOS DE MITIGACIÓN:</span>
+                <ul class="mitigation-list">{steps_html}</ul>
+            </div>
+            """
+        
+        # --- BUILD MARKET TABLE HTML ---
+        market_rows = ""
+        total_market_value = 0
+        
+        # Prices
+        prices = {'banco': 150.00, 'card': 85.00, 'id': 20.00, 'pass': 5.00, 'email': 0.50}
+        labels = {'banco': 'Acceso Bancario (Log/Saldo)', 'card': 'Tarjeta de Crédito (Fullz)', 'id': 'Identidad Completa (Scan)', 'pass': 'Credenciales (Email:Pass)', 'email': 'Datos de Contacto (Lead)'}
+        
+        for k, v in market_counts.items():
+            if v > 0:
+                subtotal = v * prices[k]
+                total_market_value += subtotal
+                market_rows += f"""
+                <tr>
+                    <td><span class="market-highlight">{labels[k]}</span></td>
+                    <td style="text-align:center;">{v}</td>
+                    <td style="text-align:right;">${prices[k]:.2f}</td>
+                    <td style="text-align:right;" class="market-price">${subtotal:.2f}</td>
+                </tr>
+                """
+        
+        # Empty row if nothing found (unlikely in report)
+        if not market_rows:
+            market_rows = "<tr><td colspan='4'>No se detectaron activos monetizables directos.</td></tr>"
+
+        # --- BUILD EXTRA SECTIONS HTML ---
+        
+        # 1. Timeline
+        timeline_events.sort(key=lambda x: x['date'], reverse=True)
+        timeline_html = ""
+        for t in timeline_events:
+            timeline_html += f"""
+            <div class="timeline-item">
+                <span class="timeline-date">{t['date']}</span>
+                <div class="timeline-title">{t['name']}</div>
+            </div>
+            """
+        
+        # 2. Hacker Path (Narrative)
+        # Simplified logic: If P0 exists -> High Impact Story
+        if any(f.get('risk_score') == 'P0' for f in findings):
+            hacker_story = """
+            <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Reconocimiento:</strong> El atacante compra el combo de <em>Telegram</em> y obtiene tu correo y contraseñas antiguas.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Acceso Inicial:</strong> Prueba esas claves (Credential Stuffing) en servicios como <em>Dropbox</em> o <em>Adobe</em>.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Escalada:</strong> Encuentra un patrón en tus contraseñas y logra acceder a tu correo principal.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-text" style="color:#ff2a2a;"><strong>Impacto Crítico:</strong> Con acceso al correo, restablece la contraseña de tu banca en línea (<em>Banorte</em>) y transfiere fondos.</div></div>
+            """
         else:
-             print(f"[!] PDF Generation Error: {error}")
-             
-        if os.path.exists(printable_filepath):
-            os.remove(printable_filepath)
-            
-        return final_pdf_path
+            hacker_story = """
+            <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Recolección:</strong> El atacante descarga bases de datos públicas como <em>Trello</em>.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Phishing:</strong> Usa tu número y nombre para enviarte SMS falsos (Smishing) haciéndose pasar por tu banco.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-text" style="color:#ffb800;"><strong>Intento de Estafa:</strong> Busca engañarte para que entregues tus claves vigentes.</div></div>
+            """
 
+        return f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Inteligencia | MAPA-RD (V89)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>{self._get_premium_style()}</style>
+</head>
+<body>
+    <div class="container">
+        <!-- HERO -->
+        <div class="hero-top">
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <div class="tag">REPORTE CONFIDENCIAL</div>
+        </div>
+
+        <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+        <div class="subtitle">Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.</div>
+        <p class="description">
+            Reporte generado para {client_name} ({report_id}).
+        </p>
+
+        <!-- SCORE SECTION -->
+        <div class="section" style="border:none; padding-top:0;">
+            <div class="master-score-card {cls}" style="--target-score: {final_score}%;">
+                <div class="master-score-header">
+                    <h3 style="letter-spacing: 0.4em; opacity: 0.7; margin-bottom: 2rem;">ÍNDICE DE RIESGO DIGITAL</h3>
+                    
+                    <div id="riskScore" class="main-score" data-target="{final_score}">0</div>
+                    <div class="score-label" style="margin-top: 2rem; letter-spacing: 0.15em;">NIVEL {txt.upper()} - Acción Requerida</div>
+                    
+                    <div class="thermometer-container">
+                        <div class="thermometer-fill">
+                             <div class="thermometer-icon {anim_class} {color_class}">
+                                <i class="fas {ico}"></i>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="master-content-stack">
+                    <div class="analysis-header" style="text-align:center;">
+                        <h4 style="color: #fff; margin-bottom: 2.5rem; letter-spacing: 0.3em; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; opacity: 0.9;">ANÁLISIS TÉCNICO (V79)</h4>
+                        
+                        <div class="glossary-container">
+                            <span class="glossary-title">GLOSARIO DE CÁLCULO</span>
+                            <p class="glossary-desc">El cálculo se basa en el promedio de las 3 variables (Exposición, Criticidad, Vigencia).</p>
+                            
+                            <div class="calc-box">
+                                <div class="calc-row">
+                                    <span>Suma de Riesgos:</span>
+                                    <strong style="color: #ff2a2a;">{total:.1f} pts</strong>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Total Hallazgos:</span>
+                                    <strong style="color: #00a3ff;">&divide; {n}</strong>
+                                </div>
+                                <div class="calc-row calc-last">
+                                    <span>ÍNDICE FINAL:</span>
+                                    <strong style="color: #00ff85;">= {final_score}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="text-align:center;">VECTORES DE ATAQUE DETALLADOS</h2>
+            <div class="grid cols-2">
+                {cards_html}
+            </div>
+        </div>
+        
+        <!-- IMPACT SECTIONS (NEW V89 - DETAILED TABLE) -->
+        <div class="section">
+            <h2 style="color: #ff2a2a;">1. Valor de Tu Información en el Mercado Negro</h2>
+            <p class="description" style="text-align:center;">Desglose estimado de tus activos digitales encontrados a la venta (Precios promedio Dark Web 2025).</p>
+            
+            <div class="impact-card" style="padding: 0; overflow: hidden; text-align: left;">
+                <table class="market-table">
+                    <thead>
+                        <tr>
+                            <th>Concepto / Activo</th>
+                            <th style="text-align:center;">Cant.</th>
+                            <th style="text-align:right;">Precio Unit.</th>
+                            <th style="text-align:right;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {market_rows}
+                        <tr style="background: rgba(255, 42, 42, 0.1);">
+                            <td><span style="color:#fff; font-weight:800; letter-spacing:0.05em;">VALOR TOTAL ESTIMADO</span></td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:right;"><span class="price-tag" style="font-size:1.5rem; margin:0;">${total_market_value:,.2f} USD</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="padding: 1.5rem; text-align:center; background: rgba(0,0,0,0.2);">
+                    <p class="impact-note"><i class="fas fa-exclamation-triangle"></i> Este es el costo por el que un criminal adquiriría tu identidad digital hoy mismo.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. Línea de Tiempo de Exposición</h2>
+            <div class="timeline">
+                {timeline_html}
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-bottom: 0.5rem;">3. Ruta de Ataque (Kill Chain)</h2>
+            <p class="description" style="text-align:center; margin-bottom: 2rem;">Cómo un atacante conecta estos puntos para causar daño real.</p>
+            <div class="hacker-path">
+                {hacker_story}
+            </div>
+        </div>
+
+        <div class="section" style="border: none; margin-top: 2rem;">
+            <p style="font-size: 0.85rem; color: #6b7490; text-align: center;">
+                Generado por Motor Cortex MAPA-RD • {date}
+            </p>
+        </div>
+    </div>
+
+    <!-- UPCOUNT ANIMATION SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {{
+            const scoreElement = document.getElementById("riskScore");
+            const targetScore = parseInt(scoreElement.getAttribute("data-target"));
+            let currentScore = 0;
+            const duration = 2500;
+            const intervalTime = 20;
+            const steps = duration / intervalTime;
+            const increment = targetScore / steps;
+
+            const updateColor = (score) => {{
+                scoreElement.classList.remove("text-critico", "text-alto", "text-medio", "text-bajo", "text-nulo");
+                if (score >= 86) scoreElement.classList.add("text-critico");
+                else if (score >= 61) scoreElement.classList.add("text-alto");
+                else if (score >= 31) scoreElement.classList.add("text-medio");
+                else if (score >= 11) scoreElement.classList.add("text-bajo");
+                else scoreElement.classList.add("text-nulo");
+            }};
+
+            const counter = setInterval(() => {{
+                currentScore += increment;
+                if (currentScore >= targetScore) {{
+                    currentScore = targetScore;
+                    clearInterval(counter);
+                }}
+                const displayScore = Math.floor(currentScore);
+                scoreElement.innerText = displayScore;
+                updateColor(displayScore);
+            }}, intervalTime);
+        }});
+    </script>
+</body>
+</html>"""

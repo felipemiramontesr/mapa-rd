@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Inteligencia | MAPA-RD (V14)</title>
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a9fca' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- USER PROVIDED LANDING PAGE CSS (REFINED FOR PREMIUM V21) --- */
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top right, #1a234a 0%, #0a0e27 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding: 3rem 1.25rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 980px;
+            text-align: center;
+        }
+
+        /* Icons & Tags */
+        .hero-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin: 0 auto 2rem;
+        }
+
+        .lock-icon {
+            display: block;
+            width: 62px;
+            height: 62px;
+            color: #8a9fca;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px rgba(138, 159, 202, 0.3));
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: .55rem 1.15rem;
+            border: 1px solid rgba(138, 159, 202, 0.2);
+            background: rgba(138, 159, 202, 0.05);
+            border-radius: 4px;
+            font-size: .72rem;
+            letter-spacing: .2em;
+            color: #8a9fca;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Typhography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.2rem;
+            color: #fff;
+            line-height: 1.2;
+            background: linear-gradient(180deg, #fff 0%, #a8adc7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #a8adc7;
+            font-weight: 300;
+            margin: 0 auto 1.5rem;
+            letter-spacing: -0.01em;
+            line-height: 1.7;
+            max-width: 760px;
+        }
+
+        .description {
+            font-size: .95rem;
+            color: #8892b4;
+            max-width: 760px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* Sections & Cards (V21 Premium Glass) */
+        .section {
+            text-align: left;
+            margin-top: 4.0rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(74, 85, 120, .15);
+        }
+
+        .section h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .section p {
+            color: #a8adc7;
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1.75rem;
+            text-align: left;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Radioactive Glows (V25 Final Spectrum) */
+        .card.risk-critical {
+            border-color: rgba(163, 73, 255, 0.4);
+            box-shadow: 0 0 20px rgba(163, 73, 255, 0.1), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card.risk-high {
+            border-color: rgba(255, 42, 42, 0.3);
+            box-shadow: 0 0 20px rgba(255, 42, 42, 0.1), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card.risk-medium {
+            border-color: rgba(255, 184, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 184, 0, 0.1), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card.risk-low {
+            border-color: rgba(0, 163, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 163, 255, 0.1), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card.risk-none {
+            border-color: rgba(0, 255, 133, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 133, 0.1), 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card.risk-critical::before {
+            background: linear-gradient(to bottom, #a349ff, transparent);
+        }
+
+        .card.risk-high::before {
+            background: linear-gradient(to bottom, #ff2a2a, transparent);
+        }
+
+        .card.risk-medium::before {
+            background: linear-gradient(to bottom, #ffb800, transparent);
+        }
+
+        .card.risk-low::before {
+            background: linear-gradient(to bottom, #00a3ff, transparent);
+        }
+
+        .card.risk-none::before {
+            background: linear-gradient(to bottom, #00ff85, transparent);
+        }
+
+        /* Top Right Icon Positioning */
+        .card-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.4rem;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .risk-critical .card-icon {
+            color: #a349ff;
+        }
+
+        .risk-high .card-icon {
+            color: #ff2a2a;
+        }
+
+        .risk-medium .card-icon {
+            color: #ffb800;
+        }
+
+        .risk-low .card-icon {
+            color: #00a3ff;
+        }
+
+        .risk-none .card-icon {
+            color: #00ff85;
+        }
+
+        /* Premium Left Accent Tip */
+        .card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #5a6fa0, transparent);
+            opacity: 0.5;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(138, 159, 202, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            word-break: break-word;
+            max-width: calc(100% - 40px);
+        }
+
+        .header-2-rows {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .type-label {
+            font-size: 0.78rem;
+            color: #8a9fca;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .kpi {
+            font-size: .8rem;
+            color: #5c6da0;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Formula Typography */
+        .formula-block {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 1px solid rgba(138, 159, 202, 0.1);
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .formula-block .math {
+            font-size: 1.4rem;
+            color: #fff;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .formula-block .legend {
+            font-size: 0.8rem;
+            color: #8892b4;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .risk-explanation {
+            font-size: 0.82rem;
+            color: #8a9fca;
+            line-height: 1.5;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+            border-left: 2px solid currentColor;
+        }
+
+        .risk-critical .risk-explanation {
+            color: #a349ff;
+            border-color: #a349ff;
+        }
+
+        .risk-high .risk-explanation {
+            color: #ff2a2a;
+            border-color: #ff2a2a;
+        }
+
+        .risk-medium .risk-explanation {
+            color: #ffb800;
+            border-color: #ffb800;
+        }
+
+        .risk-low .risk-explanation {
+            color: #00a3ff;
+            border-color: #00a3ff;
+        }
+
+        .risk-none .risk-explanation {
+            color: #00ff85;
+            border-color: #00ff85;
+        }
+
+        /* Lists within cards */
+        .list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            margin-top: .5rem;
+            flex-grow: 1;
+        }
+
+        .list li {
+            color: #c5cae0;
+            font-weight: 300;
+            line-height: 1.65;
+            position: relative;
+            padding-left: 1.25rem;
+            font-size: 0.92rem;
+        }
+
+        .list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #5a6fa0;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .45rem .85rem;
+            background: rgba(255, 42, 42, 0.05);
+            border: 1px solid rgba(255, 42, 42, 0.15);
+            color: #ff6b6b;
+            font-size: .75rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Media Queries */
+        @media (min-width: 901px) {
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(12, 1fr);
+                gap: 24px;
+                align-items: stretch;
+            }
+
+            .grid>* {
+                grid-column: span 12;
+            }
+
+            /* Default */
+
+            .cols-2>* {
+                grid-column: span 6;
+            }
+
+            .cols-3>* {
+                grid-column: span 4;
+            }
+
+            .hero-top {
+                gap: 14px;
+                margin: 0 auto 2rem;
+            }
+
+            .lock-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Helper Classes for Report content */
+        .w-full {
+            grid-column: 1 / -1 !important;
+        }
+
+        .w-full::before {
+            background: linear-gradient(to bottom, #ff2a2a, transparent);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* V37: Integrated Master Score Card (Luminous Edition) */
+        .master-score-card {
+            background: rgba(10, 15, 30, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.5rem 3rem;
+            /* V57: Reduced top padding from 5rem to 2.5rem */
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            margin-bottom: 5rem;
+            line-height: 1.6;
+            transition: all 0.5s ease;
+        }
+
+        .master-score-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Thermometer UI (V38 Gradient Liquid) */
+        .thermometer-container {
+            width: 100%;
+            max-width: 850px;
+            margin: 3.5rem auto;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            position: relative;
+            overflow: visible;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .thermometer-fill {
+            height: 100%;
+            border-radius: 100px;
+            width: 0%;
+            transition: width 2.5s cubic-bezier(0.1, 0, 0.3, 1);
+            position: relative;
+            animation: thermometer-load 3s forwards ease-out;
+
+            /* V38: Multi-color Gradient representing ranges (0-10, 11-30, 31-60, 61-85, 86-100) */
+            background: linear-gradient(90deg,
+                    #00ff85 0%,
+                    /* Verde (0-10) */
+                    #00a3ff 20%,
+                    /* Azul (11-30) */
+                    #ffb800 45%,
+                    /* Amarillo (31-60) */
+                    #ff2a2a 75%,
+                    /* Rojo (61-85) */
+                    #a349ff 100%
+                    /* Púrpura (86-100) */
+                );
+            background-size: 850px 14px;
+            background-attachment: scroll;
+        }
+
+        /* Centered Luminous Bubble */
+        /* V53: Removed legacy ::after bubble to allow Icon Tip */
+
+        @keyframes thermometer-load {
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: var(--target-score);
+            }
+        }
+
+        /* V37 Range Colors (Strict Sync) */
+        /* V42: Distinct Text Colors (For Icon & Score) - NO BACKGROUND */
+        /* V49: Distinct Text Colors (For Icon & Score) - NO IMPORTANT on Color to allow Animation */
+        .text-nulo {
+            color: #00ff85;
+            text-shadow: 0 0 20px rgba(0, 255, 133, 0.4);
+            background: none !important;
+        }
+
+        .text-bajo {
+            color: #00a3ff;
+            text-shadow: 0 0 20px rgba(0, 163, 255, 0.4);
+            background: none !important;
+        }
+
+        .text-medio {
+            color: #ffb800;
+            text-shadow: 0 0 20px rgba(255, 184, 0, 0.4);
+            background: none !important;
+        }
+
+        .text-alto {
+            color: #ff2a2a;
+            text-shadow: 0 0 20px rgba(255, 42, 42, 0.4);
+            background: none !important;
+        }
+
+        .text-critico {
+            color: #a349ff;
+            text-shadow: 0 0 20px rgba(163, 73, 255, 0.4);
+            background: none !important;
+        }
+
+        /* V44: Distinct Background Fills (For Thermometer ONLY) - SOLID COLOR SYNC */
+        /* V47: Gradient Thermometer (Restored) */
+        .thermometer-fill {
+            height: 100%;
+            border-radius: 100px;
+            width: 0%;
+            transition: width 2.5s cubic-bezier(0.1, 0, 0.3, 1);
+            position: relative;
+            animation: thermometer-load 3s forwards ease-out;
+
+            /* Multi-color Gradient representing ranges strictly */
+            background: linear-gradient(90deg,
+                    #00ff85 0%,
+                    /* 0-10 */
+                    #00a3ff 20%,
+                    /* 11-30 (approx 20% mark) */
+                    #ffb800 45%,
+                    /* 31-60 */
+                    #ff2a2a 75%,
+                    /* 61-85 */
+                    #a349ff 100%
+                    /* 86-100 */
+                );
+            background-size: 850px 100%;
+            /* Static Gradient */
+            background-attachment: scroll;
+        }
+
+        /* V47: Remove solid fill overrides to allow gradient */
+        .fill-nulo,
+        .fill-bajo,
+        .fill-medio,
+        .fill-alto,
+        .fill-critico {
+            /* Background handled by gradient on .thermometer-fill */
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        /* Bubble Color Sync via CSS Variables or matching Color Class? 
+           Actually, let's keep the bubble White/Luminous, or sync it.
+           User 'Al igual el número y el icono' implies Icon/Number change.
+           Thermometer changes as it passes zones (Gradient). */
+        /* V52: Thermometer Tip Icon (Replaces ::after bubble) */
+        .thermometer-icon {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(100%, -50%);
+            /* V54: Push icon entirely ahead of the line */
+            width: 32px;
+            /* Slightly larger container for the icon */
+            height: 32px;
+            background: #0f172a;
+            /* Dark background to make icon pop or transparent? User said 'replace white circle'. Let's give it a glowing border loop? Or just the icon. Let's try just the icon with a background to cover the line end. */
+            background: #0f172a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            /* Icon size inside bubble */
+            border: 2px solid currentColor;
+            /* Border matches icon color (animated) */
+            box-shadow: 0 0 15px currentColor;
+            z-index: 10;
+            transition: all 4s ease;
+            /* Sync with bar */
+        }
+
+        .master-score-card .main-score {
+            font-size: 11rem;
+            font-weight: 100 !important;
+            margin: 3rem 0;
+            letter-spacing: -10px;
+            /* color: currentColor; REMOVED to let text-class take precedence naturally */
+            line-height: 0.7;
+            text-shadow: 0 15px 70px rgba(255, 255, 255, 0.05);
+            transition: color 1s ease;
+        }
+
+        /* V40: Top-Right Dynamic Icon (Fix) */
+        /* V43: Top-Right Dynamic Icon (Standardized Size & No Animation) */
+        /* V43: Top-Right Dynamic Icon (Standardized Size & No Animation) */
+        /* V52: Removed .master-header-icon (User request to delete) */
+
+        /* V48: Dynamic Color Cycling Animations (Synced to 4s) */
+        .color-cycle-bajo {
+            animation: cycle-bajo 4s forwards cubic-bezier(0.1, 0, 0.3, 1);
+        }
+
+        .color-cycle-medio {
+            animation: cycle-medio 4s forwards cubic-bezier(0.1, 0, 0.3, 1);
+        }
+
+        .color-cycle-alto {
+            animation: cycle-alto 4s forwards cubic-bezier(0.1, 0, 0.3, 1);
+        }
+
+        .color-cycle-critico {
+            animation: cycle-critico 4s forwards cubic-bezier(0.1, 0, 0.3, 1);
+        }
+
+        @keyframes cycle-bajo {
+            0% {
+                color: #00ff85;
+                text-shadow: 0 0 20px rgba(0, 255, 133, 0.4);
+            }
+
+            100% {
+                color: #00a3ff;
+                text-shadow: 0 0 20px rgba(0, 163, 255, 0.4);
+            }
+        }
+
+        @keyframes cycle-medio {
+            0% {
+                color: #00ff85;
+                text-shadow: 0 0 20px rgba(0, 255, 133, 0.4);
+            }
+
+            50% {
+                color: #00a3ff;
+                text-shadow: 0 0 20px rgba(0, 163, 255, 0.4);
+            }
+
+            100% {
+                color: #ffb800;
+                text-shadow: 0 0 20px rgba(255, 184, 0, 0.4);
+            }
+        }
+
+        @keyframes cycle-alto {
+            0% {
+                color: #00ff85;
+                text-shadow: 0 0 20px rgba(0, 255, 133, 0.4);
+            }
+
+            33% {
+                color: #00a3ff;
+                text-shadow: 0 0 20px rgba(0, 163, 255, 0.4);
+            }
+
+            66% {
+                color: #ffb800;
+                text-shadow: 0 0 20px rgba(255, 184, 0, 0.4);
+            }
+
+            100% {
+                color: #ff2a2a;
+                text-shadow: 0 0 20px rgba(255, 42, 42, 0.4);
+            }
+        }
+
+        @keyframes cycle-critico {
+            0% {
+                color: #00ff85;
+                text-shadow: 0 0 20px rgba(0, 255, 133, 0.4);
+            }
+
+            25% {
+                color: #00a3ff;
+                text-shadow: 0 0 20px rgba(0, 163, 255, 0.4);
+            }
+
+            50% {
+                color: #ffb800;
+                text-shadow: 0 0 20px rgba(255, 184, 0, 0.4);
+            }
+
+            75% {
+                color: #ff2a2a;
+                text-shadow: 0 0 20px rgba(255, 42, 42, 0.4);
+            }
+
+            100% {
+                color: #a349ff;
+                text-shadow: 0 0 20px rgba(163, 73, 255, 0.4);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        .master-score-card h3 {
+            font-size: 0.95rem;
+            /* V55: Standardized Size */
+            color: #8a9fca;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .master-score-card .score-label {
+            font-size: 0.95rem;
+            /* V55: Matching Header Size */
+            font-weight: 700;
+            color: #8a9fca;
+            /* V55: Matching Header Color */
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        /* Professional Methodology Stack (V36) */
+        .master-content-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HERO -->
+        <div class="hero-top">
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <div class="tag">REPORTE CONFIDENCIAL</div>
+        </div>
+
+        <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+        <div class="subtitle">Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.</div>
+        <p class="description">
+            Reporte generado automáticamente por la plataforma MAPA-RD para $client_name.
+            Identificación de riesgos de impacto y exposición pública.
+        </p>
+
+        <!-- SCORE SECTION (V29 Dynamic) -->
+        $risk_score_block
+
+        <!-- DYNAMIC CONTENT -->
+        $body
+
+        <!-- FOOTER -->
+        <div class="section" style="border: none; margin-top: 2rem;">
+            <p style="font-size: 0.85rem; color: #6b7490; text-align: center;">
+                Generated by MAPA-RD Cortex Engine • $report_date
+            </p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
