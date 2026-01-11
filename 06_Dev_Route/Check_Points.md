@@ -33,6 +33,7 @@
 32:     - [x] **Coverage 100%**: Tests unitarios para `StateManager`, `ClientManager`, `QCManager` y Utils.
 33:     - [x] **Protocolo**: Codificación de "Golden Rules" en `06_Dev_Route/PROTOCOL.md`.
     - [x] **Regla 4 (Push)**: Agregada política de sincronización continua.
+    - [x] **Regla 5 (Auto-Save)**: Eliminada redundancia en confirmaciones de guardado.
     - [x] **UI-01 (Email)**: Template Premium implementado y validado en vivo.
 34: - [ ] **Phase 7: Business Logic & Onboarding (EN CURSO):**
 35:     - [x] Definición de `Business_Logic.md`.
@@ -63,7 +64,7 @@
 - [ ] **TEST-01: Validación Ana Flores:** Re-ejecutar el pipeline para el usuario de prueba una vez activas las llaves.
 
 ### 🔵 Próximos Pasos (Media Prioridad)
-- [ ] **PROC-02: Deduplicación Avanzada:** Refinar el `Deduper` para limpiar hallazgos redundantes entre distintos módulos de SpiderFoot.
+
 
 ---
 
