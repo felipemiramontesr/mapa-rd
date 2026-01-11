@@ -64,7 +64,9 @@
 - [ ] **TEST-01: Validación Ana Flores:** Re-ejecutar el pipeline para el usuario de prueba una vez activas las llaves.
 
 ### 🔵 Próximos Pasos (Media Prioridad)
-
+- [ ] **INTAKE-01:** Implementar `IntakeManager` para validación estricta de Textos/Imágenes.
+- [ ] **RENDER-01:** Crear wrapper `pdf_renderer.py` utilizando Headless Chrome.
+- [ ] **LOGIC-01:** Integrar reglas de negocio (Fast Fail) en el Orchestrator.
 
 ---
 
