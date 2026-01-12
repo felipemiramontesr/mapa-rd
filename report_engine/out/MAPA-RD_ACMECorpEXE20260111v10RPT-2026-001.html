@@ -323,6 +323,114 @@
     
 </section>
 
+        <!-- Technical Annex (Methodology) -->
+        <div class="annex-page">
+    <div class="annex-header">
+        <h1 class="annex-title">Anexo Técnico</h1>
+        <span class="annex-subtitle">Metodología de Riesgo v1.0 (Oficial)</span>
+    </div>
+
+    <!-- SECTION 1: IRV -->
+    <div class="annex-section">
+        <h2 class="annex-h2">1. Índice de Riesgo del Vector (IRV)</h2>
+        <p class="annex-p">
+            El <strong>IRV</strong> mide la urgencia y el impacto real de no remediar un vector de vulnerabilidad
+            específico.
+            Se calcula internamente mediante un modelo ponderado de seis dimensiones y se normaliza a una escala
+            centesimal (0-100).
+        </p>
+
+        <div class="formula-block">
+            <span class="formula-label">Fórmula General</span>
+            <div class="formula-text">
+                IRV = [ Σ(Componente × Peso) / Σ(Pesos_Max) ] × 100
+            </div>
+        </div>
+
+        <h3 style="color:#fff; font-size:1.1rem; margin-top:2rem;">Variables del Modelo</h3>
+        <div class="variable-grid">
+            <div class="variable-item">
+                <span class="var-name">CA (x4)</span>
+                <span class="var-desc">Criticidad del Activo. Evalúa la importancia del sistema afectado para la
+                    operación.</span>
+            </div>
+            <div class="variable-item">
+                <span class="var-name">ET (x3)</span>
+                <span class="var-desc">Exposición Temporal. Determina si el hallazgo es histórico, residual o
+                    vigente.</span>
+            </div>
+            <div class="variable-item">
+                <span class="var-name">SE (x3)</span>
+                <span class="var-desc">Superficie de Exposición. Mide la facilidad de acceso (Público vs
+                    Interno).</span>
+            </div>
+            <div class="variable-item">
+                <span class="var-name">IM (x4)</span>
+                <span class="var-desc">Impacto Multidimensional. Suma binaria de impactos (Legal, Financiero,
+                    Operativo).</span>
+            </div>
+            <div class="variable-item">
+                <span class="var-name">FE (x3)</span>
+                <span class="var-desc">Facilidad de Explotación. Nivel de esfuerzo técnico requerido por el
+                    atacante.</span>
+            </div>
+            <div class="variable-item">
+                <span class="var-name">DV (x3)</span>
+                <span class="var-desc">Detectabilidad. Probabilidad de que el ataque pase desapercibido.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: IRD -->
+    <div class="annex-section">
+        <h2 class="annex-h2">2. Índice de Riesgo Digital (IRD)</h2>
+        <p class="annex-p">
+            El <strong>IRD</strong> representa el estado global de riesgo de la organización. Es un indicador dinámico
+            derivado
+            exclusivamente de los IRV activos, utilizando un promedio ponderado por severidad.
+        </p>
+
+        <div class="formula-block">
+            <span class="formula-label">Cálculo Ponderado</span>
+            <div class="formula-text">
+                IRD = Σ(IRV × Peso_Severidad) / Σ(Pesos_Severidad)
+            </div>
+        </div>
+
+        <div class="example-box">
+            <span class="example-title">Escala de Severidad (Pesos)</span>
+            <div class="variable-grid" style="margin-top:0.5rem; gap:1rem; grid-template-columns: repeat(5, 1fr);">
+                <div style="border-left:2px solid #74b9ff; padding-left:0.5rem;">
+                    <span class="var-name" style="color:#74b9ff;">BAJO</span>
+                    <span class="var-desc">Peso x1</span>
+                </div>
+                <div style="border-left:2px solid #ffeaa7; padding-left:0.5rem;">
+                    <span class="var-name" style="color:#ffeaa7;">MEDIO</span>
+                    <span class="var-desc">Peso x2</span>
+                </div>
+                <div style="border-left:2px solid #ff9f43; padding-left:0.5rem;">
+                    <span class="var-name" style="color:#ff9f43;">ALTO</span>
+                    <span class="var-desc">Peso x3</span>
+                </div>
+                <div style="border-left:2px solid #ff7675; padding-left:0.5rem;">
+                    <span class="var-name" style="color:#ff7675;">CRÍTICO</span>
+                    <span class="var-desc">Peso x4</span>
+                </div>
+                <div style="border-left:2px solid #a29bfe; padding-left:0.5rem;">
+                    <span class="var-name" style="color:#a29bfe;">MÁXIMO</span>
+                    <span class="var-desc">Peso x5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+        <p style="font-size: 0.8rem; color: #4b5563;">
+            Este documento es confidencial y parte integral del entregable MAPA-RD. La metodología v1.0 es propiedad
+            intelectual cerrada.
+        </p>
+    </div>
+</div>
 
         <!-- Example Footer from MAPA-RD -->
         <p class="footer-text">
