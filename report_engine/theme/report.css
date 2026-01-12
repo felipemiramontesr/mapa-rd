@@ -523,6 +523,93 @@ h1 {
     font-weight: 500;
 }
 
+/* --- Risk Scale Colors --- */
+/* Defined strictly for text/accents */
+.vector-card.critical {
+    --risk-color: #ff6b6b;
+}
+
+/* Red */
+.vector-card.high {
+    --risk-color: #ff9f43;
+}
+
+/* Orange */
+.vector-card.medium {
+    --risk-color: #feca57;
+}
+
+/* Yellow */
+.vector-card.low {
+    --risk-color: #54a0ff;
+}
+
+/* Blue */
+.vector-card.info {
+    --risk-color: #48dbfb;
+}
+
+/* Cyan */
+
+/* --- Vector Body (New Layout) --- */
+.vector-body-new {
+    margin-top: 2rem;
+}
+
+.vector-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.action-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-card .sub-header {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--risk-color, var(--primary-color));
+    /* Use risk color if available, else primary */
+}
+
+/* Description Card (Sober & Elegant) */
+.description-card {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2rem;
+    text-align: left;
+}
+
+.sub-header-simple {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+/* --- Color Overrides for Visibility --- */
+.vector-id {
+    color: var(--risk-color) !important;
+    /* Force visibility */
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.irv-value {
+    color: var(--risk-color) !important;
+}
+
 /* Vector Body Columns */
 .vector-body {
     display: flex;
@@ -556,17 +643,19 @@ h1 {
     text-align: left;
 }
 
+/* Lists */
 .impact-list,
 .remediation-list {
     padding-left: 1.2rem;
     margin-top: 0;
+    margin-bottom: 0;
 }
 
 .impact-list li,
 .remediation-list li {
     font-size: 0.9rem;
     line-height: 1.5;
-    color: var(--text-muted);
+    color: var(--text-main);
     margin-bottom: 0.5rem;
     text-align: left;
 }

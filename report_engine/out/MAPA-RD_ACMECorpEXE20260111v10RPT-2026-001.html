@@ -173,36 +173,42 @@
             </div>
         </div>
 
-        <div class="vector-body">
-            <div class="vector-column principal">
-                <h4 class="sub-header">Descripción del Evento</h4>
-                <p class="description-text">Hardcoded credentials for the primary production database were identified in a public GitHub repository (config.js). Determining access logs confirmed unauthorized clone events.</p>
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Revoke the exposed AWS IAM credentials immediately.</li>
+                        
+                        <li>Rotate the database master password.</li>
+                        
+                        <li>Audit CloudTrail logs for suspicious activities since the commit date.</li>
+                        
+                        <li>Implement git-secrets to prevent future commits.</li>
+                        
+                    </ol>
+                </div>
 
-                <h4 class="sub-header">Impacto</h4>
-                <ul class="impact-list">
-                    
-                    <li>Full compromise of customer data (PII).</li>
-                    
-                    <li>Potential total service disruption (Ransomware).</li>
-                    
-                    <li>Severe regulatory fines (GDPR/CCPA).</li>
-                    
-                </ul>
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Full compromise of customer data (PII).</li>
+                        
+                        <li>Potential total service disruption (Ransomware).</li>
+                        
+                        <li>Severe regulatory fines (GDPR/CCPA).</li>
+                        
+                    </ul>
+                </div>
             </div>
 
-            <div class="vector-column remediation">
-                <h4 class="sub-header">Ruta de Cierre</h4>
-                <ol class="remediation-list">
-                    
-                    <li>Revoke the exposed AWS IAM credentials immediately.</li>
-                    
-                    <li>Rotate the database master password.</li>
-                    
-                    <li>Audit CloudTrail logs for suspicious activities since the commit date.</li>
-                    
-                    <li>Implement git-secrets to prevent future commits.</li>
-                    
-                </ol>
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Hardcoded credentials for the primary production database were identified in a public GitHub repository (config.js). Determining access logs confirmed unauthorized clone events.</p>
             </div>
         </div>
     </div>
@@ -232,34 +238,40 @@
             </div>
         </div>
 
-        <div class="vector-body">
-            <div class="vector-column principal">
-                <h4 class="sub-header">Descripción del Evento</h4>
-                <p class="description-text">The administrative panel allows single-factor authentication. Brute-force attacks or credential stuffing could easily compromise an admin account.</p>
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Enforce MFA (Time-based OTP) for all admin roles.</li>
+                        
+                        <li>Restrict access to VPN or trusted IPs only.</li>
+                        
+                        <li>Implement rate-limiting on the login endpoint.</li>
+                        
+                    </ol>
+                </div>
 
-                <h4 class="sub-header">Impacto</h4>
-                <ul class="impact-list">
-                    
-                    <li>Unauthorized administrative access.</li>
-                    
-                    <li>Data manipulation or deletion.</li>
-                    
-                    <li>Backdoor installation.</li>
-                    
-                </ul>
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Unauthorized administrative access.</li>
+                        
+                        <li>Data manipulation or deletion.</li>
+                        
+                        <li>Backdoor installation.</li>
+                        
+                    </ul>
+                </div>
             </div>
 
-            <div class="vector-column remediation">
-                <h4 class="sub-header">Ruta de Cierre</h4>
-                <ol class="remediation-list">
-                    
-                    <li>Enforce MFA (Time-based OTP) for all admin roles.</li>
-                    
-                    <li>Restrict access to VPN or trusted IPs only.</li>
-                    
-                    <li>Implement rate-limiting on the login endpoint.</li>
-                    
-                </ol>
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">The administrative panel allows single-factor authentication. Brute-force attacks or credential stuffing could easily compromise an admin account.</p>
             </div>
         </div>
     </div>
@@ -289,32 +301,38 @@
             </div>
         </div>
 
-        <div class="vector-body">
-            <div class="vector-column principal">
-                <h4 class="sub-header">Descripción del Evento</h4>
-                <p class="description-text">The SSL certificate for the development environment is expired, triggering browser warnings and exposing traffic to interception.</p>
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Provision a new LetsEncrypt certificate.</li>
+                        
+                        <li>Automate renewal via Certbot.</li>
+                        
+                    </ol>
+                </div>
 
-                <h4 class="sub-header">Impacto</h4>
-                <ul class="impact-list">
-                    
-                    <li>Developer workflow disruption.</li>
-                    
-                    <li>Man-in-the-Middle (MitM) risk if used externally.</li>
-                    
-                    <li>Loss of trust validation.</li>
-                    
-                </ul>
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Developer workflow disruption.</li>
+                        
+                        <li>Man-in-the-Middle (MitM) risk if used externally.</li>
+                        
+                        <li>Loss of trust validation.</li>
+                        
+                    </ul>
+                </div>
             </div>
 
-            <div class="vector-column remediation">
-                <h4 class="sub-header">Ruta de Cierre</h4>
-                <ol class="remediation-list">
-                    
-                    <li>Provision a new LetsEncrypt certificate.</li>
-                    
-                    <li>Automate renewal via Certbot.</li>
-                    
-                </ol>
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">The SSL certificate for the development environment is expired, triggering browser warnings and exposing traffic to interception.</p>
             </div>
         </div>
     </div>
