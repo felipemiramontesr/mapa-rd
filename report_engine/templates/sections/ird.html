@@ -13,23 +13,13 @@
 
         <div class="ird-interpretation">
             {% if ird.score >= 80 %}
-            <div class="interpretation-content">
-                <p class="interp-lead"><strong>Urgencia Inmediata:</strong> Un IRD de {{ ird.score }} señala un <strong
-                        class="text-maximum">MÁXIMO riesgo sistémico</strong>.</p>
-                <ul class="interp-list">
-                    <li>Datos sensibles (financieros/accesos) están expuestos activamente.</li>
-                    <li>Se requiere <strong>contención de emergencia</strong> para evitar fraude inminente.</li>
-                </ul>
-            </div>
+            <p><strong>Urgencia Inmediata:</strong> Un IRD de {{ ird.score }} señala un MÁXIMO riesgo sistémico. Datos
+                sensibles (financieros/accesos) están expuestos activamente. Se requiere <strong>contención de
+                    emergencia</strong> para evitar fraude inminente.</p>
             {% elif ird.score >= 60 %}
-            <div class="interpretation-content">
-                <p class="interp-lead"><strong>Estado Crítico:</strong> Un IRD de {{ ird.score }} indica una postura de
-                    riesgo activo.</p>
-                <ul class="interp-list">
-                    <li>Credenciales o datos privados están expuestos.</li>
-                    <li>Probabilidad elevada de impacto operativo o regulatorio sin acción inmediata.</li>
-                </ul>
-            </div>
+            <p><strong>Estado Crítico:</strong> Un IRD de {{ ird.score }} indica una postura de riesgo activo.
+                Credenciales o datos privados están expuestos, con probabilidad elevada de impacto operativo o
+                regulatorio si no se actúa en el corto plazo.</p>
             {% elif ird.score >= 40 %}
             <p><strong>Riesgo Alto:</strong> Múltiples vectores de ataque están abiertos. Aunque la operación continúa,
                 la superficie de exposición es inaceptable y requiere corrección prioritaria.</p>

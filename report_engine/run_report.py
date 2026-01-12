@@ -84,12 +84,12 @@ def main():
     html_content = renderer.render(data, output_path=html_output_path)
 
     # 5. Render PDF
-    print(f"Generating PDF at {pdf_output_path}...")
-    pdf_gen = PDFRenderer()
-    pdf_gen.render_from_html_file(html_output_path, pdf_output_path)
+    # print(f"Generating PDF at {pdf_output_path}...")
+    # pdf_gen = PDFRenderer()
+    # pdf_gen.render_from_html_file(html_output_path, pdf_output_path)
 
-    print("SUCCESS: Report generated.")
-    print(f"PDF: {pdf_output_path}")
+    print("SUCCESS: HTML generated (PDF skipped).")
+    # print(f"PDF: {pdf_output_path}")
 
 if __name__ == "__main__":
     main()
