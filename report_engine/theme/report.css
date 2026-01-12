@@ -595,6 +595,8 @@ h1 {
     margin-bottom: 2rem;
     color: var(--text-muted);
     max-width: 750px;
+    text-align: left;
+    /* Explicit left alignment */
 }
 
 /* 2.0 Native Card System */
