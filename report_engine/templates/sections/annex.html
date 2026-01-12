@@ -1,75 +1,76 @@
 <div class="annex-page">
     <div class="annex-header">
-        <div>
-            <span class="annex-subtitle">DOCUMENTO OFICIAL // VERSIÓN 1.0</span>
-            <h1 class="annex-title">ANEXO TÉCNICO</h1>
-        </div>
-        <div style="text-align:right;">
-            <span class="annex-subtitle">STATUS</span>
-            <span style="display:block; color:#fff; font-weight:700;">FROZEN</span>
-        </div>
+        <span class="annex-eyebrow">Documentación Oficial</span>
+        <h1 class="annex-title">Anexo Técnico</h1>
     </div>
 
     <!-- SECTION 1: IRV -->
     <div class="annex-section">
-        <h2 class="annex-h2">01 // ÍNDICE DE RIESGO DEL VECTOR (IRV)</h2>
+        <span class="annex-eyebrow">METODOLOGÍA MAPA-RD (v1.0)</span>
+        <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
         <p class="annex-p">
             El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la necesidad
             operativa de cierre.
             Se calcula internamente mediante un modelo ponderado de seis dimensiones.
         </p>
 
-        <!-- TERMINAL FORMULA BLOCK -->
+        <!-- SAAS FORMULA BLOCK -->
         <div class="formula-block">
-            <span class="formula-label">SYSTEM_CALC_CORE</span>
+            <span class="formula-label">Fórmula de Cálculo</span>
             <div class="formula-text">
-                > IRV = [ Σ(Componente * Peso) / Σ(Pesos_Max) ] * 100
-            </div>
-            <div style="margin-top:0.5rem; font-size:0.8rem; color:#444;">
-                // Normalización a escala centesimal (0-100)
+                IRV = [ Σ(Componente × Peso) / Σ(Pesos_Max) ] × 100
             </div>
         </div>
 
-        <h3
-            style="color:#fff; font-size:0.9rem; margin-top:4rem; font-family:'Courier New'; text-transform:uppercase; letter-spacing:0.1em; color:#00a3ff;">
-            > VARIABLES DEL SISTEMA
-        </h3>
+        <h3 style="color:#fff; font-size:1rem; margin-top:3rem; font-weight:700;">Variables del Modelo</h3>
 
-        <!-- HUD VARIABLE GRID -->
+        <!-- SAAS VARIABLE GRID -->
         <div class="variable-grid">
             <div class="variable-card">
-                <div class="var-badge">W: x4</div>
-                <span class="var-name">Criticidad (CA)</span>
+                <div class="var-header">
+                    <span class="var-name">Criticidad (CA)</span>
+                    <span class="var-badge">x4</span>
+                </div>
                 <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
             </div>
 
             <div class="variable-card">
-                <div class="var-badge">W: x3</div>
-                <span class="var-name">Exposición (ET)</span>
+                <div class="var-header">
+                    <span class="var-name">Exposición (ET)</span>
+                    <span class="var-badge">x3</span>
+                </div>
                 <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
             </div>
 
             <div class="variable-card">
-                <div class="var-badge">W: x3</div>
-                <span class="var-name">Superficie (SE)</span>
+                <div class="var-header">
+                    <span class="var-name">Superficie (SE)</span>
+                    <span class="var-badge">x3</span>
+                </div>
                 <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
             </div>
 
             <div class="variable-card">
-                <div class="var-badge">W: x4</div>
-                <span class="var-name">Impacto (IM)</span>
+                <div class="var-header">
+                    <span class="var-name">Impacto (IM)</span>
+                    <span class="var-badge">x4</span>
+                </div>
                 <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
             </div>
 
             <div class="variable-card">
-                <div class="var-badge">W: x3</div>
-                <span class="var-name">Explotación (FE)</span>
+                <div class="var-header">
+                    <span class="var-name">Explotación (FE)</span>
+                    <span class="var-badge">x3</span>
+                </div>
                 <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
             </div>
 
             <div class="variable-card">
-                <div class="var-badge">W: x3</div>
-                <span class="var-name">Detección (DV)</span>
+                <div class="var-header">
+                    <span class="var-name">Detección (DV)</span>
+                    <span class="var-badge">x3</span>
+                </div>
                 <span class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</span>
             </div>
         </div>
@@ -77,64 +78,60 @@
 
     <!-- SECTION 2: IRD -->
     <div class="annex-section">
-        <h2 class="annex-h2">02 // ÍNDICE DE RIESGO DIGITAL (IRD)</h2>
+        <span class="annex-eyebrow">POSTURA GLOBAL</span>
+        <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
         <p class="annex-p">
             El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores activos
             mediante
             un promedio ponderado por severidad.
         </p>
 
-        <!-- TERMINAL FORMULA BLOCK -->
+        <!-- SAAS FORMULA BLOCK -->
         <div class="formula-block">
-            <span class="formula-label">SYSTEM_AGGREGATION</span>
+            <span class="formula-label">Agregación Ponderada</span>
             <div class="formula-text">
-                > IRD = Σ(IRV * Peso_Severidad) / Σ(Pesos_Severidad)
+                IRD = Σ(IRV × Peso_Severidad) / Σ(Pesos_Severidad)
             </div>
         </div>
 
-        <h3
-            style="color:#fff; font-size:0.9rem; margin-top:4rem; font-family:'Courier New'; text-transform:uppercase; letter-spacing:0.1em; color:#00a3ff;">
-            > MATRIZ DE PESOS
-        </h3>
+        <h3 style="color:#fff; font-size:1rem; margin-top:3rem; font-weight:700;">Matriz de Pesos</h3>
 
-        <!-- COMPONENT: TECH SEVERITY BAR -->
+        <!-- COMPONENT: SAAS SEVERITY BAR -->
         <div class="severity-row">
             <div class="severity-chip">
                 <div class="chip-dot" style="background: #74b9ff;"></div>
                 <span class="chip-text">Bajo</span>
-                <span class="chip-weight">MULT: x1</span>
+                <span class="chip-weight">Mult x1</span>
             </div>
 
             <div class="severity-chip">
                 <div class="chip-dot" style="background: #ffeaa7;"></div>
                 <span class="chip-text">Medio</span>
-                <span class="chip-weight">MULT: x2</span>
+                <span class="chip-weight">Mult x2</span>
             </div>
 
             <div class="severity-chip">
                 <div class="chip-dot" style="background: #ff9f43;"></div>
                 <span class="chip-text">Alto</span>
-                <span class="chip-weight">MULT: x3</span>
+                <span class="chip-weight">Mult x3</span>
             </div>
 
             <div class="severity-chip">
                 <div class="chip-dot" style="background: #ff7675;"></div>
                 <span class="chip-text">Crítico</span>
-                <span class="chip-weight">MULT: x4</span>
+                <span class="chip-weight">Mult x4</span>
             </div>
 
             <div class="severity-chip">
                 <div class="chip-dot" style="background: #a29bfe;"></div>
                 <span class="chip-text">Máximo</span>
-                <span class="chip-weight">MULT: x5</span>
+                <span class="chip-weight">Mult x5</span>
             </div>
         </div>
     </div>
 
     <!-- FOOTER NOTE -->
     <div class="annex-footer">
-        <span>MAPA-RD // SECURITY PROTOCOL</span>
-        <span>CONFIDENTIAL DOCUMENT</span>
-        <span>ID: M-RD-V1</span>
+        MAPA-RD | Protocolo de Seguridad Ofensiva v1.0 | Confidencial
     </div>
 </div>

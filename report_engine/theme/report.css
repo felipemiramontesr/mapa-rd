@@ -550,49 +550,39 @@ h1 {
     /* Highlight remediation steps slightly */
 }
 
-/* --- TECHNICAL ANNEX (LANDING CONCEPT / CYBER-MINIMALIST) --- */
+/* --- TECHNICAL ANNEX (SAAS LANDING REFERENCE) --- */
 .annex-page {
     page-break-before: always;
-    color: #c5cae0;
-    padding: 4rem 0;
+    color: #e2e8f0;
+    padding: 3rem 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-image:
-        linear-gradient(rgba(11, 15, 25, 0.95), rgba(11, 15, 25, 0.95)),
-        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255, 255, 255, 0.03) 20px),
-        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255, 255, 255, 0.03) 20px);
-    background-size: 100% 100%, 20px 20px, 20px 20px;
-    /* Tech Grid Background */
+    /* Clean Navy Background matching reference */
+    background: #0b0f19;
 }
 
-/* 1.1 Header Typography (Hero) */
+/* 1.1 Header Typography */
 .annex-header {
-    margin-bottom: 6rem;
-    border-bottom: 2px solid #00a3ff;
-    /* Electric Blue Line */
-    padding-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1.5rem;
+}
+
+.annex-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
 .annex-title {
-    font-size: 3.5rem;
-    /* Massive */
+    font-size: 2.5rem;
     font-weight: 700;
     color: #fff;
-    letter-spacing: -0.03em;
     margin: 0;
-    line-height: 1;
-}
-
-.annex-subtitle {
-    font-size: 0.8rem;
-    color: #00a3ff;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-family: 'Courier New', monospace;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+    line-height: 1.2;
 }
 
 /* 1.2 Section Titles */
@@ -601,177 +591,162 @@ h1 {
 }
 
 .annex-h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #fff;
-    font-weight: 600;
-    margin-bottom: 2rem;
-    padding-left: 0;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.annex-h2::before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 4px;
-    background: #00a3ff;
+    gap: 0.5rem;
 }
 
 /* 1.3 Paragraphs */
 .annex-p {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin-bottom: 3rem;
-    color: #b0b8c8;
-    max-width: 800px;
-    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: #94a3b8;
+    max-width: 720px;
 }
 
-/* 3.2 Terminal Formula Block */
-.formula-block {
-    background: #05070a;
-    /* Deep black */
-    border: 1px solid #1f293a;
-    border-left: 4px solid #00a3ff;
+/* Reference Card Style (Bordered Box) */
+.ref-card {
+    background: rgba(18, 24, 39, 0.5);
+    /* Very dark semi-transparent */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Crisp border */
     border-radius: 4px;
-    /* Minimal radius */
-    padding: 2.5rem;
-    margin: 3rem 0;
-    text-align: left;
-    /* Terminal style left-align */
-    position: relative;
-    font-family: 'Courier New', monospace;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.formula-label {
-    position: absolute;
-    top: -0.8rem;
-    left: 1rem;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    color: #000;
-    background: #00a3ff;
-    /* High contrast label */
-    padding: 0.2rem 0.6rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-}
-
-.formula-text {
-    font-size: 1.3rem;
-    color: #00ff85;
-    /* Terminal Green/Cyan */
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-/* 4.0 HUD Variable Grid */
-.variable-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1px;
-    /* Gap for border effect */
-    background: rgba(255, 255, 255, 0.05);
-    /* Border color */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 3rem;
-}
-
-.variable-card {
-    background: #0b0f19;
-    /* Back to navy */
+    /* Slight radius */
     padding: 2rem;
     position: relative;
 }
 
-.variable-card:hover {
-    background: #111625;
+/* 3.2 Formula Block (SaaS Style) */
+.formula-block {
+    background: #1e293b;
+    /* Slightly lighter slate */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.var-badge {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    color: #5c6da0;
-    font-size: 0.8rem;
+.formula-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
-    font-family: 'Courier New', monospace;
-    border: 1px solid #2d3436;
-    padding: 0.2rem 0.5rem;
+}
+
+.formula-text {
+    font-size: 1.25rem;
+    color: #38bdf8;
+    /* Sky blue */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* 4.0 Variable Grid (Feature Cards) */
+.variable-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.variable-card {
+    background: rgba(18, 24, 39, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+}
+
+.variable-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.var-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
 }
 
 .var-name {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
     color: #fff;
-    font-size: 1.1rem;
-    margin-bottom: 0.8rem;
-    display: block;
+    font-size: 1rem;
+}
+
+.var-badge {
+    background: rgba(56, 189, 248, 0.1);
+    /* Sky blue tint */
+    color: #38bdf8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
 }
 
 .var-desc {
     font-size: 0.9rem;
-    color: #8fa0bc;
+    color: #94a3b8;
     line-height: 1.5;
 }
 
-/* 5.0 Tech Severity Bar */
+/* 5.0 Severity Chips (SaaS Pills) */
 .severity-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    background: rgba(18, 24, 39, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 1.5rem;
 }
 
 .severity-chip {
-    padding: 1.5rem 0.5rem;
-    text-align: center;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.01);
-    position: relative;
-    transition: background 0.2s;
-}
-
-.severity-chip:last-child {
-    border-right: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 80px;
 }
 
 .chip-dot {
-    width: 100%;
-    height: 4px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    /* Color handled inline */
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
 }
 
 .chip-text {
-    font-size: 0.8rem;
-    font-weight: 800;
+    font-size: 0.75rem;
+    font-weight: 700;
     color: #fff;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
-    display: block;
-    margin-bottom: 0.5rem;
 }
 
 .chip-weight {
     font-size: 0.7rem;
-    color: #5c6da0;
-    font-family: 'Courier New', monospace;
+    color: #64748b;
 }
 
 .annex-footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 8rem;
+    margin-top: 6rem;
     padding-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Courier New', monospace;
-    font-size: 0.7rem;
-    color: #4b5563;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.8rem;
 }
