@@ -67,6 +67,8 @@ Esta metodología es oficial y aplica a todos los reportes MAPA-RD.
 - **Metodología IRV**: Componentes, Escalas, Pesos, Normalización (0–100), Clasificación cromática radioactiva.
 - **Metodología IRD**: Derivación exclusiva desde IRV, Cálculo ponderado por severidad.
 - **Principios**: Objetividad, No edición manual, No ajuste subjetivo, Reproducibilidad.
+- **Estrictamente Confidencial**: Todos los reportes generados contienen datos sensibles simulados o reales.
+- **Fase HTML**: Durante esta fase, TODAS las modificaciones deben reflejarse únicamente en `C:/Felipe/Projects/Mapa-rd/report_engine/out/MAPA-RD_ACMECorpEXE20260111v10RPT-2026-001.html`. Ningún otro archivo de salida debe ser generado o modificado.idez histórica.
 
 **Validación Histórica**: Los reportes generados bajo v1.0 conservan su validez histórica.
 

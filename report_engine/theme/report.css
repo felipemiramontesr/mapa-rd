@@ -102,8 +102,9 @@ body {
     text-align: center;
     margin-bottom: 2rem;
     margin-bottom: 2rem;
-    margin-top: -95px;
-    /* Aggressive pull up (-95px) */
+    margin-bottom: 2rem;
+    margin-top: calc(-1.5rem - 20px);
+    /* Exact neutralization of ird-page padding for symmetric 1.6rem gap */
 }
 
 /* Typography */
