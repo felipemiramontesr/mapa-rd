@@ -309,13 +309,14 @@ h1 {
     align-items: center;
     justify-content: flex-start;
     /* Moved from center to flex-start to lift content */
-    padding-top: 4vh;
-    /* Reduced to 4vh to lift content to 'red dot' level */
+    padding-top: 40px;
+    /* Baja 40px reales per user request */
     text-align: center;
 }
 
 .ird-container {
-    padding: 2rem;
+    padding: 0 2rem 2rem 2rem;
+    /* Zero top padding */
     width: 100%;
     max-width: 600px;
 }
@@ -324,6 +325,8 @@ h1 {
     font-size: 1.8rem;
     font-weight: 300;
     color: #fff;
+    margin-top: 0;
+    /* Ensure no top margin */
     margin-bottom: 3rem;
     letter-spacing: -0.02em;
 }
