@@ -770,10 +770,51 @@ h1 {
 .var-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 0.8rem;
+    margin-right: auto;
+    line-height: 1.6;
+    text-align: left;
+    /* Changed to left for better reading of bullets */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+}
+
+.interp-lead {
+    margin-bottom: 0.8rem;
+    text-align: center;
+    /* Lead text remains centered */
+    color: var(--text-muted);
+}
+
+.text-maximum {
+    color: var(--rad-max);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.interp-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 auto;
+    max-width: 500px;
+    /* Constrain width for readability */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.interp-list li {
+    position: relative;
+    padding-left: 1.2rem;
+    color: #c5cae0;
+    font-size: 0.9rem;
+}
+
+.interp-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--text-highlight);
+    /* Or dynamic risk color if possible, keeping simple for now */
 }
 
 .var-name {

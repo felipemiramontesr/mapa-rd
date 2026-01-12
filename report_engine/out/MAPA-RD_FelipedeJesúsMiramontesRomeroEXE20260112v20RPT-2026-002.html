@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPA-RD | RPT-2026-002</title>
+    <link rel="stylesheet" href="../theme/report.css">
+    <link rel="stylesheet" href="../theme/report.print.css" media="print">
+</head>
+
+<body class="theme-dark">
+    <div class="container">
+
+        <!-- Cover Section -->
+        <div class="cover-wrapper">
+    <!-- Hero / Top -->
+    <div class="hero-top">
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+
+        <div class="tag">OSINT + ARCO + PROTECCIÓN DE DATOS</div>
+    </div>
+
+    <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+
+    <div class="divider"></div>
+
+    <p class="subtitle">
+        Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.
+    </p>
+
+    <p class="description">
+        MAPA-RD identifica exposición real (visible públicamente), prioriza riesgos y entrega una ruta de cierre
+        ejecututable.
+        Incluye base operativa para gestión ARCO y un esquema mensual de control continuo.
+        <br><br>
+        <strong>Sin auditorías genéricas. Sin promesas vacías.</strong>
+    </p>
+
+    <!-- Quiet Depth Layer 2: Divider Fade -->
+    <div class="divider-fade"></div>
+
+    <!-- Metadata Editorial Block (Quiet Depth Layer 3) -->
+    <div class="meta-block">
+        <div class="meta-line-primary">
+            Felipe de Jesús Miramontes Romero &middot; Reporte RPT-2026-002 &middot; 2026-01-12
+        </div>
+        <div class="meta-line-secondary">
+            Reporte Ejecutivo de Seguridad &middot; Exposición pública &middot; Estrictamente Confidencial
+        </div>
+    </div>
+</div>
+
+        <!-- Visual Divider (Fluidity) -->
+        <div class="divider" style="margin-top: 3rem; margin-bottom: 3rem;"></div>
+
+        <!-- IRD Section (Premium Page) -->
+        <div class="page-break"></div>
+        <div class="page-break"></div>
+
+<section class="ird-page">
+    <div class="ird-container">
+        <h2 class="section-title-center">Índice de Riesgo Digital</h2>
+
+        <!-- Updated to IRD Box (Rounded Rectangle) -->
+        <!-- 'final-score' attribute holds the value for JS animation. Content is pre-filled for PDF static render. -->
+        <div class="ird-box maximum" id="irdBox">
+            <span class="ird-score" id="irdScore" data-target="94">94</span>
+            <span class="ird-label maximum">Riesgo Máximo</span>
+        </div>
+
+        <div class="ird-interpretation">
+            
+            <div class="interpretation-content">
+                <p class="interp-lead"><strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un <strong
+                        class="text-maximum">MÁXIMO riesgo sistémico</strong>.</p>
+                <ul class="interp-list">
+                    <li>Datos sensibles (financieros/accesos) están expuestos activamente.</li>
+                    <li>Se requiere <strong>contención de emergencia</strong> para evitar fraude inminente.</li>
+                </ul>
+            </div>
+            
+        </div>
+
+
+    </div>
+</section>
+
+<!-- Progressive Animation Script (Browser Only - Ignored by PDF Renderer) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Only run if elements exist
+        const scoreEl = document.getElementById('irdScore');
+        const boxEl = document.getElementById('irdBox');
+        const labelEl = boxEl ? boxEl.querySelector('.ird-label') : null;
+
+        if (!scoreEl || !boxEl || !labelEl) return;
+
+        const targetScore = parseInt(scoreEl.getAttribute('data-target'), 10);
+        if (isNaN(targetScore)) return;
+
+        // Animation Config
+        const duration = 4000; // 4 seconds
+        const startTimestamp = performance.now();
+
+        // Strict Range Logic (0-19, 20-39, 40-59, 60-79, 80-100)
+        // Colors: Low=Blue, Med=Yellow, High=Orange (#ff9f43), Crit=Red, Max=Purple
+        function getRiskData(s) {
+            if (s >= 80) return { color: '#a29bfe', text: 'RIESGO MÁXIMO', glow: 'rgba(162, 155, 254, 0.2)' };
+            if (s >= 60) return { color: '#ff7675', text: 'RIESGO CRÍTICO', glow: 'rgba(255, 118, 117, 0.2)' };
+            if (s >= 40) return { color: '#ff9f43', text: 'RIESGO ALTO', glow: 'rgba(255, 159, 67, 0.2)' }; // Orange
+            if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MEDIO', glow: 'rgba(255, 234, 167, 0.2)' };
+            return { color: '#74b9ff', text: 'RIESGO BAJO', glow: 'rgba(116, 185, 255, 0.2)' };
+        }
+
+        function step(timestamp) {
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentScore = Math.floor(progress * targetScore);
+
+            // Get Dynamic Data
+            const riskData = getRiskData(currentScore);
+
+            // Update Content
+            scoreEl.innerText = currentScore;
+            labelEl.innerText = riskData.text;
+
+            // Update Styles (Dynamic Color & Glow)
+            scoreEl.style.color = riskData.color;
+            labelEl.style.color = riskData.color; // NEW: Explicilty sync label color
+
+            // Label can inherit or be explicit. Let's be explicit to ensure sync.
+            // boxEl.style.borderColor = riskData.color; 
+            // Note: CSS might override if specific classes are present, but inline styles normally win.
+
+            boxEl.style.borderColor = riskData.color;
+            boxEl.style.boxShadow = `0 0 20px ${riskData.glow}`;
+            // Optional: Subtle background tint
+            boxEl.style.backgroundColor = riskData.glow.replace('0.2', '0.05');
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                // Final State (Ensure exact match)
+                scoreEl.innerText = targetScore;
+                const finalData = getRiskData(targetScore);
+
+                labelEl.innerText = finalData.text;
+                labelEl.style.color = finalData.color; // NEW: Ensure final state is also colored
+                scoreEl.style.color = finalData.color;
+                boxEl.style.borderColor = finalData.color;
+                boxEl.style.boxShadow = `0 0 20px ${finalData.glow}`;
+                boxEl.style.backgroundColor = finalData.glow.replace('0.2', '0.05');
+            }
+        }
+
+        // Start Animation
+        window.requestAnimationFrame(step);
+    });
+</script>
+
+        <!-- Vectors Section (Premium Cards) -->
+        <section class="vectors-section" style="padding-top: 0;">
+    <h2 class="section-title" style="margin-top: 0;">Vectores de Vulnerabilidad</h2>
+    <div class="divider-left"></div>
+
+    
+    <div class="vector-card maximum">
+        <div class="vector-header">
+            <div class="vector-id">VEC-001</div>
+            <div class="vector-title">Banorte: Fuga de Datos Bancarios y PII</div>
+            <div class="vector-irv-badge maximum">
+                <span class="irv-value">95</span>
+                <span class="irv-level">Máximo</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Sector Financiero</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Identidad Bancaria</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Filtración Masiva (2014/2022)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Activar alertas biométricas en banca móvil.</li>
+                        
+                        <li>Revisar historial crediticio (Buró de Crédito) inmediatamente.</li>
+                        
+                        <li>Solicitar renovación de tarjetas y credenciales bancarias.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Robo de Identidad Bancaria y Fiscal (RFC).</li>
+                        
+                        <li>Ingeniería Social dirigida de alta precisión.</li>
+                        
+                        <li>Riesgo de extorsión o fraude telefónico.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Exposición crítica de datos personales y financieros incluyendo saldos de cuenta, RFC, domicilio físico y números de teléfono. Esta información facilita el robo de identidad y fraude bancario directo.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card maximum">
+        <div class="vector-header">
+            <div class="vector-id">VEC-002</div>
+            <div class="vector-title">Synthient: Credenciales Activas</div>
+            <div class="vector-irv-badge maximum">
+                <span class="irv-value">90</span>
+                <span class="irv-level">Máximo</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Identidad Digital</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Botnet Logs</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Credential Stuffing (2025)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Cambio global de contraseñas de manera inmediata.</li>
+                        
+                        <li>Uso gestor de contraseñas para evitar reutilización.</li>
+                        
+                        <li>Habilitar 2FA/MFA en todos los servicios críticos.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Compromiso automatizado de cuentas en diversos servicios.</li>
+                        
+                        <li>Evasión de controles de seguridad básicos.</li>
+                        
+                        <li>Acceso no autorizado persistente.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">El correo y contraseñas asociadas aparecen en listas de amenazas activas de 'Credential Stuffing' (Synthient). Esto indica que los datos están siendo probados activamente contra múltiples servicios.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card maximum">
+        <div class="vector-header">
+            <div class="vector-id">VEC-003</div>
+            <div class="vector-title">000webhost: Contraseñas en Texto Plano</div>
+            <div class="vector-irv-badge maximum">
+                <span class="irv-value">88</span>
+                <span class="irv-level">Máximo</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Hosting Web</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Servicio de Infraestructura</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Texto Plano (2015)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Abandonar el uso de esa contraseña específica definitivamente.</li>
+                        
+                        <li>Verificar integridad de sitios web antiguos.</li>
+                        
+                        <li>Monitorear accesos no reconocidos.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Acceso inmediato a cuentas con la misma contraseña.</li>
+                        
+                        <li>Rastreo de actividad por dirección IP.</li>
+                        
+                        <li>Compromiso de sitios web alojados.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Filtración de base de datos completa exponiendo contraseñas almacenadas en texto plano, junto con nombres y direcciones IP. Permite acceso directo sin necesidad de descifrado.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-004</div>
+            <div class="vector-title">Adobe: Compromiso de Credenciales</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">75</span>
+                <span class="irv-level">Crítico</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Cuenta Adobe ID</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Software SaaS</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2013)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Actualizar cuenta de Adobe si sigue activa.</li>
+                        
+                        <li>No utilizar pistas de contraseña que revelen información real.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Deducción de patrones de contraseñas personales.</li>
+                        
+                        <li>Ataques dirigidos a cuentas creativas/profesionales.</li>
+                        
+                        <li>Spam y phishing dirigido.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Brecha histórica masiva exponiendo usuarios, contraseñas cifradas y, críticamente, las pistas de contraseña (password hints) en texto plano, lo que facilita la deducción de claves.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-005</div>
+            <div class="vector-title">Exploit.In: Listas de Combo</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">78</span>
+                <span class="irv-level">Crítico</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Identidad Digital</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Mercado Negro</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Agregador de Brechas (2016)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Eliminar cuentas en desuso.</li>
+                        
+                        <li>Verificar actividad en correos secundarios.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Alta probabilidad de intentos de acceso automatizados.</li>
+                        
+                        <li>Reutilización de credenciales en servicios bancarios/correo.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Aparición en 'Combo Lists' utilizadas por cibercriminales para ataques de fuerza bruta automatizados contra múltiples plataformas.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-006</div>
+            <div class="vector-title">Collection #1: Mega-Brecha</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">80</span>
+                <span class="irv-level">Crítico</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Múltiples Servicios</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Agregador de Brechas</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Data Dump Masivo (2019)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Higiene digital completa: cambio masivo de claves.</li>
+                        
+                        <li>Uso estricto de gestor de contraseñas.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Exposición universal a actores de amenaza.</li>
+                        
+                        <li>Saturación de intentos de login.</li>
+                        
+                        <li>Venta de datos en lotes masivos.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Su correo forma parte de una de las colecciones más grandes de credenciales robadas (773 millones de registros Unique), distribuidas ampliamente en foros de hacking.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-007</div>
+            <div class="vector-title">Nitro PDF: Documentos y Claves</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">82</span>
+                <span class="irv-level">Crítico</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Productividad</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Software SaaS</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2020)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Revisar documentos almacenados en la nube de Nitro.</li>
+                        
+                        <li>Cambiar contraseña y desvincular sesiones.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Espionaje corporativo o personal.</li>
+                        
+                        <li>Acceso a documentos sensibles almacenados.</li>
+                        
+                        <li>Fraude documental.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Compromiso de servicio de gestión documental. Además de credenciales, existe riesgo sobre metadatos de documentos procesados.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-008</div>
+            <div class="vector-title">123RF: Datos Físicos y Digitales</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">70</span>
+                <span class="irv-level">Crítico</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Banco de Imágenes</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Servicio Web</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2020)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Verificar privacidad en redes sociales.</li>
+                        
+                        <li>Estar alerta ante correos/llamadas sospechosas.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Doxing (publicación de datos privados).</li>
+                        
+                        <li>Acoso o localización física.</li>
+                        
+                        <li>Suplantación de identidad verificada.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Filtración que incluye direcciones físicas, teléfonos y direcciones IP, combinados con datos de cuenta. Aumenta la superficie para ataques de ingeniería social.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-009</div>
+            <div class="vector-title">MyFitnessPal: Datos de Perfil</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">65</span>
+                <span class="irv-level">Alta</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Salud / Lifestyle</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Aplicación Móvil</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Brecha Masiva (2018)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Cambiar contraseña si es compartida.</li>
+                        
+                        <li>Desvincular integraciones con redes sociales.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Perflado de usuario para marketing o estafas.</li>
+                        
+                        <li>Acceso lateral a otras cuentas.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Exposición de correos, usuarios y contraseñas. Aunque no incluye datos financieros, permite correlacionar hábitos y rutinas del usuario.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-010</div>
+            <div class="vector-title">Canva: Datos de Diseño y Geo</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">68</span>
+                <span class="irv-level">Alta</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Diseño Gráfico</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">SaaS</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2019)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Cambiar contraseña y activar MFA.</li>
+                        
+                        <li>Revisar actividad reciente en la cuenta.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Correlación geográfica.</li>
+                        
+                        <li>Ataques de phishing temáticos (diseño/marketing).</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Exposición de datos de usuario, ubicación geográfica y hashes de contraseña.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-011</div>
+            <div class="vector-title">Animoto: Datos Personales</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">60</span>
+                <span class="irv-level">Alta</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Edición de Video</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">SaaS</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2018)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Monitorear preguntas de seguridad en otros servicios.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Uso de fecha de nacimiento para recuperar otras cuentas.</li>
+                        
+                        <li>Suplantación de identidad básica.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Inclusión de fechas de nacimiento y geolocalización junto a credenciales. La fecha de nacimiento es un dato crítico para verificaciones de seguridad.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card high">
+        <div class="vector-header">
+            <div class="vector-id">VEC-012</div>
+            <div class="vector-title">Dropbox: Hash de Contraseñas</div>
+            <div class="vector-irv-badge high">
+                <span class="irv-value">55</span>
+                <span class="irv-level">Alta</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Almacenamiento Cloud</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Infraestructura</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2012)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Asegurar que la contraseña fue cambiada post-2016.</li>
+                        
+                        <li>Activar 2FA en Dropbox obligatoriamente.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Intento de descifrado de hashes antiguos.</li>
+                        
+                        <li>Reutilización histórica.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Brecha antigua pero relevante por la popularidad del servicio. Se filtraron hashes de contraseñas.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card high">
+        <div class="vector-header">
+            <div class="vector-id">VEC-013</div>
+            <div class="vector-title">Manipulated Caiman: Blanco de Phishing</div>
+            <div class="vector-irv-badge high">
+                <span class="irv-value">58</span>
+                <span class="irv-level">Alta</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Email Personal</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Campaña de Amenaza</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Target List (2023)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Extrema precaución con adjuntos y enlaces.</li>
+                        
+                        <li>Mejorar filtros de spam/seguridad en el correo.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Recepción de correos maliciosos altamente personalizados.</li>
+                        
+                        <li>Riesgo de infección por malware.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Su dirección de correo ha sido identificada en listas de objetivos de la campaña de phishing 'Manipulated Caiman', enfocada en usuarios de México.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card medium">
+        <div class="vector-header">
+            <div class="vector-id">VEC-014</div>
+            <div class="vector-title">GeekedIn: Perfil Profesional</div>
+            <div class="vector-irv-badge medium">
+                <span class="irv-value">45</span>
+                <span class="irv-level">Media</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Desarrollo Profesional</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Scraping</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Base de Datos (2016)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Verificar legitimidad de reclutadores.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Ofertas de trabajo falsas (Job Scams).</li>
+                        
+                        <li>Ingeniería social basada en perfil laboral.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Exposición de datos profesionales: habilidades, experiencia y ubicación. Útil para reclutadores falsos o ingeniería social corporativa.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card medium">
+        <div class="vector-header">
+            <div class="vector-id">VEC-015</div>
+            <div class="vector-title">Twitter (200M): Identidad Social</div>
+            <div class="vector-irv-badge medium">
+                <span class="irv-value">40</span>
+                <span class="irv-level">Media</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Red Social</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Perfil Público</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Scraping/API (2021)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Desvincular teléfono/email de la búsqueda pública.</li>
+                        
+                        <li>Usar alias de correo para redes sociales.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Desanonimización de cuentas.</li>
+                        
+                        <li>Acoso selectivo.</li>
+                        
+                        <li>Correlación de identidad cruzada.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Asociación del correo electrónico con el perfil de Twitter (X). Permite vincular la identidad seudónima con la real.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card medium">
+        <div class="vector-header">
+            <div class="vector-id">VEC-016</div>
+            <div class="vector-title">Trello: Enumeración de Usuarios</div>
+            <div class="vector-irv-badge medium">
+                <span class="irv-value">35</span>
+                <span class="irv-level">Media</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Gestión de Proyectos</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">SaaS</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Scraping (2024)</span>
+            </div>
+        </div>
+
+        <div class="vector-body-new">
+            <!-- Row 1: Action Cards (Ruta & Impacto) -->
+            <div class="vector-action-grid">
+                <div class="action-card remediation">
+                    <h4 class="sub-header">Ruta de Cierre</h4>
+                    <ol class="remediation-list">
+                        
+                        <li>Hacer tableros privados si contienen datos sensibles.</li>
+                        
+                        <li>Ignorar correos genéricos de soporte de Trello.</li>
+                        
+                    </ol>
+                </div>
+
+                <div class="action-card impact">
+                    <h4 class="sub-header">Impacto</h4>
+                    <ul class="impact-list">
+                        
+                        <li>Phishing temático de Atlassian/Trello.</li>
+                        
+                        <li>Confirmación de cuenta activa.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Row 2: Description (Sober & Elegant) -->
+            <div class="description-card">
+                <h4 class="sub-header-simple">Descripción del Evento</h4>
+                <p class="description-text">Confirmación de que el correo tiene una cuenta de Trello asociada mediante enumeración de API.</p>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+        <!-- Technical Annex (Methodology) -->
+        <div class="annex-page">
+    <div class="annex-header">
+        <h1 class="annex-title">Anexo Técnico</h1>
+    </div>
+
+    <!-- SECTION 1: IRV -->
+    <div class="annex-section">
+        <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
+        <p class="annex-p">
+            El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la necesidad
+            operativa de cierre.
+            Se calcula internamente mediante un modelo ponderado de seis dimensiones.
+        </p>
+
+        <!-- CLEAN FORMULA BLOCK -->
+        <div class="formula-block">
+            <span class="formula-label">Fórmula de Cálculo</span>
+            <div class="formula-text">
+                IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+            </div>
+        </div>
+
+        <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Variables del
+            Modelo</h3>
+
+        <!-- CLEAN VARIABLE GRID -->
+        <div class="variable-grid">
+            <div class="annex-card">
+                <div class="var-header">
+                    <span class="var-name">Criticidad (CA)</span>
+                    <span class="var-badge">x4</span>
+                </div>
+                <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
+            </div>
+
+            <div class="annex-card">
+                <div class="var-header">
+                    <span class="var-name">Exposición (ET)</span>
+                    <span class="var-badge">x3</span>
+                </div>
+                <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
+            </div>
+
+            <div class="annex-card">
+                <div class="var-header">
+                    <span class="var-name">Superficie (SE)</span>
+                    <span class="var-badge">x3</span>
+                </div>
+                <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
+            </div>
+
+            <div class="annex-card">
+                <div class="var-header">
+                    <span class="var-name">Impacto (IM)</span>
+                    <span class="var-badge">x4</span>
+                </div>
+                <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
+            </div>
+
+            <div class="annex-card">
+                <div class="var-header">
+                    <span class="var-name">Explotación (FE)</span>
+                    <span class="var-badge">x3</span>
+                </div>
+                <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
+            </div>
+
+            <div class="annex-card">
+                <div class="var-header">
+                    <span class="var-name">Detección (DV)</span>
+                    <span class="var-badge">x3</span>
+                </div>
+                <span class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: IRD -->
+    <div class="annex-section">
+        <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
+        <p class="annex-p">
+            El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores activos
+            mediante
+            un promedio ponderado por severidad.
+        </p>
+
+        <!-- CLEAN FORMULA BLOCK -->
+        <div class="formula-block">
+            <span class="formula-label">Agregación Ponderada</span>
+            <div class="formula-text">
+                IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
+            </div>
+        </div>
+
+        <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Matriz de Pesos
+        </h3>
+
+        <!-- COMPONENT: CLEAN SEVERITY ROW -->
+        <div class="severity-row">
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #74b9ff;"></div>
+                <span class="sev-label">Bajo</span>
+                <span class="sev-mult">Multiplicador x1</span>
+            </div>
+
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #ffeaa7;"></div>
+                <span class="sev-label">Medio</span>
+                <span class="sev-mult">Multiplicador x2</span>
+            </div>
+
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #ff9f43;"></div>
+                <span class="sev-label">Alto</span>
+                <span class="sev-mult">Multiplicador x3</span>
+            </div>
+
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #ff7675;"></div>
+                <span class="sev-label">Crítico</span>
+                <span class="sev-mult">Multiplicador x4</span>
+            </div>
+
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #a29bfe;"></div>
+                <span class="sev-label">Máximo</span>
+                <span class="sev-mult">Multiplicador x5</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER NOTE -->
+    <div class="annex-footer">
+        Protegiendo la información que importa · <a href="https://private.felipemiramontesr.net/aviso-privacidad.html"
+            target="_blank" class="privacy-link">Aviso de Privacidad</a>
+    </div>
+</div>
+
+    </div>
+</body>
+
+</html>
