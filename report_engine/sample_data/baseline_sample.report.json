@@ -1,0 +1,48 @@
+{
+    "meta": {
+        "client_name": "ACME Corp",
+        "report_type": "Executive Security Report",
+        "report_date": "2026-01-11",
+        "report_version": "1.0",
+        "report_id": "RPT-2026-001"
+    },
+    "assets": {
+        "logo_path": "c:/Felipe/Projects/Mapa-rd/report_engine/sample_data/assets/logo.png"
+    },
+    "kpis": {
+        "risk_score": 85,
+        "scanned_assets": 120,
+        "open_vulnerabilities": 12,
+        "remediation_rate": "80%"
+    },
+    "findings": [
+        {
+            "severity": "critical",
+            "title": "Exposed Database Credentials",
+            "impact": "Full database compromise possible.",
+            "description": "Credentials for the production database were found in a public GitHub repository.",
+            "recommendation": "Rotate credentials immediately and audit access logs.",
+            "evidence": [
+                "https://github.com/example/repo/blob/main/config.js"
+            ]
+        },
+        {
+            "severity": "high",
+            "title": "Admin Portal without MFA",
+            "impact": "Unauthorized access potential.",
+            "description": "The administrative portal at admin.acme.com does not enforce Multi-Factor Authentication.",
+            "recommendation": "Enforce MFA for all admin accounts.",
+            "evidence": [
+                "Screenshot of login page"
+            ]
+        },
+        {
+            "severity": "medium",
+            "title": "Outdated SSL Certificate",
+            "impact": "Man-in-the-middle attacks.",
+            "description": "The SSL certificate for dev.acme.com expires in 2 days.",
+            "recommendation": "Renew certificate.",
+            "evidence": []
+        }
+    ]
+}

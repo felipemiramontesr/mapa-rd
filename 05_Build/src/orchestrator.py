@@ -131,12 +131,17 @@ class Orchestrator:
         # Persistence
         raw_path = self._persist_raw_data(client["client_dir"], intake_id, raw_data)
         
+        from deduper import Deduper # Lazy import to ensure availability or use self.deduper if init
+        
         # 3. Processing
         print("[*] Processing intelligence...")
         norm = Normalizer().normalize_scan(raw_data)
-        scored = Scorer().score_findings(norm)
         
-        # 4. Artifact Generation
+        # Deduplication Step (New)
+        deduped = Deduper().deduplicate(norm)
+        
+        scored = Scorer().score_findings(deduped)
+        
         # 4. Artifact Generation
         report_id = self.sm.create_report(client_id, intake_id, intake["intake_type"])
         art = self.rg.generate_report(

@@ -27,23 +27,30 @@ class Deduper:
     """
 
     def deduplicate(self, findings: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Filter out findings with duplicate IDs based on finding_id.
+        """Filter out findings with duplicate IDs or equivalent semantic values.
         
-        This method preserves the original order of findings (First-seen wins).
-        
+        This method preserves the original order of findings (First-seen wins),
+        but now also handles cross-module redundancy (e.g. DOMAIN_NAME vs INTERNET_NAME).
+
         Args:
             findings: A list of normalized finding dictionaries.
             
         Returns:
-            A list containing only the first occurrence of each unique finding.
+            A list containing only the first occurrence of each unique information piece.
         """
         # ---------------------------------------------------------
         # INITIALIZATION
-        # We use a Set for 'seen_ids' because lookups are nearly instantaneous.
+        # seen_ids: Standard exact duplicate check.
+        # seen_values: Value-based check for "identity" types.
         # ---------------------------------------------------------
         seen_ids: Set[str] = set()
+        seen_values: Set[str] = set()
         unique_findings: List[Dict[str, Any]] = []
         
+        # Types that represent the same concept (Host/Domain)
+        # Should be treated as redundant if the VALUE is identical.
+        EQUIVALENT_TYPES = {'DOMAIN_NAME', 'INTERNET_NAME', 'SIMILARDOMAIN', 'AFFILIATE_IPADDR'}
+
         initial_count = len(findings)
         logger.debug(f"Starting deduplication of {initial_count} items.")
         
@@ -51,16 +58,24 @@ class Deduper:
         # PROCESSING LOOP
         # ---------------------------------------------------------
         for finding in findings:
-            # Finding ID is a SHA-256 determined by Normalizer
             fid = finding.get('finding_id')
+            etype = finding.get('event_type')
+            val = str(finding.get('value', '')).lower().strip() # Normalize value for comparison
+
+            # 1. Exact Match Check (ID)
+            if fid in seen_ids:
+                continue
+                
+            # 2. Semantic Value Check (Cross-Type)
+            if etype in EQUIVALENT_TYPES:
+                if val in seen_values:
+                    # Logically redundant (same domain from different module/type)
+                    continue
+                seen_values.add(val)
             
-            # Logic: If we haven't seen this ID, it's new. Track and Keep.
-            if fid and fid not in seen_ids:
-                seen_ids.add(fid)
-                unique_findings.append(finding)
-            else:
-                # Log redundancy for debugging if needed
-                pass
+            # If passed checks, keep it.
+            seen_ids.add(fid)
+            unique_findings.append(finding)
                 
         final_count = len(unique_findings)
         logger.info(f"Deduplication finished. Removed {initial_count - final_count} redundant findings.")

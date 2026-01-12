@@ -1,0 +1,50 @@
+@import "./tokens.css";
+
+@page {
+    size: A4;
+    margin: 0;
+    /* Remove margin from @page to let body background fill everything */
+}
+
+/* Print Overrides for "Quiet Depth" */
+body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #0a0e27 !important;
+    /* Force Solid Navy */
+    background: #0a0e27 !important;
+    color: #e8e8e8 !important;
+    padding: 16mm 14mm;
+    /* Apply padding instead of margin for content */
+}
+
+/* Ensure Halo is subtle but present (or removed if too heavy, but user asked to preserve tonal) */
+.cover-wrapper::before {
+    opacity: 0.5;
+    /* Slightly reduced for print safety */
+}
+
+/* No animations */
+*,
+*::before,
+*::after {
+    animation: none !important;
+    transition: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Pagination & Breaks */
+.page-break {
+    page-break-before: always;
+}
+
+.card {
+    break-inside: avoid;
+    box-shadow: none;
+    /* Shadow usually prints badly, remove it for cleaner print */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

@@ -1,0 +1,42 @@
+<div class="cover-wrapper">
+    <!-- Hero / Top -->
+    <div class="hero-top">
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+
+        <div class="tag">OSINT + ARCO + PROTECCIÓN DE DATOS</div>
+    </div>
+
+    <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+
+    <div class="divider"></div>
+
+    <p class="subtitle">
+        Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.
+    </p>
+
+    <p class="description">
+        MAPA-RD identifica exposición real (visible públicamente), prioriza riesgos y entrega una ruta de cierre
+        ejecututable.
+        Incluye base operativa para gestión ARCO y un esquema mensual de control continuo.
+        <br><br>
+        <strong>Sin auditorías genéricas. Sin promesas vacías.</strong>
+    </p>
+
+    <!-- Quiet Depth Layer 2: Divider Fade -->
+    <div class="divider-fade"></div>
+
+    <!-- Metadata Editorial Block (Quiet Depth Layer 3) -->
+    <div class="meta-block">
+        <div class="meta-line-primary">
+            {{ meta.client_name }} &middot; Reporte {{ meta.report_id }} &middot; {{ meta.report_date|upper }}
+        </div>
+        <div class="meta-line-secondary">
+            {{ meta.report_type }} &middot; Exposición pública &middot; {{ meta.confidentiality|default("Confidencial")
+            }}
+        </div>
+    </div>
+</div>
