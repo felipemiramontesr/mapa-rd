@@ -488,25 +488,25 @@ h1 {
     color: var(--text-muted);
 }
 
-/* Vector Meta Grid (Clean Distribution) */
+/* Vector Meta Grid (Individual Cards) */
 .vector-meta-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-bottom: 2rem;
     font-size: 0.9rem;
-    background: rgba(0, 0, 0, 0.2);
-    /* Slightly darker for contrast */
-    padding: 1rem;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    /* Defined box */
+    /* Grid container no longer has background/border */
 }
 
 .meta-item {
     display: flex;
     flex-direction: column;
     text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+    /* Individual card background */
+    padding: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
 }
 
 .meta-item .label {
@@ -514,7 +514,7 @@ h1 {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.2rem;
     font-weight: 600;
 }
 
