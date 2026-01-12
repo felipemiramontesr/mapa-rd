@@ -113,6 +113,8 @@
 
             // Update Styles (Dynamic Color & Glow)
             scoreEl.style.color = riskData.color;
+            labelEl.style.color = riskData.color; // NEW: Explicilty sync label color
+
             // Label can inherit or be explicit. Let's be explicit to ensure sync.
             // boxEl.style.borderColor = riskData.color; 
             // Note: CSS might override if specific classes are present, but inline styles normally win.
@@ -130,6 +132,7 @@
                 const finalData = getRiskData(targetScore);
 
                 labelEl.innerText = finalData.text;
+                labelEl.style.color = finalData.color; // NEW: Ensure final state is also colored
                 scoreEl.style.color = finalData.color;
                 boxEl.style.borderColor = finalData.color;
                 boxEl.style.boxShadow = `0 0 20px ${finalData.glow}`;
