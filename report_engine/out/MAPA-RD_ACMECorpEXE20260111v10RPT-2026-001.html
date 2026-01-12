@@ -50,7 +50,7 @@
             ACME Corp &middot; Reporte RPT-2026-001 &middot; 2026-01-11
         </div>
         <div class="meta-line-secondary">
-            Executive Security Report &middot; Exposición pública &middot; Confidencial
+            Reporte Ejecutivo de Seguridad &middot; Exposición pública &middot; Confidencial
         </div>
     </div>
 </div>
@@ -96,7 +96,7 @@
             if (s >= 80) return { color: '#a29bfe', text: 'RIESGO MÁXIMO', glow: 'rgba(162, 155, 254, 0.2)' };
             if (s >= 60) return { color: '#ff7675', text: 'RIESGO CRÍTICO', glow: 'rgba(255, 118, 117, 0.2)' };
             if (s >= 40) return { color: '#ff9f43', text: 'RIESGO ALTO', glow: 'rgba(255, 159, 67, 0.2)' }; // Orange
-            if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MODERADO', glow: 'rgba(255, 234, 167, 0.2)' };
+            if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MEDIO', glow: 'rgba(255, 234, 167, 0.2)' };
             return { color: '#74b9ff', text: 'RIESGO BAJO', glow: 'rgba(116, 185, 255, 0.2)' };
         }
 
@@ -151,7 +151,7 @@
     <div class="vector-card maximum">
         <div class="vector-header">
             <div class="vector-id">VEC-001</div>
-            <div class="vector-title">Exposed Database Credentials</div>
+            <div class="vector-title">Credenciales de Base de Datos Expuestas</div>
             <div class="vector-irv-badge maximum">
                 <span class="irv-value">85</span>
                 <span class="irv-level">Máximo</span>
@@ -161,15 +161,15 @@
         <div class="vector-meta-grid">
             <div class="meta-item">
                 <span class="label">Activo:</span>
-                <span class="value">Production Database (AWS RDS)</span>
+                <span class="value">Base de Datos Prod (AWS RDS)</span>
             </div>
             <div class="meta-item">
                 <span class="label">Tipo:</span>
-                <span class="value">Cloud Infrastructure</span>
+                <span class="value">Infraestructura Cloud</span>
             </div>
             <div class="meta-item">
                 <span class="label">Exposición:</span>
-                <span class="value">Public Repo Leak</span>
+                <span class="value">Fuga en Repo Público</span>
             </div>
         </div>
 
@@ -180,13 +180,13 @@
                     <h4 class="sub-header">Ruta de Cierre</h4>
                     <ol class="remediation-list">
                         
-                        <li>Revoke the exposed AWS IAM credentials immediately.</li>
+                        <li>Revocar las credenciales IAM de AWS expuestas inmediatamente.</li>
                         
-                        <li>Rotate the database master password.</li>
+                        <li>Rotar la contraseña maestra de la base de datos.</li>
                         
-                        <li>Audit CloudTrail logs for suspicious activities since the commit date.</li>
+                        <li>Auditar logs de CloudTrail buscando actividad sospechosa desde la fecha del commit.</li>
                         
-                        <li>Implement git-secrets to prevent future commits.</li>
+                        <li>Implementar git-secrets para prevenir futuros commits de secretos.</li>
                         
                     </ol>
                 </div>
@@ -195,11 +195,11 @@
                     <h4 class="sub-header">Impacto</h4>
                     <ul class="impact-list">
                         
-                        <li>Full compromise of customer data (PII).</li>
+                        <li>Compromiso total de datos de clientes (PII).</li>
                         
-                        <li>Potential total service disruption (Ransomware).</li>
+                        <li>Potencial interrupción total del servicio (Ransomware).</li>
                         
-                        <li>Severe regulatory fines (GDPR/CCPA).</li>
+                        <li>Multas regulatorias severas (GDPR/Ley de Datos). </li>
                         
                     </ul>
                 </div>
@@ -208,7 +208,7 @@
             <!-- Row 2: Description (Sober & Elegant) -->
             <div class="description-card">
                 <h4 class="sub-header-simple">Descripción del Evento</h4>
-                <p class="description-text">Hardcoded credentials for the primary production database were identified in a public GitHub repository (config.js). Determining access logs confirmed unauthorized clone events.</p>
+                <p class="description-text">Se identificaron credenciales hardcodeadas para la base de datos principal de producción en un repositorio público de GitHub (config.js). El análisis de logs confirmó eventos de clonación no autorizados.</p>
             </div>
         </div>
     </div>
@@ -216,7 +216,7 @@
     <div class="vector-card critical">
         <div class="vector-header">
             <div class="vector-id">VEC-002</div>
-            <div class="vector-title">Admin Portal without MFA</div>
+            <div class="vector-title">Portal de Administración sin MFA</div>
             <div class="vector-irv-badge critical">
                 <span class="irv-value">60</span>
                 <span class="irv-level">Crítico</span>
@@ -230,11 +230,11 @@
             </div>
             <div class="meta-item">
                 <span class="label">Tipo:</span>
-                <span class="value">Web Application</span>
+                <span class="value">Aplicación Web</span>
             </div>
             <div class="meta-item">
                 <span class="label">Exposición:</span>
-                <span class="value">Missing Control</span>
+                <span class="value">Control Faltante</span>
             </div>
         </div>
 
@@ -245,11 +245,11 @@
                     <h4 class="sub-header">Ruta de Cierre</h4>
                     <ol class="remediation-list">
                         
-                        <li>Enforce MFA (Time-based OTP) for all admin roles.</li>
+                        <li>Forzar MFA (OTP basado en tiempo) para todos los roles administrativos.</li>
                         
-                        <li>Restrict access to VPN or trusted IPs only.</li>
+                        <li>Restringir el acceso solo a VPN o IPs de confianza.</li>
                         
-                        <li>Implement rate-limiting on the login endpoint.</li>
+                        <li>Implementar limitación de tasa (rate-limiting) en el endpoint de login.</li>
                         
                     </ol>
                 </div>
@@ -258,11 +258,11 @@
                     <h4 class="sub-header">Impacto</h4>
                     <ul class="impact-list">
                         
-                        <li>Unauthorized administrative access.</li>
+                        <li>Acceso administrativo no autorizado.</li>
                         
-                        <li>Data manipulation or deletion.</li>
+                        <li>Manipulación o eliminación de datos.</li>
                         
-                        <li>Backdoor installation.</li>
+                        <li>Instalación de puertas traseras (Backdoors).</li>
                         
                     </ul>
                 </div>
@@ -271,7 +271,7 @@
             <!-- Row 2: Description (Sober & Elegant) -->
             <div class="description-card">
                 <h4 class="sub-header-simple">Descripción del Evento</h4>
-                <p class="description-text">The administrative panel allows single-factor authentication. Brute-force attacks or credential stuffing could easily compromise an admin account.</p>
+                <p class="description-text">El panel administrativo permite autenticación de un solo factor. Ataques de fuerza bruta o relleno de credenciales podrían comprometer fácilmente una cuenta de administrador.</p>
             </div>
         </div>
     </div>
@@ -279,7 +279,7 @@
     <div class="vector-card medium">
         <div class="vector-header">
             <div class="vector-id">VEC-003</div>
-            <div class="vector-title">Outdated SSL Certificate</div>
+            <div class="vector-title">Certificado SSL Desactualizado</div>
             <div class="vector-irv-badge medium">
                 <span class="irv-value">35</span>
                 <span class="irv-level">Medio</span>
@@ -293,11 +293,11 @@
             </div>
             <div class="meta-item">
                 <span class="label">Tipo:</span>
-                <span class="value">Dev Environment</span>
+                <span class="value">Entorno de Desarrollo</span>
             </div>
             <div class="meta-item">
                 <span class="label">Exposición:</span>
-                <span class="value">Configuration</span>
+                <span class="value">Configuración</span>
             </div>
         </div>
 
@@ -308,9 +308,9 @@
                     <h4 class="sub-header">Ruta de Cierre</h4>
                     <ol class="remediation-list">
                         
-                        <li>Provision a new LetsEncrypt certificate.</li>
+                        <li>Aprovisionar un nuevo certificado (ej. LetsEncrypt).</li>
                         
-                        <li>Automate renewal via Certbot.</li>
+                        <li>Automatizar la renovación vía Certbot.</li>
                         
                     </ol>
                 </div>
@@ -319,11 +319,11 @@
                     <h4 class="sub-header">Impacto</h4>
                     <ul class="impact-list">
                         
-                        <li>Developer workflow disruption.</li>
+                        <li>Disrupción del flujo de trabajo de los desarrolladores.</li>
                         
-                        <li>Man-in-the-Middle (MitM) risk if used externally.</li>
+                        <li>Riesgo de Man-in-the-Middle (MitM) si se usa externamente.</li>
                         
-                        <li>Loss of trust validation.</li>
+                        <li>Pérdida de validación de confianza.</li>
                         
                     </ul>
                 </div>
@@ -332,7 +332,7 @@
             <!-- Row 2: Description (Sober & Elegant) -->
             <div class="description-card">
                 <h4 class="sub-header-simple">Descripción del Evento</h4>
-                <p class="description-text">The SSL certificate for the development environment is expired, triggering browser warnings and exposing traffic to interception.</p>
+                <p class="description-text">El certificado SSL para el entorno de desarrollo ha expirado, provocando advertencias en el navegador y exponiendo el tráfico a interceptación.</p>
             </div>
         </div>
     </div>

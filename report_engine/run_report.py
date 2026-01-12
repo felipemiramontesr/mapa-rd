@@ -67,7 +67,7 @@ def main():
     # Filename: MAPA-RD_<CLIENT><TYPE><YYYYMMDD>v<VER><ID>.pdf
     # Sanitizing mostly for safety
     client = data['meta']['client_name'].replace(" ", "")
-    rtype = data['meta']['report_type'][:3].upper()
+    rtype = "EXE" # Forced to maintain filename consistency per user request
     date = data['meta']['report_date'].replace("-", "")
     ver = data['meta']['report_version'].replace(".", "")
     rid = data['meta']['report_id']
