@@ -14,6 +14,7 @@
             centesimal (0-100).
         </p>
 
+        <!-- JEWEL FORMULA BLOCK -->
         <div class="formula-block">
             <span class="formula-label">Fórmula General</span>
             <div class="formula-text">
@@ -21,36 +22,55 @@
             </div>
         </div>
 
-        <h3 style="color:#fff; font-size:1.1rem; margin-top:2rem;">Variables del Modelo</h3>
+        <h3 style="color:#fff; font-size:1.1rem; margin-top:4rem; font-weight:600; letter-spacing:0.05em;">VARIABLES DEL
+            MODELO</h3>
+
+        <!-- VARIABLE CARDS GRID -->
         <div class="variable-grid">
-            <div class="variable-item">
-                <span class="var-name">CA (x4)</span>
-                <span class="var-desc">Criticidad del Activo. Evalúa la importancia del sistema afectado para la
-                    operación.</span>
+            <div class="variable-card">
+                <div class="var-badge">x4</div>
+                <span class="var-sigla">CA</span>
+                <span class="var-name">Criticidad del Activo</span>
+                <span class="var-desc">Evalúa la importancia crítica del sistema afectado para la operación del
+                    negocio.</span>
             </div>
-            <div class="variable-item">
-                <span class="var-name">ET (x3)</span>
-                <span class="var-desc">Exposición Temporal. Determina si el hallazgo es histórico, residual o
-                    vigente.</span>
+
+            <div class="variable-card">
+                <div class="var-badge">x3</div>
+                <span class="var-sigla">ET</span>
+                <span class="var-name">Exposición Temporal</span>
+                <span class="var-desc">Determina si el hallazgo es histórico, residual o plenamente vigente.</span>
             </div>
-            <div class="variable-item">
-                <span class="var-name">SE (x3)</span>
-                <span class="var-desc">Superficie de Exposición. Mide la facilidad de acceso (Público vs
-                    Interno).</span>
+
+            <div class="variable-card">
+                <div class="var-badge">x3</div>
+                <span class="var-sigla">SE</span>
+                <span class="var-name">Superficie de Exposición</span>
+                <span class="var-desc">Mide la facilidad de acceso desde el exterior (Público vs
+                    Privado/Interno).</span>
             </div>
-            <div class="variable-item">
-                <span class="var-name">IM (x4)</span>
-                <span class="var-desc">Impacto Multidimensional. Suma binaria de impactos (Legal, Financiero,
-                    Operativo).</span>
+
+            <div class="variable-card">
+                <div class="var-badge">x4</div>
+                <span class="var-sigla">IM</span>
+                <span class="var-name">Impacto Multidimensional</span>
+                <span class="var-desc">Suma binaria de impactos confirmados: Legal, Financiero, Operativo y
+                    Reputacional.</span>
             </div>
-            <div class="variable-item">
-                <span class="var-name">FE (x3)</span>
-                <span class="var-desc">Facilidad de Explotación. Nivel de esfuerzo técnico requerido por el
-                    atacante.</span>
+
+            <div class="variable-card">
+                <div class="var-badge">x3</div>
+                <span class="var-sigla">FE</span>
+                <span class="var-name">Facilidad de Explotación</span>
+                <span class="var-desc">Nivel de esfuerzo técnico y recursos requeridos por el atacante.</span>
             </div>
-            <div class="variable-item">
-                <span class="var-name">DV (x3)</span>
-                <span class="var-desc">Detectabilidad. Probabilidad de que el ataque pase desapercibido.</span>
+
+            <div class="variable-card">
+                <div class="var-badge">x3</div>
+                <span class="var-sigla">DV</span>
+                <span class="var-name">Detectabilidad</span>
+                <span class="var-desc">Probabilidad de que la explotación pase desapercibida por los sistemas de
+                    defensa.</span>
             </div>
         </div>
     </div>
@@ -64,6 +84,7 @@
             exclusivamente de los IRV activos, utilizando un promedio ponderado por severidad.
         </p>
 
+        <!-- JEWEL FORMULA BLOCK -->
         <div class="formula-block">
             <span class="formula-label">Cálculo Ponderado</span>
             <div class="formula-text">
@@ -71,37 +92,48 @@
             </div>
         </div>
 
-        <div class="example-box">
-            <span class="example-title">Escala de Severidad (Pesos)</span>
-            <div class="variable-grid" style="margin-top:0.5rem; gap:1rem; grid-template-columns: repeat(5, 1fr);">
-                <div style="border-left:2px solid #74b9ff; padding-left:0.5rem;">
-                    <span class="var-name" style="color:#74b9ff;">BAJO</span>
-                    <span class="var-desc">Peso x1</span>
-                </div>
-                <div style="border-left:2px solid #ffeaa7; padding-left:0.5rem;">
-                    <span class="var-name" style="color:#ffeaa7;">MEDIO</span>
-                    <span class="var-desc">Peso x2</span>
-                </div>
-                <div style="border-left:2px solid #ff9f43; padding-left:0.5rem;">
-                    <span class="var-name" style="color:#ff9f43;">ALTO</span>
-                    <span class="var-desc">Peso x3</span>
-                </div>
-                <div style="border-left:2px solid #ff7675; padding-left:0.5rem;">
-                    <span class="var-name" style="color:#ff7675;">CRÍTICO</span>
-                    <span class="var-desc">Peso x4</span>
-                </div>
-                <div style="border-left:2px solid #a29bfe; padding-left:0.5rem;">
-                    <span class="var-name" style="color:#a29bfe;">MÁXIMO</span>
-                    <span class="var-desc">Peso x5</span>
-                </div>
+        <h3 style="color:#fff; font-size:1.1rem; margin-top:4rem; font-weight:600; letter-spacing:0.05em;">ESCALA DE
+            SEVERIDAD</h3>
+
+        <!-- COMPONENT: SEVERITY CHIPS -->
+        <div class="severity-row">
+            <div class="severity-chip">
+                <div class="chip-dot" style="color: #74b9ff;"></div>
+                <span class="chip-text">Bajo</span>
+                <span class="chip-weight">PESO x1</span>
+            </div>
+
+            <div class="severity-chip">
+                <div class="chip-dot" style="color: #ffeaa7;"></div>
+                <span class="chip-text">Medio</span>
+                <span class="chip-weight">PESO x2</span>
+            </div>
+
+            <div class="severity-chip">
+                <div class="chip-dot" style="color: #ff9f43;"></div>
+                <span class="chip-text">Alto</span>
+                <span class="chip-weight">PESO x3</span>
+            </div>
+
+            <div class="severity-chip">
+                <div class="chip-dot" style="color: #ff7675;"></div>
+                <span class="chip-text">Crítico</span>
+                <span class="chip-weight">PESO x4</span>
+            </div>
+
+            <div class="severity-chip">
+                <div class="chip-dot" style="color: #a29bfe;"></div>
+                <span class="chip-text">Máximo</span>
+                <span class="chip-weight">PESO x5</span>
             </div>
         </div>
     </div>
 
-    <div style="margin-top: 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
-        <p style="font-size: 0.8rem; color: #4b5563;">
-            Este documento es confidencial y parte integral del entregable MAPA-RD. La metodología v1.0 es propiedad
-            intelectual cerrada.
+    <!-- FOOTER NOTE -->
+    <div class="annex-footer">
+        <p style="font-size: 0.75rem; color: #4b5563; max-width:500px; margin:0 auto; line-height:1.5;">
+            CONFIDENCIAL. Este documento y la Metodología v1.0 son propiedad intelectual cerrada.
+            Prohibida su reproducción total o parcial sin autorización.
         </p>
     </div>
 </div>
