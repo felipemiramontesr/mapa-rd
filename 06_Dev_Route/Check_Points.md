@@ -1,15 +1,15 @@
-# 🏁 Check-Points & Roadmap: MAPA-RD
+# 🦅 Check-Points & Roadmap: MAPA-RD
 
 > **Propósito:** Este documento es el "punto de retorno" para entender rápidamente el estado del proyecto, qué se ha logrado y qué sigue.
 
-## 📅 Estado al: 10 de Enero, 2026
+## 🏁 Estado al: 10 de Enero, 2026
 **Estado Global:** 🟢 **EN CURSO (Lógica de Negocio)**
 **Última Versión:** 1.1.0 (Elite Engineering)
 **Última Versión:** 1.0.0 (Beta Stabilization)
 
 ---
 
-## 🏗️ De dónde venimos (Logros)
+## 🔙 De dónde venimos (Logros)
 - [x] **Fase 1: Testing & Bug Fixing (COMPLETADA):** Notifier reparado. suite de 7 tests pasando al 100%.
 - [x] **Fase 2: Refactorización Core (COMPLETADA):**
     - [x] **StateManager**: Migrado a arquitectura basada en tipos, Google Docstrings y validaciones robustas.
@@ -28,21 +28,22 @@
     - [x] **Refactorización Senior**: Aplicación de Type Hints, Docstrings estilo Google y manejo de excepciones robusto en todo el core.
     - [x] **Comentarización Pro**: Documentación interna detallada en `normalizer`, `deduper`, `scorer`, `test_pipeline` y `dashboard`.
     - [x] **Testing Robusto**: Suite de pruebas integral validando el ciclo de vida completo.
-30: - [x] **Phase 6: Engineering Excellence (COMPLETADA):**
-31:     - [x] **Limpieza Total**: Eliminación de mocks ("Ana Flores"), scripts legacy y templates basura.
-32:     - [x] **Coverage 100%**: Tests unitarios para `StateManager`, `ClientManager`, `QCManager` y Utils.
-33:     - [x] **Protocolo**: Codificación de "Golden Rules" en `06_Dev_Route/PROTOCOL.md`.
+- [x] **Phase 6: Engineering Excellence (COMPLETADA):**
+    - [x] **Limpieza Total**: Eliminación de mocks ("Ana Flores"), scripts legacy y templates basura.
+    - [x] **Coverage 100%**: Tests unitarios para `StateManager`, `ClientManager`, `QCManager` y Utils.
+    - [x] **Protocolo**: Codificación de "Golden Rules" en `06_Dev_Route/PROTOCOL.md`.
     - [x] **Regla 4 (Push)**: Agregada política de sincronización continua.
     - [x] **Regla 5 (Auto-Save)**: Eliminada redundancia en confirmaciones de guardado.
     - [x] **UI-01 (Email)**: Template Premium implementado y validado en vivo.
-34: - [ ] **Phase 7: Business Logic & Onboarding (EN CURSO):**
-35:     - [x] Definición de `Business_Logic.md`.
-36:     - [ ] Implementación del Paso 1 (Recepción de Inputs).
-37:     - [ ] Validación de Reglas de Negocio.
+- [ ] **Phase 7: Business Logic & Onboarding (EN CURSO):**
+    - [x] Definición de `Business_Logic.md`.
+    - [ ] Implementación del Paso 1 (Recepción de Inputs).
+    - [ ] Validación de Reglas de Negocio.
+- [x] **FASE 1 — Metodología v1.0 DECLARADA Y CONGELADA**
 
 ---
 
-## 🚧 En qué estamos (Haciendo / Sprint Actual)
+## 🏃 En qué estamos (Haciendo / Sprint Actual)
 *   **Estado Global:** 🟢 **COMPLETADO (Reporte V90 Finalizado)**
 *   **Foco Actual:** Implementación final de secciones de Impacto y Localización al 100%.
 
@@ -56,26 +57,26 @@
 
 ---
 
-## 📋 Roadmap de Tareas
+## 🗺️ Roadmap de Tareas
 
-### 🔴 Por Hacer (Alta Prioridad)
+### 🔥 Por Hacer (Alta Prioridad)
 - [ ] **DATA-01: Inversión HIBP:** Adquirir API Key de Provide HaveIBeenPwned ($4.50). Sin esto, el reporte no detecta lo más valioso (leaks).
 - [ ] **CONFIG-01: Google OSINT:** Configurar la API de Google Custom Search (Capa gratuita) para detectar perfiles sociales.
 - [ ] **TEST-01: Validación Ana Flores:** Re-ejecutar el pipeline para el usuario de prueba una vez activas las llaves.
 
-### 🔵 Próximos Pasos (Media Prioridad)
+### 🔮 Próximos Pasos (Media Prioridad)
 - [ ] **INTAKE-01:** Implementar `IntakeManager` para validación estricta de Textos/Imágenes.
 - [ ] **RENDER-01:** Crear wrapper `pdf_renderer.py` utilizando Headless Chrome.
 - [ ] **LOGIC-01:** Integrar reglas de negocio (Fast Fail) en el Orchestrator.
 
 ---
 
-## ⚠️ Riesgos y Alertas
+## 🚨 Riesgos y Alertas
 | Riesgo | Impacto | Mitigación |
 | :--- | :--- | :--- |
-| **Reportes Vacíos** | 🔥 Alto | El QC ya los bloquea, pero la solución real es pagar la API de HIBP. |
+| **Reportes Vacíos** | 🔴 Alto | El QC ya los bloquea, pero la solución real es pagar la API de HIBP. |
 | **Límites de API** | 🟡 Medio | Usar Google Search solo para lo indispensable y monitorear cuotas. |
-| **Falsos Positivos** | 🟢 Bajo | El `Scorer` debe ser ajustado conforme lleguen datos reales. |
+| **Falsos Positivos** | 🟡 Bajo | El `Scorer` debe ser ajustado conforme lleguen datos reales. |
 
 ---
 
@@ -88,6 +89,3 @@
 3.  **Estado Crítico**: Si ves un error de QC, es porque SpiderFoot no encontró nada. Revisa `04_Data/raw/[ID]/spiderfoot.json` para confirmar que el archivo está vacío o tiene pocos datos.
 
 ---
-
-## 🏆 Próximo Hito: "First Value Report"
-**Objetivo:** Generar el primer reporte con hallazgos reales de filtraciones de contraseñas.
