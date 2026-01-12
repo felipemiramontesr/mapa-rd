@@ -94,6 +94,17 @@ body {
     white-space: nowrap;
 }
 
+/* Override for Layout Fluidity */
+.section-title-center {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-top: -10px;
+    /* Pull up closer to the divider/dot */
+}
+
 /* Typography */
 h1 {
     font-size: 3.0rem;
