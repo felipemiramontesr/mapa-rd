@@ -309,8 +309,8 @@ h1 {
     align-items: center;
     justify-content: flex-start;
     /* Moved from center to flex-start to lift content */
-    padding-top: 4.5rem;
-    /* Clean calculated spacing (H1 margin + Divider + Margins = ~4.2rem). 4.5rem for optical match. */
+    padding-top: 1.5rem;
+    /* Lifted closer to the Red Dot (approx 24px) per user request */
     text-align: center;
 }
 
