@@ -316,7 +316,10 @@ h1 {
 
 /* --- IRD Page (Digital Risk Index) --- */
 .ird-page {
-    min-height: 90vh;
+    min-height: auto;
+    /* Allow content to dictate height */
+    padding-bottom: 2rem;
+    /* Add some breathing room before vectors */
     display: flex;
     flex-direction: column;
     align-items: center;
