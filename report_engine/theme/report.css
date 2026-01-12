@@ -309,8 +309,8 @@ h1 {
     align-items: center;
     justify-content: flex-start;
     /* Moved from center to flex-start to lift content */
-    padding-top: 1.5rem;
-    /* Lifted closer to the Red Dot (approx 24px) per user request */
+    padding-top: calc(1.5rem + 20px);
+    /* Lowered by 20px from previous 1.5rem per user request */
     text-align: center;
 }
 
