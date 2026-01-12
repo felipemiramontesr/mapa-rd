@@ -55,77 +55,207 @@
     </div>
 </div>
 
-        <!-- Findings Section -->
-        
-        <div class="section-title">Hallazgos & Ruta de Cierre</div>
+        <!-- IRD Section (Premium Page) -->
+        <div class="page-break"></div>
 
-        <div class="grid-2">
-            
-            <div class="card">
-                <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                    Exposed Database Credentials
-                    <!-- Severity Indicator Mini-Pill -->
-                    <span
-                        style="font-size: 0.7em; opacity: 0.8; 
-                            color: #ff6b6b;">
-                        CRITICAL
-                    </span>
-                </h3>
+<section class="ird-page">
+    <div class="ird-container">
+        <h2 class="section-title-center">Índice de Riesgo Digital</h2>
 
-                <ul class="list">
-                    <li><strong>Impacto:</strong> Full database compromise possible.</li>
-                    <li>Credentials for the production database were found in a public GitHub repository.</li>
-                </ul>
-
-                <div class="pill">
-                    Acción: Rotate credentials immediately and audit access logs.
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                    Admin Portal without MFA
-                    <!-- Severity Indicator Mini-Pill -->
-                    <span
-                        style="font-size: 0.7em; opacity: 0.8; 
-                            color: #ff9f43;">
-                        HIGH
-                    </span>
-                </h3>
-
-                <ul class="list">
-                    <li><strong>Impacto:</strong> Unauthorized access potential.</li>
-                    <li>The administrative portal at admin.acme.com does not enforce Multi-Factor Authentication.</li>
-                </ul>
-
-                <div class="pill">
-                    Acción: Enforce MFA for all admin accounts.
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                    Outdated SSL Certificate
-                    <!-- Severity Indicator Mini-Pill -->
-                    <span
-                        style="font-size: 0.7em; opacity: 0.8; 
-                            color: #54a0ff;">
-                        MEDIUM
-                    </span>
-                </h3>
-
-                <ul class="list">
-                    <li><strong>Impacto:</strong> Man-in-the-middle attacks.</li>
-                    <li>The SSL certificate for dev.acme.com expires in 2 days.</li>
-                </ul>
-
-                <div class="pill">
-                    Acción: Renew certificate.
-                </div>
-            </div>
-            
+        <div class="ird-circle critical">
+            <span class="ird-score">65</span>
+            <span class="ird-label">Riesgo Crítico</span>
         </div>
-        
+
+        <p class="ird-context">
+            Evaluado a partir de <strong>3</strong> vectores de vulnerabilidad
+        </p>
+
+        <p class="ird-date">Fecha de evaluación: 2026-01-11</p>
+    </div>
+</section>
+
+        <!-- Vectors Section (Premium Cards) -->
+        <div class="page-break"></div>
+
+<section class="vectors-section">
+    <h2 class="section-title">Vectores de Vulnerabilidad</h2>
+    <div class="divider-left"></div>
+
+    
+    <div class="vector-card maximum">
+        <div class="vector-header">
+            <div class="vector-id">VEC-001</div>
+            <div class="vector-title">Exposed Database Credentials</div>
+            <div class="vector-irv-badge maximum">
+                <span class="irv-value">85</span>
+                <span class="irv-level">Máximo</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">Production Database (AWS RDS)</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Cloud Infrastructure</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Public Repo Leak</span>
+            </div>
+        </div>
+
+        <div class="vector-body">
+            <div class="vector-column principal">
+                <h4 class="sub-header">Descripción del Evento</h4>
+                <p class="description-text">Hardcoded credentials for the primary production database were identified in a public GitHub repository (config.js). Determining access logs confirmed unauthorized clone events.</p>
+
+                <h4 class="sub-header">Impacto</h4>
+                <ul class="impact-list">
+                    
+                    <li>Full compromise of customer data (PII).</li>
+                    
+                    <li>Potential total service disruption (Ransomware).</li>
+                    
+                    <li>Severe regulatory fines (GDPR/CCPA).</li>
+                    
+                </ul>
+            </div>
+
+            <div class="vector-column remediation">
+                <h4 class="sub-header">Ruta de Cierre</h4>
+                <ol class="remediation-list">
+                    
+                    <li>Revoke the exposed AWS IAM credentials immediately.</li>
+                    
+                    <li>Rotate the database master password.</li>
+                    
+                    <li>Audit CloudTrail logs for suspicious activities since the commit date.</li>
+                    
+                    <li>Implement git-secrets to prevent future commits.</li>
+                    
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card critical">
+        <div class="vector-header">
+            <div class="vector-id">VEC-002</div>
+            <div class="vector-title">Admin Portal without MFA</div>
+            <div class="vector-irv-badge critical">
+                <span class="irv-value">60</span>
+                <span class="irv-level">Crítico</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">admin.acme.com</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Web Application</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Missing Control</span>
+            </div>
+        </div>
+
+        <div class="vector-body">
+            <div class="vector-column principal">
+                <h4 class="sub-header">Descripción del Evento</h4>
+                <p class="description-text">The administrative panel allows single-factor authentication. Brute-force attacks or credential stuffing could easily compromise an admin account.</p>
+
+                <h4 class="sub-header">Impacto</h4>
+                <ul class="impact-list">
+                    
+                    <li>Unauthorized administrative access.</li>
+                    
+                    <li>Data manipulation or deletion.</li>
+                    
+                    <li>Backdoor installation.</li>
+                    
+                </ul>
+            </div>
+
+            <div class="vector-column remediation">
+                <h4 class="sub-header">Ruta de Cierre</h4>
+                <ol class="remediation-list">
+                    
+                    <li>Enforce MFA (Time-based OTP) for all admin roles.</li>
+                    
+                    <li>Restrict access to VPN or trusted IPs only.</li>
+                    
+                    <li>Implement rate-limiting on the login endpoint.</li>
+                    
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vector-card medium">
+        <div class="vector-header">
+            <div class="vector-id">VEC-003</div>
+            <div class="vector-title">Outdated SSL Certificate</div>
+            <div class="vector-irv-badge medium">
+                <span class="irv-value">35</span>
+                <span class="irv-level">Medio</span>
+            </div>
+        </div>
+
+        <div class="vector-meta-grid">
+            <div class="meta-item">
+                <span class="label">Activo:</span>
+                <span class="value">dev.acme.com</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Tipo:</span>
+                <span class="value">Dev Environment</span>
+            </div>
+            <div class="meta-item">
+                <span class="label">Exposición:</span>
+                <span class="value">Configuration</span>
+            </div>
+        </div>
+
+        <div class="vector-body">
+            <div class="vector-column principal">
+                <h4 class="sub-header">Descripción del Evento</h4>
+                <p class="description-text">The SSL certificate for the development environment is expired, triggering browser warnings and exposing traffic to interception.</p>
+
+                <h4 class="sub-header">Impacto</h4>
+                <ul class="impact-list">
+                    
+                    <li>Developer workflow disruption.</li>
+                    
+                    <li>Man-in-the-Middle (MitM) risk if used externally.</li>
+                    
+                    <li>Loss of trust validation.</li>
+                    
+                </ul>
+            </div>
+
+            <div class="vector-column remediation">
+                <h4 class="sub-header">Ruta de Cierre</h4>
+                <ol class="remediation-list">
+                    
+                    <li>Provision a new LetsEncrypt certificate.</li>
+                    
+                    <li>Automate renewal via Certbot.</li>
+                    
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
 
         <!-- Example Footer from MAPA-RD -->
         <p class="footer-text">

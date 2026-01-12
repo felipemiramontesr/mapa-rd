@@ -4,7 +4,8 @@
     "required": [
         "meta",
         "assets",
-        "findings"
+        "ird",
+        "vectors"
     ],
     "properties": {
         "meta": {
@@ -48,41 +49,117 @@
         "kpis": {
             "type": "object"
         },
-        "findings": {
+        "ird": {
+            "type": "object",
+            "required": [
+                "score",
+                "level",
+                "level_class",
+                "vector_count"
+            ],
+            "properties": {
+                "score": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "string"
+                },
+                "level_class": {
+                    "type": "string"
+                },
+                "vector_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "vectors": {
             "type": "array",
             "items": {
                 "type": "object",
                 "required": [
-                    "severity",
+                    "id",
                     "title",
-                    "impact",
-                    "recommendation"
+                    "asset",
+                    "asset_type",
+                    "exposure_type",
+                    "irv_score",
+                    "irv_level",
+                    "irv_class",
+                    "components",
+                    "description",
+                    "impact_bullets",
+                    "remediation_steps"
                 ],
                 "properties": {
-                    "severity": {
-                        "type": "string",
-                        "enum": [
-                            "critical",
-                            "high",
-                            "medium",
-                            "low",
-                            "info"
-                        ]
+                    "id": {
+                        "type": "string"
                     },
                     "title": {
                         "type": "string"
                     },
+                    "asset": {
+                        "type": "string"
+                    },
+                    "asset_type": {
+                        "type": "string"
+                    },
+                    "exposure_type": {
+                        "type": "string"
+                    },
+                    "irv_score": {
+                        "type": "integer"
+                    },
+                    "irv_level": {
+                        "type": "string"
+                    },
+                    "irv_class": {
+                        "type": "string"
+                    },
+                    "components": {
+                        "type": "object",
+                        "required": [
+                            "CA",
+                            "ET",
+                            "SE",
+                            "IM",
+                            "FE",
+                            "DV"
+                        ],
+                        "properties": {
+                            "CA": {
+                                "type": "integer"
+                            },
+                            "ET": {
+                                "type": "integer"
+                            },
+                            "SE": {
+                                "type": "integer"
+                            },
+                            "IM": {
+                                "type": "integer"
+                            },
+                            "FE": {
+                                "type": "integer"
+                            },
+                            "DV": {
+                                "type": "integer"
+                            }
+                        }
+                    },
                     "description": {
                         "type": "string"
                     },
-                    "impact": {
-                        "type": "string"
+                    "impact_bullets": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     },
-                    "recommendation": {
-                        "type": "string"
-                    },
-                    "evidence": {
-                        "type": "array"
+                    "remediation_steps": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 }
             }

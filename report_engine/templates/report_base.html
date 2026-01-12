@@ -15,35 +15,12 @@
         <!-- Cover Section -->
         {% include 'sections/cover.html' %}
 
-        <!-- Findings Section -->
-        {% if findings %}
-        <div class="section-title">Hallazgos & Ruta de Cierre</div>
+        <!-- IRD Section (Premium Page) -->
+        {% include 'sections/ird.html' %}
 
-        <div class="grid-2">
-            {% for finding in findings %}
-            <div class="card">
-                <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                    {{ finding.title }}
-                    <!-- Severity Indicator Mini-Pill -->
-                    <span
-                        style="font-size: 0.7em; opacity: 0.8; 
-                            color: {% if finding.severity == 'critical' %}#ff6b6b{% elif finding.severity == 'high' %}#ff9f43{% else %}#54a0ff{% endif %};">
-                        {{ finding.severity|upper }}
-                    </span>
-                </h3>
+        <!-- Vectors Section (Premium Cards) -->
+        {% include 'sections/vectors.html' %}
 
-                <ul class="list">
-                    <li><strong>Impacto:</strong> {{ finding.impact }}</li>
-                    <li>{{ finding.description }}</li>
-                </ul>
-
-                <div class="pill">
-                    Acción: {{ finding.recommendation }}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
 
         <!-- Example Footer from MAPA-RD -->
         <p class="footer-text">

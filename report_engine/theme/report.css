@@ -237,14 +237,279 @@ h1 {
     color: #8a9fca;
 }
 
-.pill {
-    display: inline-flex;
+
+/* =========================================
+   PHASE 2: PREMIUM REPORT COMPONENTS
+   ========================================= */
+
+/* --- Radioactive Color Palette (Accents Only) --- */
+:root {
+    --rad-max: #a29bfe;
+    /* Purple Maximum */
+    --rad-crit: #ff7675;
+    /* Red Critical */
+    --rad-high: #fd79a8;
+    /* Pink/Fuchsia High */
+    --rad-med: #ffeaa7;
+    /* Yellow Medium */
+    --rad-low: #74b9ff;
+    /* Blue Low */
+}
+
+/* Helper Classes for radioactive accents */
+.maximum {
+    color: var(--rad-max);
+    border-color: var(--rad-max);
+}
+
+.critical {
+    color: var(--rad-crit);
+    border-color: var(--rad-crit);
+}
+
+.high {
+    color: var(--rad-high);
+    border-color: var(--rad-high);
+}
+
+.medium {
+    color: var(--rad-med);
+    border-color: var(--rad-med);
+}
+
+.low {
+    color: var(--rad-low);
+    border-color: var(--rad-low);
+}
+
+/* Background fills for badges (low opacity) */
+.maximum.vector-irv-badge,
+.maximum.ird-circle {
+    background: rgba(162, 155, 254, 0.1);
+    box-shadow: 0 0 15px rgba(162, 155, 254, 0.15);
+}
+
+.critical.vector-irv-badge,
+.critical.ird-circle {
+    background: rgba(255, 118, 117, 0.1);
+    box-shadow: 0 0 15px rgba(255, 118, 117, 0.15);
+}
+
+.medium.vector-irv-badge,
+.medium.ird-circle {
+    background: rgba(255, 234, 167, 0.1);
+    box-shadow: 0 0 15px rgba(255, 234, 167, 0.15);
+}
+
+/* --- IRD Page (Digital Risk Index) --- */
+.ird-page {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: .5rem;
-    padding: .45rem .75rem;
-    border: 1px solid rgba(74, 85, 120, .55);
-    color: var(--text-muted);
-    font-size: .82rem;
+    justify-content: center;
+    text-align: center;
+}
+
+.ird-container {
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.section-title-center {
+    font-size: 1.8rem;
     font-weight: 300;
-    margin-top: .8rem;
+    color: #fff;
+    margin-bottom: 3rem;
+    letter-spacing: -0.02em;
+}
+
+.ird-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 2px solid;
+    /* Color comes from utility class */
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.ird-score {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    /* Score is white */
+}
+
+.ird-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+    /* Color inherits from parent utility class */
+}
+
+.ird-context {
+    color: #c5cae0;
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.ird-date {
+    color: #4a5578;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* --- Vector Cards (The Core) --- */
+.vectors-section {
+    padding-top: 2rem;
+}
+
+.divider-left {
+    height: 1px;
+    width: 60px;
+    background: #4a5578;
+    margin: 1rem 0 2.5rem;
+}
+
+.vector-card {
+    background: rgba(255, 255, 255, 0.02);
+    /* Glassy dark */
+    border: 1px solid rgba(74, 85, 120, 0.3);
+    border-left: 3px solid;
+    /* Accent color via utility class */
+    padding: 1.8rem;
+    margin-bottom: 2rem;
+    break-inside: avoid;
+    position: relative;
+}
+
+.vector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(74, 85, 120, 0.2);
+    padding-bottom: 0.8rem;
+}
+
+.vector-id {
+    color: #4a5578;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.vector-title {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    flex-grow: 1;
+    margin: 0 1.5rem;
+}
+
+.vector-irv-badge {
+    border: 1px solid;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.irv-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.irv-level {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* Vector Meta Grid */
+.vector-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-item .label {
+    color: #6b7490;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+}
+
+.meta-item .value {
+    color: #c5cae0;
+    font-weight: 500;
+}
+
+/* Vector Body (Columns) */
+.vector-body {
+    display: flex;
+    gap: 2rem;
+}
+
+.vector-column {
+    flex: 1;
+}
+
+.sub-header {
+    color: #8892b4;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(74, 85, 120, 0.2);
+    padding-bottom: 0.3rem;
+    display: inline-block;
+}
+
+.description-text {
+    color: #c5cae0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+.impact-list,
+.remediation-list {
+    margin-left: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #c5cae0;
+}
+
+.impact-list li {
+    margin-bottom: 0.4rem;
+}
+
+.remediation-list li {
+    margin-bottom: 0.6rem;
+    color: #fff;
+    /* Highlight remediation steps slightly */
 }

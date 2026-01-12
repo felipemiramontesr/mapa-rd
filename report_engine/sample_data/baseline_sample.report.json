@@ -9,40 +9,99 @@
     "assets": {
         "logo_path": "c:/Felipe/Projects/Mapa-rd/report_engine/sample_data/assets/logo.png"
     },
-    "kpis": {
-        "risk_score": 85,
-        "scanned_assets": 120,
-        "open_vulnerabilities": 12,
-        "remediation_rate": "80%"
+    "ird": {
+        "score": 65,
+        "level": "Riesgo Crítico",
+        "level_class": "critical",
+        "vector_count": 3
     },
-    "findings": [
+    "vectors": [
         {
-            "severity": "critical",
+            "id": "VEC-001",
             "title": "Exposed Database Credentials",
-            "impact": "Full database compromise possible.",
-            "description": "Credentials for the production database were found in a public GitHub repository.",
-            "recommendation": "Rotate credentials immediately and audit access logs.",
-            "evidence": [
-                "https://github.com/example/repo/blob/main/config.js"
+            "asset": "Production Database (AWS RDS)",
+            "asset_type": "Cloud Infrastructure",
+            "exposure_type": "Public Repo Leak",
+            "irv_score": 85,
+            "irv_level": "Máximo",
+            "irv_class": "maximum",
+            "components": {
+                "CA": 5,
+                "ET": 5,
+                "SE": 5,
+                "IM": 4,
+                "FE": 5,
+                "DV": 5
+            },
+            "description": "Hardcoded credentials for the primary production database were identified in a public GitHub repository (config.js). Determining access logs confirmed unauthorized clone events.",
+            "impact_bullets": [
+                "Full compromise of customer data (PII).",
+                "Potential total service disruption (Ransomware).",
+                "Severe regulatory fines (GDPR/CCPA)."
+            ],
+            "remediation_steps": [
+                "Revoke the exposed AWS IAM credentials immediately.",
+                "Rotate the database master password.",
+                "Audit CloudTrail logs for suspicious activities since the commit date.",
+                "Implement git-secrets to prevent future commits."
             ]
         },
         {
-            "severity": "high",
+            "id": "VEC-002",
             "title": "Admin Portal without MFA",
-            "impact": "Unauthorized access potential.",
-            "description": "The administrative portal at admin.acme.com does not enforce Multi-Factor Authentication.",
-            "recommendation": "Enforce MFA for all admin accounts.",
-            "evidence": [
-                "Screenshot of login page"
+            "asset": "admin.acme.com",
+            "asset_type": "Web Application",
+            "exposure_type": "Missing Control",
+            "irv_score": 60,
+            "irv_level": "Crítico",
+            "irv_class": "critical",
+            "components": {
+                "CA": 4,
+                "ET": 5,
+                "SE": 4,
+                "IM": 3,
+                "FE": 4,
+                "DV": 3
+            },
+            "description": "The administrative panel allows single-factor authentication. Brute-force attacks or credential stuffing could easily compromise an admin account.",
+            "impact_bullets": [
+                "Unauthorized administrative access.",
+                "Data manipulation or deletion.",
+                "Backdoor installation."
+            ],
+            "remediation_steps": [
+                "Enforce MFA (Time-based OTP) for all admin roles.",
+                "Restrict access to VPN or trusted IPs only.",
+                "Implement rate-limiting on the login endpoint."
             ]
         },
         {
-            "severity": "medium",
+            "id": "VEC-003",
             "title": "Outdated SSL Certificate",
-            "impact": "Man-in-the-middle attacks.",
-            "description": "The SSL certificate for dev.acme.com expires in 2 days.",
-            "recommendation": "Renew certificate.",
-            "evidence": []
+            "asset": "dev.acme.com",
+            "asset_type": "Dev Environment",
+            "exposure_type": "Configuration",
+            "irv_score": 35,
+            "irv_level": "Medio",
+            "irv_class": "medium",
+            "components": {
+                "CA": 2,
+                "ET": 3,
+                "SE": 2,
+                "IM": 1,
+                "FE": 2,
+                "DV": 5
+            },
+            "description": "The SSL certificate for the development environment is expired, triggering browser warnings and exposing traffic to interception.",
+            "impact_bullets": [
+                "Developer workflow disruption.",
+                "Man-in-the-Middle (MitM) risk if used externally.",
+                "Loss of trust validation."
+            ],
+            "remediation_steps": [
+                "Provision a new LetsEncrypt certificate.",
+                "Automate renewal via Certbot."
+            ]
         }
     ]
 }

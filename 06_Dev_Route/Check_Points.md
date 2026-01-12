@@ -37,9 +37,10 @@
     - [x] **UI-01 (Email)**: Template Premium implementado y validado en vivo.
 - [ ] **Phase 7: Business Logic & Onboarding (EN CURSO):**
     - [x] Definición de `Business_Logic.md`.
-    - [ ] Implementación del Paso 1 (Recepción de Inputs).
-    - [ ] Validación de Reglas de Negocio.
+    - [x] Implementación del Paso 1 (Recepción de Inputs).
+    - [x] Validación de Reglas de Negocio.
 - [x] **FASE 1 — Metodología v1.0 DECLARADA Y CONGELADA**
+- [x] **FASE 2 — PDF PREMIUM v1.0 APROBADO**
 
 ---
 

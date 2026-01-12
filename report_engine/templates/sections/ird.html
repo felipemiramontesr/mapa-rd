@@ -1,0 +1,18 @@
+<div class="page-break"></div>
+
+<section class="ird-page">
+    <div class="ird-container">
+        <h2 class="section-title-center">Índice de Riesgo Digital</h2>
+
+        <div class="ird-circle {{ ird.level_class }}">
+            <span class="ird-score">{{ ird.score }}</span>
+            <span class="ird-label">{{ ird.level }}</span>
+        </div>
+
+        <p class="ird-context">
+            Evaluado a partir de <strong>{{ ird.vector_count }}</strong> vectores de vulnerabilidad
+        </p>
+
+        <p class="ird-date">Fecha de evaluación: {{ meta.report_date }}</p>
+    </div>
+</section>
