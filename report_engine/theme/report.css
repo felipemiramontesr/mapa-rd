@@ -102,8 +102,8 @@ body {
     text-align: center;
     margin-bottom: 2rem;
     margin-bottom: 2rem;
-    margin-top: -75px;
-    /* Aggressive pull up to hit the red dot (-75px) */
+    margin-top: -95px;
+    /* Aggressive pull up (-95px) */
 }
 
 /* Typography */
