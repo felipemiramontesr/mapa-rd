@@ -610,6 +610,11 @@ h1 {
     color: var(--risk-color) !important;
 }
 
+.irv-level {
+    color: var(--risk-color) !important;
+    /* Match text color to risk */
+}
+
 /* Vector Body Columns */
 .vector-body {
     display: flex;
