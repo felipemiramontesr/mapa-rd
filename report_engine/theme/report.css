@@ -248,8 +248,8 @@ h1 {
     /* Purple Maximum */
     --rad-crit: #ff7675;
     /* Red Critical */
-    --rad-high: #fd79a8;
-    /* Pink/Fuchsia High */
+    --rad-high: #ff9f43;
+    /* Orange High (Updated per user request "etched in stone") */
     --rad-med: #ffeaa7;
     /* Yellow Medium */
     --rad-low: #74b9ff;
@@ -282,24 +282,37 @@ h1 {
     border-color: var(--rad-low);
 }
 
-/* Background fills for badges (low opacity) */
+/* Background fills for badges (low opacity) and IRD Box Glow */
 .maximum.vector-irv-badge,
-.maximum.ird-circle {
-    background: rgba(162, 155, 254, 0.1);
-    box-shadow: 0 0 15px rgba(162, 155, 254, 0.15);
+.maximum.ird-box {
+    background: rgba(162, 155, 254, 0.05);
+    box-shadow: 0 0 20px rgba(162, 155, 254, 0.2);
 }
 
 .critical.vector-irv-badge,
-.critical.ird-circle {
-    background: rgba(255, 118, 117, 0.1);
-    box-shadow: 0 0 15px rgba(255, 118, 117, 0.15);
+.critical.ird-box {
+    background: rgba(255, 118, 117, 0.05);
+    box-shadow: 0 0 20px rgba(255, 118, 117, 0.2);
+}
+
+.high.vector-irv-badge,
+.high.ird-box {
+    background: rgba(255, 159, 67, 0.05);
+    box-shadow: 0 0 20px rgba(255, 159, 67, 0.2);
 }
 
 .medium.vector-irv-badge,
-.medium.ird-circle {
-    background: rgba(255, 234, 167, 0.1);
-    box-shadow: 0 0 15px rgba(255, 234, 167, 0.15);
+.medium.ird-box {
+    background: rgba(255, 234, 167, 0.05);
+    box-shadow: 0 0 20px rgba(255, 234, 167, 0.2);
 }
+
+.low.vector-irv-badge,
+.low.ird-box {
+    background: rgba(116, 185, 255, 0.05);
+    box-shadow: 0 0 20px rgba(116, 185, 255, 0.2);
+}
+
 
 /* --- IRD Page (Digital Risk Index) --- */
 .ird-page {
@@ -336,12 +349,13 @@ h1 {
 }
 
 .ird-box {
-    width: 320px;
+    width: 536px;
+    /* Exact match to title width */
     height: 180px;
-    border-radius: 30px;
-    /* Discrete rounded corners (Rectangle) */
-    border: 3px solid;
-    /* Slightly thicker for the box */
+    border-radius: 12px;
+    /* Discrete rounded corners */
+    border: 2px solid;
+    /* Elegant thin border */
     /* Color comes from utility class */
     margin: 0 auto 2.5rem;
     display: flex;
@@ -350,34 +364,13 @@ h1 {
     justify-content: center;
     position: relative;
     transition: all 0.3s ease;
-    /* Smooth transition for JS color changes */
+    /* Smooth transition */
 }
 
-/* Base styles for background fills (re-applying to new class) */
-.maximum.ird-box {
-    background: rgba(162, 155, 254, 0.1);
-    box-shadow: 0 0 15px rgba(162, 155, 254, 0.15);
-}
+/* Specific background resets are now handled by the generic class helpers above */
+/* No need to redeclare .maximum.ird-box etc individually if they share logic with vector badges */
+/* But keeping empty declaration if needed for specificity override in future, currently empty */
 
-.critical.ird-box {
-    background: rgba(255, 118, 117, 0.1);
-    box-shadow: 0 0 15px rgba(255, 118, 117, 0.15);
-}
-
-.high.ird-box {
-    background: rgba(253, 121, 168, 0.1);
-    box-shadow: 0 0 15px rgba(253, 121, 168, 0.15);
-}
-
-.medium.ird-box {
-    background: rgba(255, 234, 167, 0.1);
-    box-shadow: 0 0 15px rgba(255, 234, 167, 0.15);
-}
-
-.low.ird-box {
-    background: rgba(116, 185, 255, 0.1);
-    box-shadow: 0 0 15px rgba(116, 185, 255, 0.15);
-}
 
 
 .ird-score {

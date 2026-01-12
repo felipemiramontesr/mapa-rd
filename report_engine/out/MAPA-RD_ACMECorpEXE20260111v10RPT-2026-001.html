@@ -83,7 +83,9 @@
         // Only run if elements exist
         const scoreEl = document.getElementById('irdScore');
         const boxEl = document.getElementById('irdBox');
-        if (!scoreEl || !boxEl) return;
+        const labelEl = boxEl ? boxEl.querySelector('.ird-label') : null;
+
+        if (!scoreEl || !boxEl || !labelEl) return;
 
         const targetScore = parseInt(scoreEl.getAttribute('data-target'), 10);
         if (isNaN(targetScore)) return;
@@ -92,35 +94,50 @@
         const duration = 4000; // 4 seconds
         const startTimestamp = performance.now();
 
-        // Color Palette (Radioactive)
-        // Low: #74b9ff, Med: #ffeaa7, High: #fd79a8, Crit: #ff7675, Max: #a29bfe
-        function getColorForScore(s) {
-            if (s >= 80) return '#a29bfe'; // Maximum (Purple)
-            if (s >= 60) return '#ff7675'; // Critical (Red)
-            if (s >= 40) return '#fd79a8'; // High (Pink)
-            if (s >= 20) return '#ffeaa7'; // Medium (Yellow)
-            return '#74b9ff'; // Low (Blue)
+        // Strict Range Logic (0-19, 20-39, 40-59, 60-79, 80-100)
+        // Colors: Low=Blue, Med=Yellow, High=Orange (#ff9f43), Crit=Red, Max=Purple
+        function getRiskData(s) {
+            if (s >= 80) return { color: '#a29bfe', text: 'RIESGO MÁXIMO', glow: 'rgba(162, 155, 254, 0.2)' };
+            if (s >= 60) return { color: '#ff7675', text: 'RIESGO CRÍTICO', glow: 'rgba(255, 118, 117, 0.2)' };
+            if (s >= 40) return { color: '#ff9f43', text: 'RIESGO ALTO', glow: 'rgba(255, 159, 67, 0.2)' }; // Orange
+            if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MODERADO', glow: 'rgba(255, 234, 167, 0.2)' };
+            return { color: '#74b9ff', text: 'RIESGO BAJO', glow: 'rgba(116, 185, 255, 0.2)' };
         }
 
         function step(timestamp) {
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             const currentScore = Math.floor(progress * targetScore);
 
-            // Update Text
-            scoreEl.innerText = currentScore;
+            // Get Dynamic Data
+            const riskData = getRiskData(currentScore);
 
-            // Update Color (Dynamic)
-            const color = getColorForScore(currentScore);
-            scoreEl.style.color = color;
-            boxEl.style.borderColor = color;
+            // Update Content
+            scoreEl.innerText = currentScore;
+            labelEl.innerText = riskData.text;
+
+            // Update Styles (Dynamic Color & Glow)
+            scoreEl.style.color = riskData.color;
+            // Label can inherit or be explicit. Let's be explicit to ensure sync.
+            // boxEl.style.borderColor = riskData.color; 
+            // Note: CSS might override if specific classes are present, but inline styles normally win.
+
+            boxEl.style.borderColor = riskData.color;
+            boxEl.style.boxShadow = `0 0 20px ${riskData.glow}`;
+            // Optional: Subtle background tint
+            boxEl.style.backgroundColor = riskData.glow.replace('0.2', '0.05');
 
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             } else {
-                // Ensure final state matches exact target
+                // Final State (Ensure exact match)
                 scoreEl.innerText = targetScore;
-                scoreEl.style.color = getColorForScore(targetScore);
-                boxEl.style.borderColor = getColorForScore(targetScore);
+                const finalData = getRiskData(targetScore);
+
+                labelEl.innerText = finalData.text;
+                scoreEl.style.color = finalData.color;
+                boxEl.style.borderColor = finalData.color;
+                boxEl.style.boxShadow = `0 0 20px ${finalData.glow}`;
+                boxEl.style.backgroundColor = finalData.glow.replace('0.2', '0.05');
             }
         }
 
