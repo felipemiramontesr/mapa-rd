@@ -307,7 +307,10 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    /* Moved from center to flex-start to lift content */
+    padding-top: 10vh;
+    /* Added padding to position it visually higher */
     text-align: center;
 }
 
