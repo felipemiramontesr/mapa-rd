@@ -1,7 +1,7 @@
 {
     "meta": {
         "client_name": "ACME Corp",
-        "report_type": "Executive Security Report",
+        "report_type": "Reporte Ejecutivo de Seguridad",
         "report_date": "2026-01-11",
         "report_version": "1.0",
         "report_id": "RPT-2026-001"
@@ -18,10 +18,10 @@
     "vectors": [
         {
             "id": "VEC-001",
-            "title": "Exposed Database Credentials",
-            "asset": "Production Database (AWS RDS)",
-            "asset_type": "Cloud Infrastructure",
-            "exposure_type": "Public Repo Leak",
+            "title": "Credenciales de Base de Datos Expuestas",
+            "asset": "Base de Datos Prod (AWS RDS)",
+            "asset_type": "Infraestructura Cloud",
+            "exposure_type": "Fuga en Repo Público",
             "irv_score": 85,
             "irv_level": "Máximo",
             "irv_class": "maximum",
@@ -33,25 +33,25 @@
                 "FE": 5,
                 "DV": 5
             },
-            "description": "Hardcoded credentials for the primary production database were identified in a public GitHub repository (config.js). Determining access logs confirmed unauthorized clone events.",
+            "description": "Se identificaron credenciales hardcodeadas para la base de datos principal de producción en un repositorio público de GitHub (config.js). El análisis de logs confirmó eventos de clonación no autorizados.",
             "impact_bullets": [
-                "Full compromise of customer data (PII).",
-                "Potential total service disruption (Ransomware).",
-                "Severe regulatory fines (GDPR/CCPA)."
+                "Compromiso total de datos de clientes (PII).",
+                "Potencial interrupción total del servicio (Ransomware).",
+                "Multas regulatorias severas (GDPR/Ley de Datos). "
             ],
             "remediation_steps": [
-                "Revoke the exposed AWS IAM credentials immediately.",
-                "Rotate the database master password.",
-                "Audit CloudTrail logs for suspicious activities since the commit date.",
-                "Implement git-secrets to prevent future commits."
+                "Revocar las credenciales IAM de AWS expuestas inmediatamente.",
+                "Rotar la contraseña maestra de la base de datos.",
+                "Auditar logs de CloudTrail buscando actividad sospechosa desde la fecha del commit.",
+                "Implementar git-secrets para prevenir futuros commits de secretos."
             ]
         },
         {
             "id": "VEC-002",
-            "title": "Admin Portal without MFA",
+            "title": "Portal de Administración sin MFA",
             "asset": "admin.acme.com",
-            "asset_type": "Web Application",
-            "exposure_type": "Missing Control",
+            "asset_type": "Aplicación Web",
+            "exposure_type": "Control Faltante",
             "irv_score": 60,
             "irv_level": "Crítico",
             "irv_class": "critical",
@@ -63,24 +63,24 @@
                 "FE": 4,
                 "DV": 3
             },
-            "description": "The administrative panel allows single-factor authentication. Brute-force attacks or credential stuffing could easily compromise an admin account.",
+            "description": "El panel administrativo permite autenticación de un solo factor. Ataques de fuerza bruta o relleno de credenciales podrían comprometer fácilmente una cuenta de administrador.",
             "impact_bullets": [
-                "Unauthorized administrative access.",
-                "Data manipulation or deletion.",
-                "Backdoor installation."
+                "Acceso administrativo no autorizado.",
+                "Manipulación o eliminación de datos.",
+                "Instalación de puertas traseras (Backdoors)."
             ],
             "remediation_steps": [
-                "Enforce MFA (Time-based OTP) for all admin roles.",
-                "Restrict access to VPN or trusted IPs only.",
-                "Implement rate-limiting on the login endpoint."
+                "Forzar MFA (OTP basado en tiempo) para todos los roles administrativos.",
+                "Restringir el acceso solo a VPN o IPs de confianza.",
+                "Implementar limitación de tasa (rate-limiting) en el endpoint de login."
             ]
         },
         {
             "id": "VEC-003",
-            "title": "Outdated SSL Certificate",
+            "title": "Certificado SSL Desactualizado",
             "asset": "dev.acme.com",
-            "asset_type": "Dev Environment",
-            "exposure_type": "Configuration",
+            "asset_type": "Entorno de Desarrollo",
+            "exposure_type": "Configuración",
             "irv_score": 35,
             "irv_level": "Medio",
             "irv_class": "medium",
@@ -92,15 +92,15 @@
                 "FE": 2,
                 "DV": 5
             },
-            "description": "The SSL certificate for the development environment is expired, triggering browser warnings and exposing traffic to interception.",
+            "description": "El certificado SSL para el entorno de desarrollo ha expirado, provocando advertencias en el navegador y exponiendo el tráfico a interceptación.",
             "impact_bullets": [
-                "Developer workflow disruption.",
-                "Man-in-the-Middle (MitM) risk if used externally.",
-                "Loss of trust validation."
+                "Disrupción del flujo de trabajo de los desarrolladores.",
+                "Riesgo de Man-in-the-Middle (MitM) si se usa externamente.",
+                "Pérdida de validación de confianza."
             ],
             "remediation_steps": [
-                "Provision a new LetsEncrypt certificate.",
-                "Automate renewal via Certbot."
+                "Aprovisionar un nuevo certificado (ej. LetsEncrypt).",
+                "Automatizar la renovación vía Certbot."
             ]
         }
     ]
