@@ -228,9 +228,9 @@ class ReportGenerator:
         .calc-row strong { font-weight: 700; }
         .calc-last { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem; margin-top: 1rem; font-size: 1.2rem; align-items: center; }
 
-        .text-critico { color: #a349ff; } .text-alto { color: #ff2a2a; } .text-medio { color: #ffb800; } .text-bajo { color: #00a3ff; } .text-nulo { color: #00ff85; }
+        .text-critico { color: #ff7675; } .text-alto { color: #ff9f43; } .text-medio { color: #ffeaa7; } .text-bajo { color: #74b9ff; } .text-nulo { color: #a29bfe; }
         .color-cycle-alto { animation: cycle-alto 4s forwards; }
-        @keyframes cycle-alto { 0% { color: #00ff85; text-shadow: 0 0 20px rgba(0,255,133,0.4); } 100% { color: #ff2a2a; text-shadow: 0 0 20px rgba(255,42,42,0.4); } }
+        @keyframes cycle-alto { 0% { color: #74b9ff; text-shadow: 0 0 20px rgba(116,185,255,0.4); } 100% { color: #ff9f43; text-shadow: 0 0 20px rgba(255,159,67,0.4); } }
         @keyframes thermometer-load { from { width: 0%; } to { width: var(--target-score); } }
 
         /* --- IMPACT SECTIONS CSS (V89) --- */
@@ -283,11 +283,12 @@ class ReportGenerator:
         total = sum(scores)
         final_score = min(round(total / n), 100)
 
-        # 2. Vis Logic
-        if final_score >= 86:   cls, ico, txt = "risk-critical", "fa-biohazard", "critico"
-        elif final_score >= 61: cls, ico, txt = "risk-high", "fa-radiation", "alto"
-        elif final_score >= 31: cls, ico, txt = "risk-medium", "fa-shield-halved", "medio"
-        else:                   cls, ico, txt = "risk-low", "fa-user-shield", "bajo"
+        # 2. Strict Scale Logic (V90 - Orange High)
+        if final_score >= 80:    cls, ico, txt = "risk-critical", "fa-biohazard", "maximo"   # 80-100: Max (Purple)
+        elif final_score >= 60:  cls, ico, txt = "risk-critical", "fa-radiation", "critico"  # 60-79: Critical (Red)
+        elif final_score >= 40:  cls, ico, txt = "risk-high",     "fa-fire",      "alto"     # 40-59: High (Orange)
+        elif final_score >= 20:  cls, ico, txt = "risk-medium",   "fa-shield",    "medio"    # 20-39: Medium (Yellow)
+        else:                    cls, ico, txt = "risk-low",      "fa-user-shield","bajo"    # 00-19: Low (Blue)
         
         color_class = f"text-{txt}"
         anim_class = f"color-cycle-{txt}"
@@ -602,11 +603,12 @@ class ReportGenerator:
 
             const updateColor = (score) => {{
                 scoreElement.classList.remove("text-critico", "text-alto", "text-medio", "text-bajo", "text-nulo");
-                if (score >= 86) scoreElement.classList.add("text-critico");
-                else if (score >= 61) scoreElement.classList.add("text-alto");
-                else if (score >= 31) scoreElement.classList.add("text-medio");
-                else if (score >= 11) scoreElement.classList.add("text-bajo");
-                else scoreElement.classList.add("text-nulo");
+                // Strict 5-Level Logic (80/60/40/20)
+                if (score >= 80) scoreElement.classList.add("text-critico"); // Max (Purple) reused for now or add text-maximo
+                else if (score >= 60) scoreElement.classList.add("text-critico");
+                else if (score >= 40) scoreElement.classList.add("text-alto"); // Orange
+                else if (score >= 20) scoreElement.classList.add("text-medio");
+                else scoreElement.classList.add("text-bajo");
             }};
 
             const counter = setInterval(() => {{
