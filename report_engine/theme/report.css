@@ -335,11 +335,13 @@ h1 {
     /* Match H1 line-height */
 }
 
-.ird-circle {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    border: 2px solid;
+.ird-box {
+    width: 320px;
+    height: 180px;
+    border-radius: 30px;
+    /* Discrete rounded corners (Rectangle) */
+    border: 3px solid;
+    /* Slightly thicker for the box */
     /* Color comes from utility class */
     margin: 0 auto 2.5rem;
     display: flex;
@@ -347,14 +349,45 @@ h1 {
     align-items: center;
     justify-content: center;
     position: relative;
+    transition: all 0.3s ease;
+    /* Smooth transition for JS color changes */
 }
 
+/* Base styles for background fills (re-applying to new class) */
+.maximum.ird-box {
+    background: rgba(162, 155, 254, 0.1);
+    box-shadow: 0 0 15px rgba(162, 155, 254, 0.15);
+}
+
+.critical.ird-box {
+    background: rgba(255, 118, 117, 0.1);
+    box-shadow: 0 0 15px rgba(255, 118, 117, 0.15);
+}
+
+.high.ird-box {
+    background: rgba(253, 121, 168, 0.1);
+    box-shadow: 0 0 15px rgba(253, 121, 168, 0.15);
+}
+
+.medium.ird-box {
+    background: rgba(255, 234, 167, 0.1);
+    box-shadow: 0 0 15px rgba(255, 234, 167, 0.15);
+}
+
+.low.ird-box {
+    background: rgba(116, 185, 255, 0.1);
+    box-shadow: 0 0 15px rgba(116, 185, 255, 0.15);
+}
+
+
 .ird-score {
-    font-size: 5rem;
+    font-size: 6rem;
+    /* Larger for the box */
     font-weight: 700;
     line-height: 1;
     color: #fff;
-    /* Score is white */
+    /* Default white, JS will override if needed */
+    transition: color 0.1s;
 }
 
 .ird-label {

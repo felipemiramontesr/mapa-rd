@@ -62,9 +62,11 @@
     <div class="ird-container">
         <h2 class="section-title-center">Índice de Riesgo Digital</h2>
 
-        <div class="ird-circle critical">
-            <span class="ird-score">65</span>
-            <span class="ird-label">Riesgo Crítico</span>
+        <!-- Updated to IRD Box (Rounded Rectangle) -->
+        <!-- 'final-score' attribute holds the value for JS animation. Content is pre-filled for PDF static render. -->
+        <div class="ird-box critical" id="irdBox">
+            <span class="ird-score" id="irdScore" data-target="65">65</span>
+            <span class="ird-label critical">Riesgo Crítico</span>
         </div>
 
         <p class="ird-context">
@@ -74,6 +76,58 @@
         <p class="ird-date">Fecha de evaluación: 2026-01-11</p>
     </div>
 </section>
+
+<!-- Progressive Animation Script (Browser Only - Ignored by PDF Renderer) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Only run if elements exist
+        const scoreEl = document.getElementById('irdScore');
+        const boxEl = document.getElementById('irdBox');
+        if (!scoreEl || !boxEl) return;
+
+        const targetScore = parseInt(scoreEl.getAttribute('data-target'), 10);
+        if (isNaN(targetScore)) return;
+
+        // Animation Config
+        const duration = 4000; // 4 seconds
+        const startTimestamp = performance.now();
+
+        // Color Palette (Radioactive)
+        // Low: #74b9ff, Med: #ffeaa7, High: #fd79a8, Crit: #ff7675, Max: #a29bfe
+        function getColorForScore(s) {
+            if (s >= 80) return '#a29bfe'; // Maximum (Purple)
+            if (s >= 60) return '#ff7675'; // Critical (Red)
+            if (s >= 40) return '#fd79a8'; // High (Pink)
+            if (s >= 20) return '#ffeaa7'; // Medium (Yellow)
+            return '#74b9ff'; // Low (Blue)
+        }
+
+        function step(timestamp) {
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentScore = Math.floor(progress * targetScore);
+
+            // Update Text
+            scoreEl.innerText = currentScore;
+
+            // Update Color (Dynamic)
+            const color = getColorForScore(currentScore);
+            scoreEl.style.color = color;
+            boxEl.style.borderColor = color;
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                // Ensure final state matches exact target
+                scoreEl.innerText = targetScore;
+                scoreEl.style.color = getColorForScore(targetScore);
+                boxEl.style.borderColor = getColorForScore(targetScore);
+            }
+        }
+
+        // Start Animation
+        window.requestAnimationFrame(step);
+    });
+</script>
 
         <!-- Vectors Section (Premium Cards) -->
         <div class="page-break"></div>
