@@ -550,223 +550,228 @@ h1 {
     /* Highlight remediation steps slightly */
 }
 
-/* --- TECHNICAL ANNEX (POLISH PASS) --- */
+/* --- TECHNICAL ANNEX (LANDING CONCEPT / CYBER-MINIMALIST) --- */
 .annex-page {
     page-break-before: always;
     color: #c5cae0;
-    padding: 3rem 0;
+    padding: 4rem 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    background-image:
+        linear-gradient(rgba(11, 15, 25, 0.95), rgba(11, 15, 25, 0.95)),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255, 255, 255, 0.03) 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255, 255, 255, 0.03) 20px);
+    background-size: 100% 100%, 20px 20px, 20px 20px;
+    /* Tech Grid Background */
 }
 
-/* 1.1 Header Typography */
+/* 1.1 Header Typography (Hero) */
 .annex-header {
-    margin-bottom: 5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    /* Ultra subtle */
-    padding-bottom: 2rem;
+    margin-bottom: 6rem;
+    border-bottom: 2px solid #00a3ff;
+    /* Electric Blue Line */
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 .annex-title {
-    font-size: 2.8rem;
-    font-weight: 300;
-    color: #ffffff;
-    letter-spacing: 0.05em;
-    /* Tracking sutil */
+    font-size: 3.5rem;
+    /* Massive */
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.03em;
     margin: 0;
-    text-transform: uppercase;
-    text-shadow: 0 0 30px rgba(0, 163, 255, 0.2);
-    /* Very subtle glow */
+    line-height: 1;
 }
 
 .annex-subtitle {
-    font-size: 0.85rem;
-    color: rgba(197, 202, 224, 0.6);
-    /* Reduced opacity for fineness */
+    font-size: 0.8rem;
+    color: #00a3ff;
     text-transform: uppercase;
-    letter-spacing: 0.25em;
-    margin-top: 1rem;
-    display: block;
-    font-weight: 400;
+    letter-spacing: 0.15em;
     font-family: 'Courier New', monospace;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
 /* 1.2 Section Titles */
 .annex-section {
-    margin-bottom: 6rem;
-    /* Breathing room */
+    margin-bottom: 5rem;
 }
 
 .annex-h2 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: #fff;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid transparent;
-    border-image: linear-gradient(90deg, rgba(0, 163, 255, 0.5), transparent) 1;
-    /* Subtle gradient line */
-    letter-spacing: -0.01em;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.annex-h2::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 4px;
+    background: #00a3ff;
 }
 
 /* 1.3 Paragraphs */
 .annex-p {
-    font-size: 1rem;
-    line-height: 1.8;
-    /* "Respira" */
+    font-size: 1.05rem;
+    line-height: 1.7;
     margin-bottom: 3rem;
-    color: #aab2c0;
-    max-width: 720px;
-    /* Reading limit */
+    color: #b0b8c8;
+    max-width: 800px;
     font-weight: 300;
 }
 
-/* 3.2 Jewel Formula Block */
+/* 3.2 Terminal Formula Block */
 .formula-block {
-    background: rgba(255, 255, 255, 0.02);
-    /* Glass Surface */
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    /* Fine border */
-    border-radius: 16px;
-    padding: 3rem;
-    margin: 4rem auto;
-    text-align: center;
+    background: #05070a;
+    /* Deep black */
+    border: 1px solid #1f293a;
+    border-left: 4px solid #00a3ff;
+    border-radius: 4px;
+    /* Minimal radius */
+    padding: 2.5rem;
+    margin: 3rem 0;
+    text-align: left;
+    /* Terminal style left-align */
     position: relative;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    /* Soft shadow */
-    max-width: 800px;
-    backdrop-filter: blur(10px);
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .formula-label {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 0.65rem;
+    top: -0.8rem;
+    left: 1rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    color: #5c6da0;
-    letter-spacing: 0.2em;
-    font-weight: 600;
-    background: #0b0f19;
-    /* Match bg to hide line */
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #000;
+    background: #00a3ff;
+    /* High contrast label */
+    padding: 0.2rem 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
 }
 
 .formula-text {
-    font-family: 'Courier New', monospace;
-    font-size: 1.4rem;
-    color: #00e0ff;
-    /* Cyan accent */
-    font-weight: 500;
+    font-size: 1.3rem;
+    color: #00ff85;
+    /* Terminal Green/Cyan */
+    font-weight: 600;
     letter-spacing: 1px;
-    text-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
 }
 
-/* 4.0 One-Level Variable Grid (Cards) */
+/* 4.0 HUD Variable Grid */
 .variable-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    /* Gap for border effect */
+    background: rgba(255, 255, 255, 0.05);
+    /* Border color */
+    border: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: 3rem;
 }
 
 .variable-card {
-    background: rgba(255, 255, 255, 0.015);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    /* Subtle border */
-    border-radius: 12px;
-    padding: 1.5rem;
+    background: #0b0f19;
+    /* Back to navy */
+    padding: 2rem;
     position: relative;
-    transition: all 0.3s ease;
 }
 
-/* Badge Top Right */
+.variable-card:hover {
+    background: #111625;
+}
+
 .var-badge {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: rgba(0, 163, 255, 0.1);
-    color: #00a3ff;
-    font-size: 0.7rem;
+    top: 1.5rem;
+    right: 1.5rem;
+    color: #5c6da0;
+    font-size: 0.8rem;
     font-weight: 700;
-    padding: 0.25rem 0.6rem;
-    border-radius: 6px;
-    border: 1px solid rgba(0, 163, 255, 0.2);
     font-family: 'Courier New', monospace;
+    border: 1px solid #2d3436;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
 }
 
 .var-name {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     color: #fff;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
     display: block;
-    padding-right: 3rem;
-    /* Space for badge */
 }
 
 .var-desc {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #8fa0bc;
     line-height: 1.5;
-    font-weight: 300;
 }
 
-/* 5.0 Severity Chips */
+/* 5.0 Tech Severity Bar */
 .severity-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     margin-top: 3rem;
-    flex-wrap: wrap;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .severity-chip {
-    flex: 1;
-    min-width: 120px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 50px;
-    /* Pill shape */
-    padding: 1rem 1.5rem;
+    padding: 1.5rem 0.5rem;
     text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.01);
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    transition: background 0.2s;
+}
+
+.severity-chip:last-child {
+    border-right: none;
 }
 
 .chip-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 0 10px currentColor;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* Color handled inline */
 }
 
 .chip-text {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 800;
     color: #fff;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .chip-weight {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #5c6da0;
-    margin-top: 0.3rem;
     font-family: 'Courier New', monospace;
 }
 
 .annex-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 8rem;
     padding-top: 2rem;
-    text-align: center;
-    opacity: 0.5;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    color: #4b5563;
 }
