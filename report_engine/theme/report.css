@@ -406,7 +406,7 @@ h1 {
     letter-spacing: 0.05em;
 }
 
-/* --- Vector Cards (The Core) --- */
+/* --- Vector Cards (Clean Navy Style) --- */
 .vectors-section {
     padding-top: 2rem;
 }
@@ -414,53 +414,61 @@ h1 {
 .divider-left {
     height: 1px;
     width: 60px;
-    background: #4a5578;
+    background: var(--border-color);
     margin: 1rem 0 2.5rem;
 }
 
 .vector-card {
-    background: rgba(255, 255, 255, 0.02);
-    /* Glassy dark */
-    border: 1px solid rgba(74, 85, 120, 0.3);
-    border-left: 3px solid;
-    /* Accent color via utility class */
-    padding: 1.8rem;
+    background: var(--bg-card);
+    /* rgba(255, 255, 255, 0.03) */
+    border: 1px solid var(--border-color);
+    /* #4a5578 */
+    border-radius: 4px;
+    /* Consistent with Annex */
+    padding: 2rem;
     margin-bottom: 2rem;
     break-inside: avoid;
     position: relative;
+    /* Clean, no left border accent, no glow */
 }
 
 .vector-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.2rem;
-    border-bottom: 1px solid rgba(74, 85, 120, 0.2);
-    padding-bottom: 0.8rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
 }
 
 .vector-id {
-    color: #4a5578;
-    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 0.05em;
+    font-family: 'Courier New', monospace;
+    /* Tech accent but subtle */
 }
 
 .vector-title {
     color: #fff;
-    font-size: 1.25rem;
-    font-weight: 500;
+    font-size: 1.4rem;
+    font-weight: 600;
     flex-grow: 1;
     margin: 0 1.5rem;
+    text-align: center;
 }
 
+/* Badge (Clean) */
 .vector-irv-badge {
-    border: 1px solid;
+    border: 1px solid var(--border-color);
     padding: 0.4rem 0.8rem;
     border-radius: 4px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    /* Very subtle tint */
 }
 
 .irv-value {
@@ -474,39 +482,50 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
+    color: var(--text-muted);
 }
 
-/* Vector Meta Grid */
+/* Vector Meta Grid (Clean Distribution) */
 .vector-meta-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    /* Slightly darker for contrast */
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    /* Defined box */
 }
 
 .meta-item {
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .meta-item .label {
-    color: #6b7490;
-    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
 }
 
 .meta-item .value {
-    color: #c5cae0;
+    color: #fff;
     font-weight: 500;
 }
 
-/* Vector Body (Columns) */
+/* Vector Body Columns */
 .vector-body {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
+    /* Simples y claras distribution */
+    margin-top: 1rem;
 }
 
 .vector-column {
@@ -514,41 +533,41 @@ h1 {
 }
 
 .sub-header {
-    color: #8892b4;
     font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.8rem;
-    border-bottom: 1px solid rgba(74, 85, 120, 0.2);
-    padding-bottom: 0.3rem;
-    display: inline-block;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.5rem;
+    display: block;
+    /* Ensure full width line */
 }
 
 .description-text {
-    color: #c5cae0;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     line-height: 1.6;
+    color: var(--text-main);
     margin-bottom: 1.5rem;
-    font-weight: 300;
+    text-align: left;
 }
 
 .impact-list,
 .remediation-list {
-    margin-left: 1.2rem;
+    padding-left: 1.2rem;
+    margin-top: 0;
+}
+
+.impact-list li,
+.remediation-list li {
     font-size: 0.9rem;
     line-height: 1.5;
-    color: #c5cae0;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-align: left;
 }
 
-.impact-list li {
-    margin-bottom: 0.4rem;
-}
-
-.remediation-list li {
-    margin-bottom: 0.6rem;
-    color: #fff;
-    /* Highlight remediation steps slightly */
-}
 
 /* --- TECHNICAL ANNEX (CLEAN NATIVE DESIGN) --- */
 .annex-page {
