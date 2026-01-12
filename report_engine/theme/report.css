@@ -846,3 +846,16 @@ h1 {
     color: var(--text-muted);
     font-size: 0.75rem;
 }
+
+.privacy-link {
+    color: #74b9ff;
+    /* Soft Blue to distinguish it as a link */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.privacy-link:hover {
+    color: #a29bfe;
+    /* Discrete hover shift to purple/lighter tone */
+    text-decoration: none;
+}
