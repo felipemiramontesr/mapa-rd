@@ -309,8 +309,8 @@ h1 {
     align-items: center;
     justify-content: flex-start;
     /* Moved from center to flex-start to lift content */
-    padding-top: 40px;
-    /* Baja 40px reales per user request */
+    padding-top: 4.5rem;
+    /* Clean calculated spacing (H1 margin + Divider + Margins = ~4.2rem). 4.5rem for optical match. */
     text-align: center;
 }
 
@@ -322,13 +322,17 @@ h1 {
 }
 
 .section-title-center {
-    font-size: 1.8rem;
+    font-size: 3.0rem;
+    /* Match H1 size */
     font-weight: 300;
+    /* Match H1 weight */
     color: #fff;
     margin-top: 0;
-    /* Ensure no top margin */
     margin-bottom: 3rem;
     letter-spacing: -0.02em;
+    /* Match H1 spacing */
+    line-height: 1.15;
+    /* Match H1 line-height */
 }
 
 .ird-circle {
