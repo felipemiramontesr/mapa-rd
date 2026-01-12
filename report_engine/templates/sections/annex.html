@@ -1,12 +1,10 @@
 <div class="annex-page">
     <div class="annex-header">
-        <span class="annex-eyebrow">Documentación Oficial</span>
         <h1 class="annex-title">Anexo Técnico</h1>
     </div>
 
     <!-- SECTION 1: IRV -->
     <div class="annex-section">
-        <span class="annex-eyebrow">METODOLOGÍA MAPA-RD (v1.0)</span>
         <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
         <p class="annex-p">
             El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la necesidad
@@ -14,7 +12,7 @@
             Se calcula internamente mediante un modelo ponderado de seis dimensiones.
         </p>
 
-        <!-- SAAS FORMULA BLOCK -->
+        <!-- CLEAN FORMULA BLOCK -->
         <div class="formula-block">
             <span class="formula-label">Fórmula de Cálculo</span>
             <div class="formula-text">
@@ -22,11 +20,12 @@
             </div>
         </div>
 
-        <h3 style="color:#fff; font-size:1rem; margin-top:3rem; font-weight:700;">Variables del Modelo</h3>
+        <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Variables del
+            Modelo</h3>
 
-        <!-- SAAS VARIABLE GRID -->
+        <!-- CLEAN VARIABLE GRID -->
         <div class="variable-grid">
-            <div class="variable-card">
+            <div class="annex-card">
                 <div class="var-header">
                     <span class="var-name">Criticidad (CA)</span>
                     <span class="var-badge">x4</span>
@@ -34,7 +33,7 @@
                 <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
             </div>
 
-            <div class="variable-card">
+            <div class="annex-card">
                 <div class="var-header">
                     <span class="var-name">Exposición (ET)</span>
                     <span class="var-badge">x3</span>
@@ -42,7 +41,7 @@
                 <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
             </div>
 
-            <div class="variable-card">
+            <div class="annex-card">
                 <div class="var-header">
                     <span class="var-name">Superficie (SE)</span>
                     <span class="var-badge">x3</span>
@@ -50,7 +49,7 @@
                 <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
             </div>
 
-            <div class="variable-card">
+            <div class="annex-card">
                 <div class="var-header">
                     <span class="var-name">Impacto (IM)</span>
                     <span class="var-badge">x4</span>
@@ -58,7 +57,7 @@
                 <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
             </div>
 
-            <div class="variable-card">
+            <div class="annex-card">
                 <div class="var-header">
                     <span class="var-name">Explotación (FE)</span>
                     <span class="var-badge">x3</span>
@@ -66,7 +65,7 @@
                 <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
             </div>
 
-            <div class="variable-card">
+            <div class="annex-card">
                 <div class="var-header">
                     <span class="var-name">Detección (DV)</span>
                     <span class="var-badge">x3</span>
@@ -78,7 +77,6 @@
 
     <!-- SECTION 2: IRD -->
     <div class="annex-section">
-        <span class="annex-eyebrow">POSTURA GLOBAL</span>
         <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
         <p class="annex-p">
             El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores activos
@@ -86,7 +84,7 @@
             un promedio ponderado por severidad.
         </p>
 
-        <!-- SAAS FORMULA BLOCK -->
+        <!-- CLEAN FORMULA BLOCK -->
         <div class="formula-block">
             <span class="formula-label">Agregación Ponderada</span>
             <div class="formula-text">
@@ -94,38 +92,39 @@
             </div>
         </div>
 
-        <h3 style="color:#fff; font-size:1rem; margin-top:3rem; font-weight:700;">Matriz de Pesos</h3>
+        <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Matriz de Pesos
+        </h3>
 
-        <!-- COMPONENT: SAAS SEVERITY BAR -->
+        <!-- COMPONENT: CLEAN SEVERITY ROW -->
         <div class="severity-row">
-            <div class="severity-chip">
-                <div class="chip-dot" style="background: #74b9ff;"></div>
-                <span class="chip-text">Bajo</span>
-                <span class="chip-weight">Mult x1</span>
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #74b9ff;"></div>
+                <span class="sev-label">Bajo</span>
+                <span class="sev-mult">Mult x1</span>
             </div>
 
-            <div class="severity-chip">
-                <div class="chip-dot" style="background: #ffeaa7;"></div>
-                <span class="chip-text">Medio</span>
-                <span class="chip-weight">Mult x2</span>
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #ffeaa7;"></div>
+                <span class="sev-label">Medio</span>
+                <span class="sev-mult">Mult x2</span>
             </div>
 
-            <div class="severity-chip">
-                <div class="chip-dot" style="background: #ff9f43;"></div>
-                <span class="chip-text">Alto</span>
-                <span class="chip-weight">Mult x3</span>
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #ff9f43;"></div>
+                <span class="sev-label">Alto</span>
+                <span class="sev-mult">Mult x3</span>
             </div>
 
-            <div class="severity-chip">
-                <div class="chip-dot" style="background: #ff7675;"></div>
-                <span class="chip-text">Crítico</span>
-                <span class="chip-weight">Mult x4</span>
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #ff7675;"></div>
+                <span class="sev-label">Crítico</span>
+                <span class="sev-mult">Mult x4</span>
             </div>
 
-            <div class="severity-chip">
-                <div class="chip-dot" style="background: #a29bfe;"></div>
-                <span class="chip-text">Máximo</span>
-                <span class="chip-weight">Mult x5</span>
+            <div class="severity-item">
+                <div class="sev-dot" style="background: #a29bfe;"></div>
+                <span class="sev-label">Máximo</span>
+                <span class="sev-mult">Mult x5</span>
             </div>
         </div>
     </div>
