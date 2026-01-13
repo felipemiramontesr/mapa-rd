@@ -36,9 +36,12 @@
     - [x] **Regla 5 (Auto-Save)**: Eliminada redundancia en confirmaciones de guardado.
     - [x] **UI-01 (Email)**: Template Premium implementado y validado en vivo.
 - [ ] **Phase 7: Business Logic & Onboarding (EN CURSO):**
-    - [x] Definición de `Business_Logic.md`.
-    - [x] Implementación del Paso 1 (Recepción de Inputs).
-    - [x] Validación de Reglas de Negocio.
+    - **Checkpoint 30 (Current)**: Working exclusively on `MAPA-RD_Felipe_de_Jesús_Miramontes_Romero_20260112_v20RPT-2026-001.html`.
+    - [x] Integrate real breach data.
+    - [x] Refine IRD spacing (Removed experimental divider, reset margins).
+    - [x] Ensure strict HTML output (No PDF).
+    - [x] Finalize visual hierarchy ("Red Dot" centered title).
+    - [x] Clean source code logic. Reglas de Negocio.
 - [x] **FASE 1 — Metodología v1.0 DECLARADA Y CONGELADA**
 - [x] **FASE 2 — PDF PREMIUM v1.0 APROBADO**
 

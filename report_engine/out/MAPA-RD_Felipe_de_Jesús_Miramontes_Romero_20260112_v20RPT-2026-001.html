@@ -1,0 +1,3570 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPA-RD | RPT-2026-002</title>
+    <link rel="stylesheet" href="../theme/report.css">
+    <link rel="stylesheet" href="../theme/report.print.css" media="print">
+</head>
+
+<body class="theme-dark">
+    <!-- STRICT LANDING PAGE ALIGNMENT -->
+    <style>
+        :root {
+            /* 1.1 Colores base (exactos) */
+            --color-bg-primary: #0a0e27;
+            --color-bg-secondary: #1a1f3a;
+            --color-bg-panel: rgba(255, 255, 255, 0.03);
+
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #c5cae0;
+            --color-text-muted: #a8adc7;
+            --color-text-micro: #6b7490;
+
+            --color-border-soft: rgba(74, 85, 120, .35);
+            --color-border-strong: rgba(74, 85, 120, .55);
+
+            /* 2. Acento principal MAPA-RD (inmutable) */
+            --color-accent-core: #5a6fa0;
+            --color-accent-hover: #6b7fa8;
+            --color-accent-glow: rgba(138, 159, 202, .22);
+
+            /* 5. Glow Tokens */
+            --glow-soft: 0 0 20px rgba(138, 159, 202, .18);
+            --glow-strong: 0 0 22px rgba(138, 159, 202, .22);
+        }
+
+        /* 3. Tipografía — herencia directa */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            background: #1a1f3a !important;
+            /* EXPLICIT REQUEST */
+            color: var(--color-text-primary) !important;
+            padding: 2rem !important;
+        }
+
+        /* MAPPING: Titles & Text to Tokens */
+        h1,
+        h2,
+        h3,
+        h4,
+        .timeline-title,
+        .t-title,
+        .closing-title,
+        .annex-h2 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            color: var(--color-text-primary) !important;
+            font-weight: 300 !important;
+            letter-spacing: -0.02em !important;
+        }
+
+        h1,
+        .timeline-title {
+            font-size: 3rem !important;
+        }
+
+        h2 {
+            font-size: 1.85rem !important;
+        }
+
+        p,
+        .subtitle,
+        .description,
+        .t-desc,
+        .inaction-desc,
+        .action-item,
+        .closing-time,
+        .timeline-year {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            color: var(--color-text-secondary) !important;
+            font-weight: 300 !important;
+            line-height: 1.85 !important;
+        }
+
+        .subtitle,
+        .timeline-subtitle {
+            color: var(--color-text-muted) !important;
+            font-size: 1.15rem !important;
+        }
+
+        /* 4. Cards y Secciones — mismo lenguaje */
+        .card,
+        .dossier-card,
+        .inaction-card,
+        .closing-card,
+        .execution-container,
+        .ird-context-card,
+        .timeline-content,
+        .vector-card
+
+        /* Explicitly adding potential vector class */
+            {
+            background: var(--color-bg-panel) !important;
+            border: 1px solid var(--color-border-strong) !important;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .18) !important;
+            border-radius: 2px !important;
+            backdrop-filter: none !important;
+            transition: border-color 0.3s ease, transform 0.3s ease !important;
+        }
+
+        /* Ad-hoc Hover for Vectors */
+        .dossier-card:hover,
+        .vector-card:hover {
+            border-color: var(--color-accent-core) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Remove specific overrides from previous design */
+        .closing-card,
+        .dossier-card,
+        .inaction-card {
+            border-left: 1px solid var(--color-border-strong) !important;
+            border-top: 1px solid var(--color-border-strong) !important;
+        }
+
+        /* 2. Buttons & Tags (Mapped to .tag and .btn) */
+        .tag,
+        .demand-badge,
+        .resp-badge,
+        .prio-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: .55rem 1.15rem !important;
+            border: 1px solid var(--color-border-main) !important;
+            /* Will fallback if undefined, let's fix below */
+            border: 1px solid #4a5578 !important;
+            border-radius: 2px !important;
+            font-size: .72rem !important;
+            letter-spacing: .16em !important;
+            color: #8892b4 !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        /* 1. Divider */
+        .divider,
+        .section-divider {
+            width: 60px !important;
+            height: 1px !important;
+            background-color: var(--color-border-main) !important;
+            /* Fallback fix: */
+            background-color: #4a5578 !important;
+            margin: 3rem auto !important;
+            border: none !important;
+            background-image: none !important;
+        }
+
+        /* 6. Riesgo visual — integración elegante */
+        /* Force spines and lines to the Border Color */
+        .timeline-line,
+        .timeline-line-fill,
+        .dossier-spine-line {
+            background: #4a5578 !important;
+            width: 1px !important;
+            box-shadow: none !important;
+        }
+
+        .timeline-dot {
+            border-color: #4a5578 !important;
+            background: #0a0e27 !important;
+        }
+
+        /* Accents: Use Landing Core Blue for highlights instead of Green/Red */
+        .closing-phase,
+        .dossier-phase,
+        .inaction-phase {
+            color: var(--color-accent-core) !important;
+            font-weight: 600 !important;
+            letter-spacing: .16em !important;
+        }
+
+        .closing-time {
+            font-size: 1.35rem !important;
+            font-weight: 500 !important;
+            color: #fff !important;
+            text-shadow: none !important;
+        }
+
+        /* Icons */
+        .lock-icon,
+        i,
+        svg {
+            color: #cfd6ea !important;
+        }
+
+        /* Fix widths */
+        .container,
+        .timeline-header,
+        .closing-section,
+        .execution-section,
+        .dossier-container,
+        .annex-page,
+        .matrix-legend {
+            max-width: 980px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        /* Annex Cards */
+        .matrix-card,
+        .definition-card {
+            background: var(--color-bg-panel) !important;
+            border: 1px solid var(--color-border-strong) !important;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .18) !important;
+            border-radius: 2px !important;
+            backdrop-filter: none !important;
+        }
+
+        /* USER REQUEST: Vector Card Specifics */
+        /* 1. Bullets match description text color */
+        .remediation-list li,
+        .impact-list li {
+            color: var(--color-text-secondary) !important;
+        }
+
+        /* 2. Labels (Activo, Tipo, Exposicion) - Neutral Ad Hoc Style */
+        .vector-meta-grid .label,
+        .meta-item .label {
+            color: var(--color-text-muted) !important;
+            /* Neutral #a8adc7 */
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+    </style>
+    <div class="container">
+
+        <!-- Cover Section -->
+        <div class="cover-wrapper">
+            <!-- Hero / Top -->
+            <div class="hero-top">
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+
+                <div class="tag">OSINT + ARCO + PROTECCIÓN DE DATOS</div>
+            </div>
+
+            <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+
+            <div class="divider"></div>
+
+            <p class="subtitle">
+                Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.
+            </p>
+
+            <p class="description">
+                MAPA-RD identifica exposición real (visible públicamente), prioriza riesgos y entrega una ruta de cierre
+                ejecututable.
+                Incluye base operativa para gestión ARCO y un esquema mensual de control continuo.
+                <br><br>
+                <strong>Sin auditorías genéricas. Sin promesas vacías.</strong>
+            </p>
+
+            <!-- Quiet Depth Layer 2: Divider Fade -->
+            <div class="divider-fade"></div>
+
+            <!-- Metadata Editorial Block (Quiet Depth Layer 3) -->
+            <div class="meta-block">
+                <div class="meta-line-primary">
+                    Felipe de Jesús Miramontes Romero &middot; Reporte RPT-2026-002 &middot; 2026-01-12
+                </div>
+                <div class="meta-line-secondary">
+                    Reporte Ejecutivo de Seguridad &middot; Exposición pública &middot; Estrictamente Confidencial
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- IRD Section (Premium Page) -->
+        <div class="page-break"></div>
+        <div class="page-break"></div>
+        <section class="ird-page" style="text-align: center;"> <!-- Enforce center alignment -->
+            <hr class="section-divider" style="margin: 0 auto 3rem auto !important; display: inline-block;">
+            <!-- Explicit Center -->
+            <style>
+                .ird-context-card {
+                    background: rgba(0, 0, 0, 0.2);
+                    /* Match Ruta de Cierre */
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 12px;
+                    padding: 1.5rem 2rem;
+                    margin: 2rem auto 0;
+                    max-width: 700px;
+                    text-align: center;
+                    backdrop-filter: blur(10px);
+                    transition: border-color 1s ease, box-shadow 1s ease;
+                }
+
+                .ird-context-label {
+                    font-size: 0.8rem;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    color: #b2bec3;
+                    margin-bottom: 0.75rem;
+                    font-weight: 600;
+                    display: block;
+                }
+            </style>
+            <div class="ird-container">
+                <div class="timeline-header">
+                    <h2 class="timeline-title">Índice de Riesgo Digital</h2>
+                    <p class="timeline-subtitle">Evaluación Cuantitativa de Postura (Estado Global)</p>
+                </div>
+
+                <!-- Updated to IRD Box (Rounded Rectangle) -->
+                <!-- 'final-score' attribute holds the value for JS animation. Content is pre-filled for PDF static render. -->
+                <div class="ird-box maximum" id="irdBox">
+                    <span class="ird-score" id="irdScore" data-target="94">94</span>
+                    <span class="ird-label maximum">Riesgo Máximo</span>
+                </div>
+
+                <div class="ird-interpretation">
+                    <div class="ird-context-card" id="irdContext">
+                        <span class="ird-context-label">Diagnóstico Operativo</span>
+                        <p><strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un MÁXIMO riesgo sistémico. Datos
+                            sensibles (financieros/accesos) están expuestos activamente. Se requiere <strong>contención
+                                de
+                                emergencia</strong> para evitar fraude inminente.</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- Progressive Animation Script (Browser Only - Ignored by PDF Renderer) -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Only run if elements exist
+                const scoreEl = document.getElementById('irdScore');
+                const boxEl = document.getElementById('irdBox');
+                const labelEl = boxEl ? boxEl.querySelector('.ird-label') : null;
+                const contextEl = document.getElementById('irdContext'); // NEW
+
+                if (!scoreEl || !boxEl || !labelEl) return;
+
+                const targetScore = parseInt(scoreEl.getAttribute('data-target'), 10);
+                if (isNaN(targetScore)) return;
+
+                // Animation Config
+                const duration = 4000; // 4 seconds
+                const startTimestamp = performance.now();
+
+                // Strict Range Logic (0-19, 20-39, 40-59, 60-79, 80-100)
+                // Colors: Low=Blue, Med=Yellow, High=Orange (#ff9f43), Crit=Red, Max=Purple
+                function getRiskData(s) {
+                    if (s >= 80) return { color: '#a29bfe', text: 'RIESGO MÁXIMO', glow: 'rgba(162, 155, 254, 0.2)' };
+                    if (s >= 60) return { color: '#ff7675', text: 'RIESGO CRÍTICO', glow: 'rgba(255, 118, 117, 0.2)' };
+                    if (s >= 40) return { color: '#ff9f43', text: 'RIESGO ALTO', glow: 'rgba(255, 159, 67, 0.2)' }; // Orange
+                    if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MEDIO', glow: 'rgba(255, 234, 167, 0.2)' };
+                    return { color: '#74b9ff', text: 'RIESGO BAJO', glow: 'rgba(116, 185, 255, 0.2)' };
+                }
+
+                function step(timestamp) {
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const currentScore = Math.floor(progress * targetScore);
+
+                    // Get Dynamic Data
+                    const riskData = getRiskData(currentScore);
+
+                    // Update Content
+                    scoreEl.innerText = currentScore;
+                    labelEl.innerText = riskData.text;
+
+                    // Update Styles (Dynamic Color & Glow)
+                    scoreEl.style.color = riskData.color;
+                    labelEl.style.color = riskData.color; // NEW: Explicilty sync label color
+
+                    // Label can inherit or be explicit. Let's be explicit to ensure sync.
+                    // boxEl.style.borderColor = riskData.color; 
+                    // Note: CSS might override if specific classes are present, but inline styles normally win.
+
+                    boxEl.style.borderColor = riskData.color;
+                    boxEl.style.boxShadow = `0 0 20px ${riskData.glow}`;
+                    // Optional: Subtle background tint
+                    boxEl.style.backgroundColor = riskData.glow.replace('0.2', '0.05');
+
+                    if (contextEl) {
+                        // Sync Context Card Border/Glow from 0%
+                        contextEl.style.borderColor = riskData.color;
+                        contextEl.style.boxShadow = `0 5px 15px ${riskData.glow.replace('0.2', '0.1')}`;
+                    }
+
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    } else {
+                        // Final State (Ensure exact match)
+                        scoreEl.innerText = targetScore;
+                        const finalData = getRiskData(targetScore);
+
+                        labelEl.innerText = finalData.text;
+                        labelEl.style.color = finalData.color; // NEW: Ensure final state is also colored
+                        scoreEl.style.color = finalData.color;
+                        boxEl.style.borderColor = finalData.color;
+                        boxEl.style.boxShadow = `0 0 20px ${finalData.glow}`;
+                        boxEl.style.backgroundColor = finalData.glow.replace('0.2', '0.05');
+
+                        // Final Sync for Context Card
+                        if (contextEl) {
+                            contextEl.style.borderColor = finalData.color;
+                            contextEl.style.boxShadow = `0 5px 15px ${finalData.glow.replace('0.2', '0.1')}`;
+                        }
+                    }
+                }
+
+                // Start Animation Trigger (Scroll-Based)
+                const observerOptions = {
+                    root: null, // viewport
+                    rootMargin: '0px 0px -50% 0px', // Trigger when top of element crosses middle of screen
+                    threshold: 0
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            window.requestAnimationFrame(step);
+                            observer.unobserve(entry.target); // Run only once
+                        }
+                    });
+                }, observerOptions);
+
+                scoreEl.innerText = '0'; // Initialize to 0
+                observer.observe(boxEl); // Observe the Risk Box itself
+            });
+        </script>
+
+        <hr class="section-divider">
+
+
+
+
+
+        <!-- Vectors Section (Premium Cards) -->
+        <section class="vectors-section" style="padding-top: 0;">
+            <div class="timeline-header" style="margin-top: 0;">
+                <h2 class="timeline-title">Vectores de Vulnerabilidad</h2>
+                <p class="timeline-subtitle">Evidencia Técnica y Ruta de Cierre Priorizada</p>
+            </div>
+            <div class="divider-left" style="display:none;"></div>
+
+
+            <div class="vector-card maximum">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-001</div>
+                    <div class="vector-title">Banorte: Fuga de Datos Bancarios y PII</div>
+                    <div class="vector-irv-badge maximum">
+                        <span class="irv-value">95</span>
+                        <span class="irv-level">Máximo</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Sector Financiero</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Identidad Bancaria</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Filtración Masiva (2014/2022)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Activar alertas biométricas en banca móvil.</li>
+
+                                <li>Revisar historial crediticio (Buró de Crédito) inmediatamente.</li>
+
+                                <li>Solicitar renovación de tarjetas y credenciales bancarias.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Robo de Identidad Bancaria y Fiscal (RFC).</li>
+
+                                <li>Ingeniería Social dirigida de alta precisión.</li>
+
+                                <li>Riesgo de extorsión o fraude telefónico.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Exposición crítica de datos personales y financieros incluyendo
+                            saldos de cuenta, RFC, domicilio físico y números de teléfono. Esta información facilita el
+                            robo de identidad y fraude bancario directo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card maximum">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-002</div>
+                    <div class="vector-title">Synthient: Credenciales Activas</div>
+                    <div class="vector-irv-badge maximum">
+                        <span class="irv-value">90</span>
+                        <span class="irv-level">Máximo</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Identidad Digital</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Botnet Logs</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Credential Stuffing (2025)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Cambio global de contraseñas de manera inmediata.</li>
+
+                                <li>Uso gestor de contraseñas para evitar reutilización.</li>
+
+                                <li>Habilitar 2FA/MFA en todos los servicios críticos.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Compromiso automatizado de cuentas en diversos servicios.</li>
+
+                                <li>Evasión de controles de seguridad básicos.</li>
+
+                                <li>Acceso no autorizado persistente.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">El correo y contraseñas asociadas aparecen en listas de amenazas
+                            activas de 'Credential Stuffing' (Synthient). Esto indica que los datos están siendo
+                            probados activamente contra múltiples servicios.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card maximum">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-003</div>
+                    <div class="vector-title">000webhost: Contraseñas en Texto Plano</div>
+                    <div class="vector-irv-badge maximum">
+                        <span class="irv-value">88</span>
+                        <span class="irv-level">Máximo</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Hosting Web</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Servicio de Infraestructura</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Texto Plano (2015)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Abandonar el uso de esa contraseña específica definitivamente.</li>
+
+                                <li>Verificar integridad de sitios web antiguos.</li>
+
+                                <li>Monitorear accesos no reconocidos.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Acceso inmediato a cuentas con la misma contraseña.</li>
+
+                                <li>Rastreo de actividad por dirección IP.</li>
+
+                                <li>Compromiso de sitios web alojados.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Filtración de base de datos completa exponiendo contraseñas
+                            almacenadas en texto plano, junto con nombres y direcciones IP. Permite acceso directo sin
+                            necesidad de descifrado.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-004</div>
+                    <div class="vector-title">Adobe: Compromiso de Credenciales</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">75</span>
+                        <span class="irv-level">Crítico</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Cuenta Adobe ID</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Software SaaS</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2013)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Actualizar cuenta de Adobe si sigue activa.</li>
+
+                                <li>No utilizar pistas de contraseña que revelen información real.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Deducción de patrones de contraseñas personales.</li>
+
+                                <li>Ataques dirigidos a cuentas creativas/profesionales.</li>
+
+                                <li>Spam y phishing dirigido.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Brecha histórica masiva exponiendo usuarios, contraseñas cifradas y,
+                            críticamente, las pistas de contraseña (password hints) en texto plano, lo que facilita la
+                            deducción de claves.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-005</div>
+                    <div class="vector-title">Exploit.In: Listas de Combo</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">78</span>
+                        <span class="irv-level">Crítico</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Identidad Digital</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Mercado Negro</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Agregador de Brechas (2016)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Eliminar cuentas en desuso.</li>
+
+                                <li>Verificar actividad en correos secundarios.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Alta probabilidad de intentos de acceso automatizados.</li>
+
+                                <li>Reutilización de credenciales en servicios bancarios/correo.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Aparición en 'Combo Lists' utilizadas por cibercriminales para
+                            ataques de fuerza bruta automatizados contra múltiples plataformas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-006</div>
+                    <div class="vector-title">Collection #1: Mega-Brecha</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">80</span>
+                        <span class="irv-level">Crítico</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Múltiples Servicios</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Agregador de Brechas</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Data Dump Masivo (2019)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Higiene digital completa: cambio masivo de claves.</li>
+
+                                <li>Uso estricto de gestor de contraseñas.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Exposición universal a actores de amenaza.</li>
+
+                                <li>Saturación de intentos de login.</li>
+
+                                <li>Venta de datos en lotes masivos.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Su correo forma parte de una de las colecciones más grandes de
+                            credenciales robadas (773 millones de registros Unique), distribuidas ampliamente en foros
+                            de hacking.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-007</div>
+                    <div class="vector-title">Nitro PDF: Documentos y Claves</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">82</span>
+                        <span class="irv-level">Crítico</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Productividad</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Software SaaS</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2020)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Revisar documentos almacenados en la nube de Nitro.</li>
+
+                                <li>Cambiar contraseña y desvincular sesiones.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Espionaje corporativo o personal.</li>
+
+                                <li>Acceso a documentos sensibles almacenados.</li>
+
+                                <li>Fraude documental.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Compromiso de servicio de gestión documental. Además de
+                            credenciales, existe riesgo sobre metadatos de documentos procesados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-008</div>
+                    <div class="vector-title">123RF: Datos Físicos y Digitales</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">70</span>
+                        <span class="irv-level">Crítico</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Banco de Imágenes</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Servicio Web</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2020)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Verificar privacidad en redes sociales.</li>
+
+                                <li>Estar alerta ante correos/llamadas sospechosas.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Doxing (publicación de datos privados).</li>
+
+                                <li>Acoso o localización física.</li>
+
+                                <li>Suplantación de identidad verificada.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Filtración que incluye direcciones físicas, teléfonos y direcciones
+                            IP, combinados con datos de cuenta. Aumenta la superficie para ataques de ingeniería social.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-009</div>
+                    <div class="vector-title">MyFitnessPal: Datos de Perfil</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">65</span>
+                        <span class="irv-level">Alta</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Salud / Lifestyle</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Aplicación Móvil</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Brecha Masiva (2018)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Cambiar contraseña si es compartida.</li>
+
+                                <li>Desvincular integraciones con redes sociales.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Perflado de usuario para marketing o estafas.</li>
+
+                                <li>Acceso lateral a otras cuentas.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Exposición de correos, usuarios y contraseñas. Aunque no incluye
+                            datos financieros, permite correlacionar hábitos y rutinas del usuario.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-010</div>
+                    <div class="vector-title">Canva: Datos de Diseño y Geo</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">68</span>
+                        <span class="irv-level">Alta</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Diseño Gráfico</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">SaaS</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2019)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Cambiar contraseña y activar MFA.</li>
+
+                                <li>Revisar actividad reciente en la cuenta.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Correlación geográfica.</li>
+
+                                <li>Ataques de phishing temáticos (diseño/marketing).</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Exposición de datos de usuario, ubicación geográfica y hashes de
+                            contraseña.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card critical">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-011</div>
+                    <div class="vector-title">Animoto: Datos Personales</div>
+                    <div class="vector-irv-badge critical">
+                        <span class="irv-value">60</span>
+                        <span class="irv-level">Alta</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Edición de Video</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">SaaS</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2018)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Monitorear preguntas de seguridad en otros servicios.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Uso de fecha de nacimiento para recuperar otras cuentas.</li>
+
+                                <li>Suplantación de identidad básica.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Inclusión de fechas de nacimiento y geolocalización junto a
+                            credenciales. La fecha de nacimiento es un dato crítico para verificaciones de seguridad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card high">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-012</div>
+                    <div class="vector-title">Dropbox: Hash de Contraseñas</div>
+                    <div class="vector-irv-badge high">
+                        <span class="irv-value">55</span>
+                        <span class="irv-level">Alta</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Almacenamiento Cloud</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Infraestructura</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2012)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Asegurar que la contraseña fue cambiada post-2016.</li>
+
+                                <li>Activar 2FA en Dropbox obligatoriamente.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Intento de descifrado de hashes antiguos.</li>
+
+                                <li>Reutilización histórica.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Brecha antigua pero relevante por la popularidad del servicio. Se
+                            filtraron hashes de contraseñas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card high">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-013</div>
+                    <div class="vector-title">Manipulated Caiman: Blanco de Phishing</div>
+                    <div class="vector-irv-badge high">
+                        <span class="irv-value">58</span>
+                        <span class="irv-level">Alta</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Email Personal</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Campaña de Amenaza</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Target List (2023)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Extrema precaución con adjuntos y enlaces.</li>
+
+                                <li>Mejorar filtros de spam/seguridad en el correo.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Recepción de correos maliciosos altamente personalizados.</li>
+
+                                <li>Riesgo de infección por malware.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Su dirección de correo ha sido identificada en listas de objetivos
+                            de la campaña de phishing 'Manipulated Caiman', enfocada en usuarios de México.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card medium">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-014</div>
+                    <div class="vector-title">GeekedIn: Perfil Profesional</div>
+                    <div class="vector-irv-badge medium">
+                        <span class="irv-value">45</span>
+                        <span class="irv-level">Media</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Desarrollo Profesional</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Scraping</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Base de Datos (2016)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Verificar legitimidad de reclutadores.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Ofertas de trabajo falsas (Job Scams).</li>
+
+                                <li>Ingeniería social basada en perfil laboral.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Exposición de datos profesionales: habilidades, experiencia y
+                            ubicación. Útil para reclutadores falsos o ingeniería social corporativa.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card medium">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-015</div>
+                    <div class="vector-title">Twitter (200M): Identidad Social</div>
+                    <div class="vector-irv-badge medium">
+                        <span class="irv-value">40</span>
+                        <span class="irv-level">Media</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Red Social</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">Perfil Público</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Scraping/API (2021)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Desvincular teléfono/email de la búsqueda pública.</li>
+
+                                <li>Usar alias de correo para redes sociales.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Desanonimización de cuentas.</li>
+
+                                <li>Acoso selectivo.</li>
+
+                                <li>Correlación de identidad cruzada.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Asociación del correo electrónico con el perfil de Twitter (X).
+                            Permite vincular la identidad seudónima con la real.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vector-card medium">
+                <div class="vector-header">
+                    <div class="vector-id">VEC-016</div>
+                    <div class="vector-title">Trello: Enumeración de Usuarios</div>
+                    <div class="vector-irv-badge medium">
+                        <span class="irv-value">35</span>
+                        <span class="irv-level">Media</span>
+                    </div>
+                </div>
+
+                <div class="vector-meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Activo:</span>
+                        <span class="value">Gestión de Proyectos</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Tipo:</span>
+                        <span class="value">SaaS</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Exposición:</span>
+                        <span class="value">Scraping (2024)</span>
+                    </div>
+                </div>
+
+                <div class="vector-body-new">
+                    <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                    <div class="vector-action-grid">
+                        <div class="action-card remediation">
+                            <h4 class="sub-header">Ruta de Cierre</h4>
+                            <ol class="remediation-list">
+
+                                <li>Hacer tableros privados si contienen datos sensibles.</li>
+
+                                <li>Ignorar correos genéricos de soporte de Trello.</li>
+
+                            </ol>
+                        </div>
+
+                        <div class="action-card impact">
+                            <h4 class="sub-header">Impacto</h4>
+                            <ul class="impact-list">
+
+                                <li>Phishing temático de Atlassian/Trello.</li>
+
+                                <li>Confirmación de cuenta activa.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description (Sober & Elegant) -->
+                    <div class="description-card">
+                        <h4 class="sub-header-simple">Descripción del Evento</h4>
+                        <p class="description-text">Confirmación de que el correo tiene una cuenta de Trello asociada
+                            mediante enumeración de API.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- NEW TIMELINE SECTION -->
+        <div class="page-break"></div>
+        <section class="timeline-section-wrapper">
+            <style>
+                /* Embedded Timeline Styles to strictly adhere to single-file editing */
+                .timeline-section-wrapper {
+                    padding: 4rem 2rem;
+                    background-color: var(--bg-dark);
+                    /* Assuming vars exist, fallback to dark */
+                    color: #fff;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .timeline-header {
+                    text-align: center;
+                    margin-bottom: 4rem;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                /* Section Divider (Global for this file due to scope) */
+                .section-divider {
+                    border: 0;
+                    height: 1px;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+                    margin: 3rem auto;
+                    width: 70%;
+                    opacity: 0.6;
+                }
+
+                .timeline-title {
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    background: linear-gradient(90deg, #fff, #a29bfe);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    margin-bottom: 0.5rem;
+                }
+
+                .timeline-subtitle {
+                    font-size: 1.1rem;
+                    color: #b2bec3;
+                    font-weight: 400;
+                }
+
+                .timeline-container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    position: relative;
+                    padding: 2rem 0;
+                }
+
+                /* The Vertical Line */
+                .timeline-line {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: 0;
+                    bottom: 0;
+                    width: 2px;
+                    background: rgba(255, 255, 255, 0.1);
+                    z-index: 1;
+                }
+
+                .timeline-line-fill {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: 0;
+                    width: 2px;
+                    background: linear-gradient(to bottom, #74b9ff, #a29bfe, #ff7675);
+                    height: 0%;
+                    /* JavaScript will animate this */
+                    transition: height 0.5s linear;
+                    z-index: 1;
+                    box-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
+                }
+
+                /* Timeline Item */
+                .timeline-item {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 3rem;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: all 0.6s ease-out;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                .timeline-item.visible {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                .timeline-dot {
+                    width: 16px;
+                    height: 16px;
+                    background-color: #2d3436;
+                    border: 2px solid #636e72;
+                    border-radius: 50%;
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 3;
+                    transition: all 0.3s ease;
+                }
+
+                .timeline-item.active .timeline-dot {
+                    background-color: #fff;
+                    box-shadow: 0 0 15px currentColor;
+                    transform: translateX(-50%) scale(1.2);
+                    border-color: transparent;
+                }
+
+                /* Content Card */
+                .timeline-content {
+                    width: 45%;
+                    background: rgba(255, 255, 255, 0.03);
+                    backdrop-filter: blur(10px);
+                    padding: 20px !important;
+                    border-radius: 12px;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    position: relative;
+                    transition: transform 0.3s ease, border-color 0.3s ease;
+                    margin-bottom: 2rem;
+                    overflow: hidden;
+                    /* CLIP the watermark */
+                }
+
+                /* Ensure visual padding equality */
+                .timeline-content>*:first-child {
+                    margin-top: 0 !important;
+                }
+
+                .timeline-content>*:last-child {
+                    margin-bottom: 0 !important;
+                }
+
+                .timeline-content:hover {
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    border-color: rgba(255, 255, 255, 0.1);
+                    transform: translateY(-2px);
+                }
+
+                /* Layout Spacing */
+                .timeline-item {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 6rem;
+                    /* Increased from 3rem to stop overlapping */
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: all 0.6s ease-out;
+                    position: relative;
+                    /* z-index managed by JS or default stack */
+                }
+
+                /* Alternating Layout */
+                .timeline-item:nth-child(odd) .timeline-content {
+                    margin-right: auto;
+                    text-align: right;
+                }
+
+                .timeline-item:nth-child(even) .timeline-content {
+                    margin-left: auto;
+                    text-align: left;
+                }
+
+                /* Year Watermark - REMOVED per user request */
+                .timeline-year {
+                    display: none !important;
+                }
+
+                /* Clean up positioning logic */
+                .timeline-item:nth-child(odd) .timeline-year,
+                .timeline-item:nth-child(even) .timeline-year {
+                    /* Removed */
+                }
+
+                .t-date {
+                    font-family: 'Courier New', monospace;
+                    color: #a29bfe;
+                    font-size: 0.9rem;
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    letter-spacing: 1px;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .t-title {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    color: #fff;
+                    position: relative;
+                    z-index: 1;
+                    line-height: 1.2;
+                }
+
+                .t-desc {
+                    position: relative;
+                    z-index: 1;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                }
+
+                /* Breathing room */
+
+
+
+                .t-badge {
+                    display: inline-block;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    margin-top: 0.5rem;
+                    text-transform: uppercase;
+                }
+
+                /* Mobile Fix */
+                @media (max-width: 768px) {
+
+                    .timeline-line,
+                    .timeline-line-fill {
+                        left: 20px;
+                    }
+
+                    .timeline-dot {
+                        left: 20px;
+                    }
+
+                    .timeline-content {
+                        width: calc(100% - 50px);
+                        margin-left: 50px !important;
+                        text-align: left !important;
+                    }
+
+                    .timeline-year {
+                        font-size: 2rem;
+                        right: 1rem !important;
+                        /* Always right on card */
+                        left: auto !important;
+                    }
+                }
+            </style>
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Línea de Tiempo de Exposición</h2>
+                <p class="timeline-subtitle">Profundidad Histórica de la Huella Digital</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                <div class="timeline-line-fill" id="timelineFill"></div>
+
+                <!-- 2012 -->
+                <div class="timeline-item" data-color="#ff9f43">
+                    <div class="timeline-dot" style="color: #ff9f43;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2012</span>
+                        <span class="t-date">2012</span>
+                        <h3 class="t-title">Dropbox</h3>
+                        <p class="t-desc">Inicio de la huella rastreable. Filtración masiva de hashes de contraseña.</p>
+                        <span class="t-badge" style="background: rgba(255, 159, 67, 0.2); color: #ff9f43;">Riesgo
+                            Alto</span>
+                    </div>
+                </div>
+
+                <!-- 2013 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2013</span>
+                        <span class="t-date">2013</span>
+                        <h3 class="t-title">Adobe</h3>
+                        <p class="t-desc">Compromiso crítico de credenciales y pistas de contraseña en texto plano.</p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
+                            Crítico</span>
+                    </div>
+                </div>
+
+                <!-- 2014 -->
+                <div class="timeline-item" data-color="#a29bfe">
+                    <div class="timeline-dot" style="color: #a29bfe;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2014</span>
+                        <span class="t-date">2014</span>
+                        <h3 class="t-title">Banorte</h3>
+                        <p class="t-desc">Exposición financiera mayor. Datos bancarios y personales (PII) comprometidos.
+                        </p>
+                        <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">Riesgo
+                            Máximo</span>
+                    </div>
+                </div>
+
+                <!-- 2015 -->
+                <div class="timeline-item" data-color="#a29bfe">
+                    <div class="timeline-dot" style="color: #a29bfe;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2015</span>
+                        <span class="t-date">2015</span>
+                        <h3 class="t-title">000webhost</h3>
+                        <p class="t-desc">Contraseñas en texto plano expuestas. Acceso directo sin desencriptación.</p>
+                        <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">Riesgo
+                            Máximo</span>
+                    </div>
+                </div>
+
+                <!-- 2016 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2016</span>
+                        <span class="t-date">2016</span>
+                        <h3 class="t-title">Exploit.In & GeekedIn</h3>
+                        <p class="t-desc">Datos agregados en 'Combo Lists' del mercado negro y perfiles profesionales.
+                        </p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Crítico /
+                            Medio</span>
+                    </div>
+                </div>
+
+                <!-- 2019 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2019</span>
+                        <span class="t-date">2019</span>
+                        <h3 class="t-title">Collection #1 & Canva</h3>
+                        <p class="t-desc">Mega-brechas globales. El correo se vuelve públicamente conocido en bases de
+                            datos masivas.</p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
+                            Crítico</span>
+                    </div>
+                </div>
+
+                <!-- 2020 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2020</span>
+                        <span class="t-date">2020</span>
+                        <h3 class="t-title">Nitro PDF & 123RF</h3>
+                        <p class="t-desc">Documentos, domicilios y teléfonos reales expuestos.</p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
+                            Crítico</span>
+                    </div>
+                </div>
+
+                <!-- 2025 -->
+                <div class="timeline-item" data-color="#a29bfe">
+                    <div class="timeline-dot" style="color: #a29bfe;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2025</span>
+                        <span class="t-date">2025 - PRESENTE</span>
+                        <h3 class="t-title">Synthient (Stealer Logs)</h3>
+                        <p class="t-desc">Actividad reciente de malware/stealers. Credenciales probadas activamente.</p>
+                        <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">ACTIVO
+                            AHORA</span>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const items = document.querySelectorAll('.timeline-item');
+                    const lineFill = document.getElementById('timelineFill');
+                    const container = document.querySelector('.timeline-container');
+
+                    const observerOptions = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.2
+                    };
+
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                entry.target.classList.add('active');
+                            }
+                        });
+                    }, observerOptions);
+
+                    items.forEach(item => {
+                        observer.observe(item);
+                    });
+
+                    // Scroll Progress for Line
+                    window.addEventListener('scroll', () => {
+                        const containerRect = container.getBoundingClientRect();
+                        const windowHeight = window.innerHeight;
+
+                        // Calculate how much of the container has been scrolled through
+                        // Start drawing when container top hits middle of screen
+                        const start = windowHeight / 2;
+
+                        // Relative position of container top to viewport
+                        const relativeTop = containerRect.top;
+
+                        // Total scrollable height within container
+                        const totalHeight = containerRect.height;
+
+                        let progress = 0;
+
+                        if (relativeTop < start) {
+                            // We are scrolling past the start point
+                            const scrolled = start - relativeTop;
+                            progress = (scrolled / totalHeight) * 100;
+                        }
+
+                        // Clamp
+                        progress = Math.min(Math.max(progress, 0), 100);
+
+                        lineFill.style.height = `${progress}%`;
+                    });
+                });
+            </script>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Value of Exposure Section (Dark Market Invoice) -->
+        <section class="value-exposure-section">
+            <div class="timeline-header">
+                <h2 class="timeline-title">Valor de Exposición</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">¿Cuánto vale tu
+                    seguridad?</div>
+                <p class="timeline-subtitle">Tasación de Activos en Mercados Ilegales y la Deep Web</p>
+            </div>
+
+            <style>
+                /* Invoice/Ledger Styles Premium */
+                .ledger-container {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    background: rgba(0, 0, 0, 0.4);
+                    /* Darker for contrast */
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-top: 2px solid #ffeaa7;
+                    /* Gold Active Border */
+                    border-radius: 8px;
+                    overflow: hidden;
+                    position: relative;
+                }
+
+                .trx-id {
+                    position: absolute;
+                    top: 1rem;
+                    right: 1.5rem;
+                    font-family: 'Courier New', monospace;
+                    font-size: 0.75rem;
+                    color: rgba(255, 255, 255, 0.3);
+                    letter-spacing: 1px;
+                }
+
+                .ledger-header {
+                    display: grid;
+                    grid-template-columns: 2.5fr 1fr 1fr 1fr;
+                    padding: 3rem 2rem 1rem;
+                    /* More top padding for ID */
+                    background: transparent;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    color: #b2bec3;
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    font-weight: 600;
+                }
+
+                .ledger-row {
+                    display: grid;
+                    grid-template-columns: 2.5fr 1fr 1fr 1fr;
+                    padding: 1.25rem 2rem;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                    transition: all 0.2s ease;
+                    color: #dfe6e9;
+                    font-size: 0.95rem;
+                    align-items: center;
+                }
+
+                .ledger-row:hover {
+                    background: rgba(255, 255, 255, 0.03);
+                    transform: translateX(5px);
+                }
+
+                .asset-name {
+                    font-family: var(--font-family);
+                    /* Sans-Serif Modern */
+                    font-weight: 600;
+                    color: #fff;
+                    font-size: 1rem;
+                }
+
+                .asset-source {
+                    opacity: 0.6;
+                    font-size: 0.85rem;
+                    font-family: 'Courier New', monospace;
+                }
+
+                /* Pill Badges */
+                .demand-badge {
+                    display: inline-block;
+                    padding: 4px 10px;
+                    border-radius: 50px;
+                    /* Pill shape */
+                    font-size: 0.65rem;
+                    text-align: center;
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                }
+
+                .demand-high {
+                    color: #ff7675;
+                    background: rgba(255, 118, 117, 0.15);
+                    border: 1px solid rgba(255, 118, 117, 0.3);
+                    box-shadow: 0 0 5px rgba(255, 118, 117, 0.2);
+                }
+
+                .demand-med {
+                    color: #ffeaa7;
+                    background: rgba(255, 234, 167, 0.15);
+                    border: 1px solid rgba(255, 234, 167, 0.3);
+                    box-shadow: 0 0 5px rgba(255, 234, 167, 0.2);
+                }
+
+                .asset-value {
+                    text-align: right;
+                    color: #ffeaa7;
+                    /* Gold */
+                    font-weight: 700;
+                    font-family: 'Courier New', monospace;
+                    font-size: 1.1rem;
+                    letter-spacing: -0.5px;
+                }
+
+                /* Bottom Line */
+                .ledger-total {
+                    margin-top: 3rem;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding-bottom: 2rem;
+                    gap: 1.5rem;
+                    /* Explicit Separation */
+                }
+
+                .total-label {
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    color: rgba(255, 234, 167, 0.6);
+                    letter-spacing: 4px;
+                    /* Widened for elegance */
+                    margin-bottom: 0;
+                }
+
+                .total-amount {
+                    font-size: 4.5rem;
+                    /* Even larger for impact */
+                    color: #ffeaa7;
+                    font-weight: 300;
+                    font-family: 'Courier New', monospace;
+                    line-height: 1;
+                    text-shadow: 0 0 30px rgba(255, 234, 167, 0.4);
+                }
+            </style>
+
+            <div class="ledger-container">
+                <div class="trx-id">TRX-2026-EXP-A4</div>
+
+                <div class="ledger-header">
+                    <div>Activo Identificado</div>
+                    <div>Fuente</div>
+                    <div style="text-align: center;">Demanda</div>
+                    <div style="text-align: right;">Valuación</div>
+                </div>
+
+                <div class="ledger-row">
+                    <div class="asset-name">Credenciales Bancarias (Fullz)</div>
+                    <div class="asset-source">Banorte Leak</div>
+                    <div style="text-align: center;"><span class="demand-badge demand-high">ALTA</span></div>
+                    <div class="asset-value">$45.00 USD</div>
+                </div>
+                <div class="ledger-row">
+                    <div class="asset-name">Acceso Correo Corporativo</div>
+                    <div class="asset-source">Synthient</div>
+                    <div style="text-align: center;"><span class="demand-badge demand-high">ALTA</span></div>
+                    <div class="asset-value">$80.00 USD</div>
+                </div>
+                <div class="ledger-row">
+                    <div class="asset-name">Identidad Fiscal (RFC/Docs)</div>
+                    <div class="asset-source">SAT/Gov</div>
+                    <div style="text-align: center;"><span class="demand-badge demand-med">MEDIA</span></div>
+                    <div class="asset-value">$20.00 USD</div>
+                </div>
+
+                <div class="ledger-total">
+                    <div class="total-label">VALOR TOTAL DE EXPOSICIÓN</div>
+                    <div class="total-amount" id="exposure-total">$0.00 USD</div>
+                </div>
+            </div> <!-- End ledger-container -->
+        </section>
+
+        <!-- Upcount Animation Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const totalEl = document.getElementById('exposure-total');
+                const targetValue = 145.00;
+                const duration = 4000; // 4 seconds (Slower, more dramatic)
+
+                const animateValue = (start, end, duration) => {
+                    let startTimestamp = null;
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+
+                        // Ease formatting
+                        // distinct easeOutQuart: 1 - Math.pow(1 - progress, 4)
+                        const ease = 1 - Math.pow(1 - progress, 4);
+
+                        const current = start + (end - start) * ease;
+
+                        // Format: $145.00 USD
+                        totalEl.innerText = `$${current.toFixed(2)} USD`;
+
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            totalEl.innerText = `$${end.toFixed(2)} USD`; // Ensure final value
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateValue(0, targetValue, duration);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                observer.observe(totalEl);
+            });
+        </script>
+
+        <hr class="section-divider">
+
+        <!-- Threat Actor Playbook (Vertical Dossier) -->
+        <section class="value-exposure-section">
+            <div class="timeline-header">
+                <h2 class="timeline-title">Vector de Ataque</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Cómo un Atacante
+                    Usaría Esta Información</div>
+                <p class="timeline-subtitle">Expediente de Ataque (Attack Dossier)</p>
+            </div>
+
+            <style>
+                /* Vertical Dossier Styles */
+                .dossier-container {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    position: relative;
+                    padding-left: 4rem;
+                    /* More space for the icon spine */
+                }
+
+                /* The Circuit Spine */
+                .dossier-spine {
+                    position: absolute;
+                    left: 1rem;
+                    /* Centered in the padding area */
+                    top: 2rem;
+                    bottom: 2rem;
+                    width: 2px;
+                    background: linear-gradient(180deg,
+                            rgba(116, 185, 255, 0.5) 0%,
+                            rgba(255, 234, 167, 0.5) 50%,
+                            rgba(255, 118, 117, 0.5) 100%);
+                    z-index: 0;
+                }
+
+                .dossier-step {
+                    display: grid;
+                    grid-template-columns: 80px 1fr 180px;
+                    gap: 2rem;
+                    background: rgba(10, 14, 39, 0.5);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 12px;
+                    padding: 2rem;
+                    margin-bottom: 3rem;
+                    /* Increased gap */
+                    position: relative;
+                    transition: all 0.3s ease;
+                    align-items: center;
+                    backdrop-filter: blur(5px);
+                }
+
+                .dossier-step:hover {
+                    background: rgba(10, 14, 39, 0.8);
+                    border-color: rgba(255, 255, 255, 0.2);
+                    transform: translateX(5px);
+                }
+
+                /* Counter-move the icon so it stays on the spine */
+                .dossier-step:hover .spine-icon-wrapper {
+                    transform: translateY(-50%) translateX(-5px);
+                }
+
+                /* Spine Icon Container (Replaces Dot) */
+                .spine-icon-wrapper {
+                    position: absolute;
+                    left: -4rem;
+                    /* Aligns with spine */
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 32px;
+                    height: 32px;
+                    background: #0f121b;
+                    /* Matches bg to 'cut' the line */
+                    border: 2px solid;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 2;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+                    transition: transform 0.3s ease;
+                    /* Smooth counter-movement */
+                }
+
+                /* Stationary Spine Anchor (Counter-Transform) - Adjusted for Y lift */
+                .dossier-step:hover .spine-icon-wrapper {
+                    /* We lift the card -5px, so we push the icon +5px Y? */
+                    transform: translateY(-50%) translateY(5px);
+                    background: #15192b;
+                    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+                }
+
+                .spine-icon-wrapper svg {
+                    width: 14px;
+                    height: 14px;
+                }
+
+                /* Specific Spine Colors */
+                .step-recon .spine-icon-wrapper {
+                    border-color: #74b9ff;
+                    color: #74b9ff;
+                    box-shadow: 0 0 10px rgba(116, 185, 255, 0.3);
+                }
+
+                .step-weapon .spine-icon-wrapper {
+                    border-color: #ffeaa7;
+                    color: #ffeaa7;
+                    box-shadow: 0 0 10px rgba(255, 234, 167, 0.3);
+                }
+
+                .step-impact .spine-icon-wrapper {
+                    border-color: #ff7675;
+                    color: #ff7675;
+                    box-shadow: 0 0 10px rgba(255, 118, 117, 0.3);
+                }
+
+                .dossier-step {
+                    display: flex;
+                    /* Flex Layout instead of Grid */
+                    flex-flow: row wrap;
+                    /* Allow wrapping for the footer */
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    gap: 0;
+                    background: rgba(10, 14, 39, 0.6);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 12px;
+                    padding: 3rem;
+                    margin-bottom: 4rem;
+                    position: relative;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(10px);
+                }
+
+                .dossier-step:hover {
+                    background: rgba(10, 14, 39, 0.9);
+                    border-color: rgba(255, 255, 255, 0.3);
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+                }
+
+                /* Stationary Spine Anchor */
+                .dossier-step:hover .spine-icon-wrapper {
+                    transform: translateY(-50%) translateY(5px);
+                    background: #15192b;
+                    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+                }
+
+                .step-visual-col {
+                    flex: 0 0 200px;
+                    /* Widened from 140px for better centering */
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    /* Center content horizontally within flex item */
+                    justify-content: center;
+                    /* Center content vertically if needed, or flex-start */
+                    padding-top: 0.5rem;
+                }
+
+                .dossier-icon {
+                    font-size: 3rem;
+                    /* Large Icon */
+                    color: rgba(255, 255, 255, 0.95);
+                    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+                    margin-bottom: 0;
+                    line-height: 1;
+                    width: 100%;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .dossier-phase-label {
+                    display: block;
+                    font-size: 1.2rem;
+                    /* Title Size */
+                    text-transform: capitalize;
+                    /* "Target" not "TARGET" based on image */
+                    font-weight: 600;
+                    color: #fff;
+                    margin-top: 0.8rem;
+                    text-align: center;
+                    width: 100%;
+                    writing-mode: horizontal-tb;
+                    transform: none;
+                    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+                }
+
+                .step-content-col {
+                    flex: 1;
+                    /* Takes remaining width */
+                    text-align: left;
+                    padding-left: 2rem;
+                    border-left: 2px solid rgba(255, 255, 255, 0.1);
+                }
+
+                .dossier-title {
+                    font-size: 2rem;
+                    /* Massive Header */
+                    margin-bottom: 1rem;
+                    color: #fff;
+                    font-weight: 700;
+                    line-height: 1.1;
+                }
+
+                .dossier-desc {
+                    font-size: 1.15rem;
+                    color: #b2bec3;
+                    line-height: 1.6;
+                }
+
+                /* Footer Bar Row */
+                .step-evidence-col {
+                    flex: 0 0 100%;
+                    /* Force full width on new row */
+                    margin-top: 2.5rem;
+                    /* Separation from content */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .evidence-badge {
+                    background: rgba(255, 255, 255, 0.03);
+                    padding: 1.5rem 3rem;
+                    /* Wide Bar Padding */
+                    border-radius: 8px;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    border-left-width: 8px;
+                    /* Prominent Accent */
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                }
+
+                .dossier-step:hover .evidence-badge {
+                    /* Removed internal scaling animation */
+                    border-left-color: #ff7675;
+                    box-shadow: 0 0 15px rgba(255, 118, 117, 0.1);
+                }
+
+                .evidence-label {
+                    display: block;
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    color: rgba(255, 255, 255, 0.6);
+                    letter-spacing: 2px;
+                    font-weight: 700;
+                    margin: 0;
+                }
+
+                .evidence-value {
+                    display: block;
+                    font-family: 'Courier New', monospace;
+                    font-size: 1.1rem;
+                    font-weight: 800;
+                    text-align: right;
+                    color: #fff;
+                }
+
+                /* Mobile Adapt */
+                @media (max-width: 768px) {
+                    .dossier-container {
+                        padding-left: 1.5rem;
+                    }
+
+                    .dossier-spine {
+                        left: 0;
+                    }
+
+                    .spine-icon-wrapper {
+                        left: -1.75rem;
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    .spine-icon-wrapper svg {
+                        width: 10px;
+                        height: 10px;
+                    }
+
+                    .dossier-step {
+                        grid-template-columns: 1fr;
+                        /* Stack everything */
+                        padding: 1.5rem;
+                        gap: 1rem;
+                        text-align: center;
+                    }
+
+                    /* Hide visual oddities on mobile */
+                    .dossier-phase-label {
+                        writing-mode: horizontal-tb;
+                        transform: none;
+                        height: auto;
+                        margin-top: 0.5rem;
+                    }
+
+                    .step-content-col {
+                        border-left: none;
+                        padding-left: 0;
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                        padding-top: 1rem;
+                        text-align: center;
+                    }
+
+                    .step-evidence-col {
+                        justify-content: center;
+                    }
+
+                    .evidence-badge {
+                        text-align: center;
+                    }
+                }
+            </style>
+
+            <div class="dossier-container">
+                <div class="dossier-spine"></div>
+
+                <!-- Step 1 -->
+                <div class="dossier-step step-recon">
+                    <!-- Spine Icon -->
+                    <div class="spine-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+
+                    <div class="step-visual-col">
+                        <div class="dossier-icon">Target</div>
+                        <span class="dossier-phase-label">Fase 01</span>
+                    </div>
+                    <div class="step-content-col">
+                        <h3 class="dossier-title">LOCALIZACIÓN</h3>
+                        <p class="dossier-desc">El atacante utiliza bases de datos públicas para correlacionar tu
+                            <strong>Nombre Completo</strong> y <strong>Domicilio</strong> físico, creando un perfil
+                            base.
+                        </p>
+                    </div>
+                    <div class="step-evidence-col">
+                        <div class="evidence-badge">
+                            <span class="evidence-label">Fuente Evidencial</span>
+                            <span class="evidence-value" style="color: #74b9ff;">Banorte Leak + SAT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="dossier-step step-weapon">
+                    <div class="spine-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+
+                    <div class="step-visual-col">
+                        <div class="dossier-icon">Key</div>
+                        <span class="dossier-phase-label">Fase 02</span>
+                    </div>
+                    <div class="step-content-col">
+                        <h3 class="dossier-title">ARMADO</h3>
+                        <p class="dossier-desc">Validación automatizada de tus credenciales contra servicios
+                            financieros. Se configuran scripts con tus <strong>Contraseñas Reales</strong>.</p>
+                    </div>
+                    <div class="step-evidence-col">
+                        <div class="evidence-badge">
+                            <span class="evidence-label">Log de Malware</span>
+                            <span class="evidence-value" style="color: #ffeaa7;">Synthient Stealer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="dossier-step step-impact">
+                    <div class="spine-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+
+                    <div class="step-visual-col">
+                        <div class="dossier-icon">Strike</div>
+                        <span class="dossier-phase-label">Fase 03</span>
+                    </div>
+                    <div class="step-content-col">
+                        <h3 class="dossier-title">IMPACTO</h3>
+                        <p class="dossier-desc">Ejecución del fraude. Acceso no autorizado a banca móvil, suplantación
+                            ante el SAT y extracción de recursos financieros.</p>
+                    </div>
+                    <div class="step-evidence-col">
+                        <div class="evidence-badge"
+                            style="background: rgba(255, 118, 117, 0.1); border-color: rgba(255, 118, 117, 0.3);">
+                            <span class="evidence-label">Estado de Riesgo</span>
+                            <span class="evidence-value" style="color: #ff7675;">EJECUCIÓN INMINENTE</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Executive Impact Section (New 2x2 Grid) -->
+        <section class="impact-section">
+            <style>
+                .impact-section {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding-bottom: 5rem;
+                }
+
+                /* Removed custom header styles to use global .timeline-header */
+
+                .impact-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 2rem;
+                }
+
+                .impact-card {
+                    background: rgba(15, 19, 45, 0.6);
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    border-radius: 12px;
+                    padding: 2.5rem;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                    backdrop-filter: blur(10px);
+                }
+
+                .impact-card:hover {
+                    transform: translateY(-5px);
+                    background: rgba(15, 19, 45, 0.9);
+                    border-color: rgba(255, 255, 255, 0.2);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+                }
+
+                .impact-icon-box {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 1.5rem;
+                    font-size: 1.8rem;
+                }
+
+                .impact-card-title {
+                    font-size: 1.4rem;
+                    color: #fff;
+                    margin-bottom: 1rem;
+                    font-weight: 700;
+                    letter-spacing: -0.5px;
+                }
+
+                .impact-card-desc {
+                    font-size: 1rem;
+                    color: #b2bec3;
+                    line-height: 1.6;
+                }
+
+                /* Color Themes */
+                .impact-financial .impact-icon-box {
+                    background: rgba(255, 234, 167, 0.1);
+                    color: #ffeaa7;
+                    box-shadow: 0 0 15px rgba(255, 234, 167, 0.1);
+                }
+
+                .impact-financial:hover {
+                    border-top: 4px solid #ffeaa7;
+                }
+
+                .impact-operational .impact-icon-box {
+                    background: rgba(116, 185, 255, 0.1);
+                    color: #74b9ff;
+                    box-shadow: 0 0 15px rgba(116, 185, 255, 0.1);
+                }
+
+                .impact-operational:hover {
+                    border-top: 4px solid #74b9ff;
+                }
+
+                .impact-reputational .impact-icon-box {
+                    background: rgba(162, 155, 254, 0.1);
+                    color: #a29bfe;
+                    box-shadow: 0 0 15px rgba(162, 155, 254, 0.1);
+                }
+
+                .impact-reputational:hover {
+                    border-top: 4px solid #a29bfe;
+                }
+
+                .impact-regulatory .impact-icon-box {
+                    background: rgba(255, 118, 117, 0.1);
+                    color: #ff7675;
+                    box-shadow: 0 0 15px rgba(255, 118, 117, 0.1);
+                }
+
+                .impact-regulatory:hover {
+                    border-top: 4px solid #ff7675;
+                }
+
+                @media (max-width: 768px) {
+                    .impact-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Impacto Directo al Negocio</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Visión Ejecutiva
+                    de Riesgo</div>
+                <p class="timeline-subtitle">Traducción de Riesgo Técnico a Estratégico</p>
+            </div>
+
+            <div class="impact-grid">
+                <!-- 1. Financiero -->
+                <div class="impact-card impact-financial">
+                    <div class="impact-icon-box">💰</div>
+                    <div class="impact-card-title">FINANCIERO</div>
+                    <p class="impact-card-desc">Pérdida directa por fraude bancario, costos elevados de remediación y
+                        posibles multas por incumplimiento.</p>
+                </div>
+
+                <!-- 2. Operativo -->
+                <div class="impact-card impact-operational">
+                    <div class="impact-icon-box">⚡</div>
+                    <div class="impact-card-title">OPERATIVO</div>
+                    <p class="impact-card-desc">Interrupción de servicios críticos, parálisis de sistemas y pérdida de
+                        productividad empresarial.</p>
+                </div>
+
+                <!-- 3. Reputacional -->
+                <div class="impact-card impact-reputational">
+                    <div class="impact-icon-box">🛡️</div>
+                    <div class="impact-card-title">REPUTACIONAL</div>
+                    <p class="impact-card-desc">Pérdida catastrófica de confianza del cliente y daño irreversible a la
+                        imagen de marca en el mercado.</p>
+                </div>
+
+                <!-- 4. Regulatorio -->
+                <div class="impact-card impact-regulatory">
+                    <div class="impact-icon-box">⚖️</div>
+                    <div class="impact-card-title">REGULATORIO</div>
+                    <p class="impact-card-desc">Sanciones legales severas por violaciones a la LFPDPPP, GDPR y
+                        normativas de protección de datos.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Inaction Scenario Section (The Risk Fuse) -->
+        <section class="inaction-section">
+            <style>
+                .inaction-section {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding-bottom: 5rem;
+                }
+
+                .inaction-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    /* Vertical Stack */
+                    gap: 3rem;
+                    /* Increased Gap */
+                    position: relative;
+                    padding-left: 5rem;
+                    /* Increased Space */
+                }
+
+                /* Vertical Timeline connector line */
+                .inaction-grid::before {
+                    content: '';
+                    position: absolute;
+                    top: 20px;
+                    bottom: 20px;
+                    left: 20px;
+                    /* Adjusted Line Position */
+                    width: 6px;
+                    /* Thickened Line */
+                    background: linear-gradient(180deg, #ffeaa7, #fab1a0, #ff7675);
+                    z-index: 0;
+                    border-radius: 6px;
+                    opacity: 0.5;
+                }
+
+                .inaction-card {
+                    background: rgba(10, 14, 39, 0.6);
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    border-radius: 12px;
+                    padding: 3rem;
+                    position: relative;
+                    backdrop-filter: blur(10px);
+                    transition: transform 0.3s ease;
+                    z-index: 1;
+                    display: flex;
+                    flex-direction: column;
+                    /* Vertical Stack for Card */
+                    align-items: stretch;
+                    gap: 2rem;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                    text-align: left;
+                }
+
+                .inaction-card:hover {
+                    transform: translateX(10px);
+                    background: rgba(10, 14, 39, 0.95);
+                    border-color: rgba(255, 255, 255, 0.15);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+                }
+
+                /* New Header Row Container */
+                .inaction-header-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    /* Align top */
+                    width: 100%;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    padding-bottom: 1.5rem;
+                }
+
+                .time-badge {
+                    background: transparent;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 100px;
+                    font-family: 'Courier New', monospace;
+                    font-weight: 700;
+                    margin-bottom: 1rem;
+                    z-index: 2;
+                    font-size: 0.9rem;
+                    display: inline-block;
+                    letter-spacing: 1px;
+                }
+
+                .inaction-phase {
+                    font-size: 2rem;
+                    color: #fff;
+                    font-weight: 800;
+                    margin-bottom: 0;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    line-height: 1.1;
+                    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+                }
+
+                .inaction-phase-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .inaction-desc {
+                    font-size: 1.15rem;
+                    /* Readable Size */
+                    color: #b2bec3;
+                    line-height: 1.7;
+                    margin-bottom: 0;
+                    padding-right: 0;
+                    /* Full Width */
+                }
+
+                .cost-indicator {
+                    width: auto;
+                    padding: 0;
+                    border: none;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    white-space: nowrap;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    /* Right align */
+                    gap: 0.5rem;
+                }
+
+                .cost-label {
+                    font-size: 0.75rem;
+                    opacity: 0.6;
+                    text-align: right;
+                }
+
+                .cost-value {
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    text-align: right;
+                }
+
+                /* T+7 Yellow */
+                .t-7 .time-badge {
+                    color: #ffeaa7;
+                    border-color: rgba(255, 234, 167, 0.3);
+                }
+
+                .t-7:hover {
+                    box-shadow: 0 0 30px rgba(255, 234, 167, 0.1);
+                    border-left: 4px solid #ffeaa7;
+                }
+
+                .t-7 .cost-value {
+                    color: #ffeaa7;
+                }
+
+                .t-7 .cost-indicator {
+                    border-left-color: rgba(255, 234, 167, 0.2);
+                }
+
+                /* T+30 Orange */
+                .t-30 .time-badge {
+                    color: #fab1a0;
+                    border-color: rgba(250, 177, 160, 0.3);
+                }
+
+                .t-30:hover {
+                    box-shadow: 0 0 30px rgba(250, 177, 160, 0.1);
+                    border-left: 4px solid #fab1a0;
+                }
+
+                .t-30 .cost-value {
+                    color: #fab1a0;
+                }
+
+                .t-30 .cost-indicator {
+                    border-left-color: rgba(250, 177, 160, 0.2);
+                }
+
+                /* T+90 Red */
+                .t-90 .time-badge {
+                    color: #ff7675;
+                    border-color: rgba(255, 118, 117, 0.3);
+                }
+
+                .t-90:hover {
+                    box-shadow: 0 0 30px rgba(255, 118, 117, 0.1);
+                    border-left: 4px solid #ff7675;
+                }
+
+                .t-90 .cost-value {
+                    color: #ff7675;
+                }
+
+                .t-90 .cost-indicator {
+                    border-left-color: rgba(255, 118, 117, 0.2);
+                }
+
+                @media (max-width: 768px) {
+                    .inaction-card {
+                        flex-direction: column;
+                        text-align: center;
+                        gap: 1.5rem;
+                    }
+
+                    .inaction-phase-wrapper {
+                        align-items: center;
+                        flex: auto;
+                    }
+
+                    .inaction-desc {
+                        padding-right: 0;
+                    }
+
+                    .cost-indicator {
+                        border-left: none;
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                        padding-left: 0;
+                        padding-top: 1rem;
+                        width: 100%;
+                    }
+
+                    .inaction-grid {
+                        padding-left: 0;
+                    }
+
+                    .inaction-grid::before {
+                        display: none;
+                    }
+                }
+            </style>
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Escenario de Inacción</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">El Costo
+                    Compuesto de la Indecisión</div>
+                <p class="timeline-subtitle">Proyección basada en la fusión de datos históricos y amenazas activas</p>
+            </div>
+
+            <div class="inaction-grid">
+                <!-- T+7 -->
+                <div class="inaction-card t-7">
+                    <div class="inaction-header-row">
+                        <div class="inaction-phase-wrapper">
+                            <div class="time-badge">1 SEMANA DESPUÉS</div>
+                            <div class="inaction-phase">La Fusión</div>
+                        </div>
+                        <div class="cost-indicator">
+                            <span class="cost-label">Impacto</span>
+                            <span class="cost-value">Operativo</span>
+                        </div>
+                    </div>
+                    <p class="inaction-desc">
+                        El atacante correlaciona tus <strong>datos históricos</strong> (domicilio, INE) para dar
+                        legitimidad a las <strong>credenciales nuevas</strong>. La brecha comienza a solidificarse.
+                    </p>
+                </div>
+
+                <!-- T+30 -->
+                <div class="inaction-card t-30">
+                    <div class="inaction-header-row">
+                        <div class="inaction-phase-wrapper">
+                            <div class="time-badge">1 MES DESPUÉS</div>
+                            <div class="inaction-phase">Monetización</div>
+                        </div>
+                        <div class="cost-indicator">
+                            <span class="cost-label">Impacto</span>
+                            <span class="cost-value">Financiero</span>
+                        </div>
+                    </div>
+                    <p class="inaction-desc">
+                        Tu identidad "verificada" se vende al mayoreo. Préstamos y fraudes se ejecutan usando tu
+                        historial crediticio real como aval involuntario.
+                    </p>
+                </div>
+
+                <!-- T+90 -->
+                <div class="inaction-card t-90">
+                    <div class="inaction-header-row">
+                        <div class="inaction-phase-wrapper">
+                            <div class="time-badge">3 MESES DESPUÉS</div>
+                            <div class="inaction-phase">Permanencia</div>
+                        </div>
+                        <div class="cost-indicator">
+                            <span class="cost-label">Impacto</span>
+                            <span class="cost-value">Estructural</span>
+                        </div>
+                    </div>
+                    <p class="inaction-desc">
+                        Tu identidad digital queda marcada en listas negras de riesgo ("Buró Profundo"). Bloqueos en
+                        servicios financieros legítimos de por vida.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Closing Window Section (Cognitive Relief) -->
+        <section class="closing-section">
+            <style>
+                .closing-section {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding-bottom: 5rem;
+                }
+
+                .closing-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    /* Vertical Stack */
+                    gap: 2rem;
+                }
+
+                .closing-card {
+                    background: rgba(10, 14, 39, 0.6);
+                    /* Standard Report Dark Background */
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    /* Standard Border */
+                    border-left: 4px solid #55efc4;
+                    /* Subtle Green Accent */
+                    border-radius: 12px;
+                    padding: 3rem;
+                    position: relative;
+                    backdrop-filter: blur(10px);
+                    display: grid;
+                    grid-template-columns: 240px 1fr;
+                    /* Left Meta, Right Content */
+                    gap: 3rem;
+                    align-items: center;
+                    /* Vertically center content */
+                    transition: transform 0.3s ease;
+                }
+
+                .closing-card:hover {
+                    transform: translateX(10px);
+                    background: rgba(10, 14, 39, 0.9);
+                    border-color: rgba(255, 255, 255, 0.2);
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+                }
+
+                /* Left Column: Meta */
+                .closing-meta-col {
+                    text-align: right;
+                    border-right: 1px solid rgba(255, 255, 255, 0.1);
+                    padding-right: 2rem;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+
+                .closing-phase {
+                    font-size: 0.9rem;
+                    color: #55efc4;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+
+                    .closing-time {
+                        font-family: 'Courier New', monospace;
+                        font-size: 1.8rem;
+                        /* Big Impact Number */
+                        color: #fff;
+                        font-weight: 800;
+                        margin-bottom: 0;
+                        line-height: 1;
+                        text-shadow: 0 0 20px rgba(85, 239, 196, 0.2);
+                    }
+
+                    .closing-label-sm {
+                        font-size: 0.75rem;
+                        color: rgba(255, 255, 255, 0.5);
+                        margin-top: 0.5rem;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    }
+
+                    /* Right Column: Actions */
+                    .closing-content-col {
+                        padding-top: 0;
+                        text-align: left;
+                        /* Force Left Alignment as requested */
+                    }
+
+                    .action-list {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    .action-item {
+                        margin-bottom: 1.5rem;
+                        font-size: 1rem;
+                        color: #b2bec3;
+                        line-height: 1.6;
+                        position: relative;
+                        padding-left: 2rem;
+                    }
+
+                    .action-item:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    .action-item::before {
+                        content: '✓';
+                        position: absolute;
+                        left: 0;
+                        top: 2px;
+                        color: #55efc4;
+                        font-weight: 800;
+                        font-size: 1.2rem;
+                    }
+
+                    .action-bold {
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 1.1rem;
+                        display: block;
+                        margin-bottom: 0.3rem;
+                    }
+
+                    @media (max-width: 768px) {
+                        .closing-card {
+                            grid-template-columns: 1fr;
+                            padding: 2rem;
+                            gap: 1.5rem;
+                            text-align: left;
+                            border-left: 1px solid rgba(255, 255, 255, 0.08);
+                            /* Reset border */
+                            border-top: 4px solid #55efc4;
+                            /* Top accent for mobile */
+                        }
+
+                        .closing-meta-col {
+                            text-align: left;
+                            border-right: none;
+                            border-bottom: 1px solid rgba(85, 239, 196, 0.2);
+                            padding-right: 0;
+                            padding-bottom: 1.5rem;
+                            height: auto;
+                        }
+                    }
+            </style>
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Ventana de Cierre</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Ruta de
+                    Recuperación</div>
+                <p class="timeline-subtitle">Plan de Acción Recomendado</p>
+            </div>
+
+            <div class="closing-grid">
+                <!-- Fase 1 -->
+                <div class="closing-card">
+                    <div class="closing-meta-col">
+                        <div class="closing-phase">FASE 1: CONTENCIÓN</div>
+                        <div class="closing-time">0-24 H</div>
+                        <div class="closing-label-sm">Tiempo de Reacción</div>
+                    </div>
+                    <div class="closing-content-col">
+                        <ul class="action-list">
+                            <li class="action-item">
+                                <span class="action-bold">Cambio Inteligente de Credenciales</span>
+                                No uses contraseñas cortas. Implementa una <strong>"Frase de Seguridad"</strong> robusta
+                                (ej. "MiPerroComeCereal2024") en tu cuenta de correo principal para detener el acceso
+                                inmediato.
+                            </li>
+                            <li class="action-item">
+                                <span class="action-bold">Doble Candado (2FA)</span>
+                                Activa la "Verificación en 2 Pasos" en WhatsApp y Banca Móvil. Prioriza el uso de una
+                                <strong>App Autenticadora</strong> sobre los mensajes SMS para evitar intercepciones.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="closing-card">
+                    <div class="closing-meta-col">
+                        <div class="closing-phase">FASE 2: SANEAMIENTO</div>
+                        <div class="closing-time">24-72 H</div>
+                        <div class="closing-label-sm">Ventana Táctica</div>
+                    </div>
+                    <div class="closing-content-col">
+                        <ul class="action-list">
+                            <li class="action-item">
+                                <span class="action-bold">Cierre Global de Sesiones</span>
+                                Accede a la configuración de seguridad de Google, Facebook y Bancos. Busca la opción
+                                "Dispositivos Conectados" y fuerza el <strong>Cierre de Sesión</strong> en todos los
+                                equipos que no tengas en tu mano.
+                            </li>
+                            <li class="action-item">
+                                <span class="action-bold">Alertas Transaccionales Totales</span>
+                                Configura tu banca móvil para recibir notificaciones push o SMS por <strong>cargos de
+                                    cualquier monto</strong> (incluso $1.00 peso) para detectar intentos de validación
+                                de tarjeta.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="closing-card">
+                    <div class="closing-meta-col">
+                        <div class="closing-phase">FASE 3: BLINDAJE</div>
+                        <div class="closing-time">30 DÍAS</div>
+                        <div class="closing-label-sm">Estrategia a Largo Plazo</div>
+                    </div>
+                    <div class="closing-content-col">
+                        <ul class="action-list">
+                            <li class="action-item">
+                                <span class="action-bold">Candado Crediticio (Buró)</span>
+                                Solicita el servicio de <strong>"Bloqueo"</strong> en Buró de Crédito. Esto actúa como
+                                un
+                                interruptor maestro que impide que cualquier institución consulte tu historial o
+                                autorice
+                                créditos sin tu desbloqueo manual.
+                            </li>
+                            <li class="action-item">
+                                <span class="action-bold">Higiene Digital Recurrente</span>
+                                Establece una rutina de revisión semanal de estados de cuenta. Los atacantes suelen
+                                realizar
+                                <strong>"cargos hormiga"</strong> imperceptibles antes de ejecutar el fraude mayor.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Consolidated Closing Route (Execution Plan) -->
+    <section class="execution-section">
+        <style>
+            .execution-section {
+                max-width: 900px;
+                margin: 0 auto;
+                padding-bottom: 5rem;
+            }
+
+            .execution-container {
+                background: rgba(10, 14, 39, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                overflow: hidden;
+                position: relative;
+                backdrop-filter: blur(10px);
+            }
+
+            .execution-header {
+                display: grid;
+                grid-template-columns: 2fr 1.5fr 1fr;
+                /* Action | Responsible | Priority */
+                padding: 1.5rem 2rem;
+                background: rgba(255, 255, 255, 0.02);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-weight: 600;
+            }
+
+            .execution-row {
+                display: grid;
+                grid-template-columns: 2fr 1.5fr 1fr;
+                padding: 1.5rem 2rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                align-items: center;
+                transition: background 0.2s ease;
+            }
+
+            .execution-row:last-child {
+                border-bottom: none;
+            }
+
+            .execution-row:hover {
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .exec-action {
+                font-size: 1rem;
+                color: #fff;
+                font-weight: 600;
+            }
+
+            .exec-sub {
+                display: block;
+                font-size: 0.8rem;
+                color: rgba(255, 255, 255, 0.4);
+                margin-top: 0.2rem;
+                font-weight: 400;
+            }
+
+            /* Responsible Badges */
+            .resp-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.3rem 0.8rem;
+                border-radius: 6px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+            }
+
+            .resp-mapa {
+                background: rgba(116, 185, 255, 0.1);
+                color: #74b9ff;
+                border: 1px solid rgba(116, 185, 255, 0.2);
+            }
+
+            .resp-client {
+                background: rgba(255, 255, 255, 0.05);
+                color: #b2bec3;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .resp-joint {
+                background: rgba(162, 155, 254, 0.1);
+                color: #a29bfe;
+                border: 1px solid rgba(162, 155, 254, 0.2);
+            }
+
+            /* Priority Badges (Reusing logic but specific classes) */
+            .prio-badge {
+                display: inline-block;
+                padding: 4px 10px;
+                border-radius: 50px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-align: center;
+                letter-spacing: 1px;
+            }
+
+            .prio-crit {
+                color: #ff7675;
+                background: rgba(255, 118, 117, 0.1);
+                border: 1px solid rgba(255, 118, 117, 0.2);
+                box-shadow: 0 0 10px rgba(255, 118, 117, 0.1);
+            }
+
+            .prio-high {
+                color: #ffeaa7;
+                background: rgba(255, 234, 167, 0.1);
+                border: 1px solid rgba(255, 234, 167, 0.2);
+            }
+
+            .prio-med {
+                color: #74b9ff;
+                background: rgba(116, 185, 255, 0.1);
+                border: 1px solid rgba(116, 185, 255, 0.2);
+            }
+
+            @media (max-width: 768px) {
+                .execution-header {
+                    display: none;
+                }
+
+                .execution-row {
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
+                    text-align: center;
+                }
+
+                .exec-action {
+                    margin-bottom: 0.5rem;
+                }
+            }
+        </style>
+
+        <div class="timeline-header">
+            <h2 class="timeline-title">Ruta de Cierre Consolidada</h2>
+            <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Plan de Ejecución
+            </div>
+            <p class="timeline-subtitle">Resumen Estratégico & Asignación de Responsabilidades</p>
+        </div>
+
+        <div class="execution-container">
+            <div class="execution-header">
+                <div>Acción Clave</div>
+                <div style="text-align: center;">Responsable</div>
+                <div style="text-align: center;">Prioridad</div>
+            </div>
+
+            <!-- Row 1 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Contención de Incidentes</div>
+                    <span class="exec-sub">Invalidación de accesos comprometidos</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-joint">MAPA-RD + Cliente</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-crit">CRÍTICA</span>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Limpieza de Credenciales</div>
+                    <span class="exec-sub">Rotación segura y activación de 2FA</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-client">Cliente</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-high">ALTA</span>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Monitoreo Activo (12 Meses)</div>
+                    <span class="exec-sub">Vigilancia continua en Dark Web</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-mapa">Consultor (MAPA-RD)</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-high">ALTA</span>
+                </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Asesoría Legal (Buró)</div>
+                    <span class="exec-sub">Gestión de alertas crediticias</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-client">Cliente</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-med">MEDIA</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Annex (Methodology) -->
+    <div class="annex-page">
+        <div class="annex-header">
+            <div class="timeline-header">
+                <h2 class="timeline-title">Anexo Técnico</h2>
+                <p class="timeline-subtitle">Metodología, Definiciones y Estándares</p>
+            </div>
+        </div>
+
+        <!-- SECTION 1: IRV -->
+        <div class="annex-section">
+            <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
+            <p class="annex-p">
+                El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la
+                necesidad
+                operativa de cierre.
+                Se calcula internamente mediante un modelo ponderado de seis dimensiones.
+            </p>
+
+            <!-- CLEAN FORMULA BLOCK -->
+            <div class="formula-block">
+                <span class="formula-label">Fórmula de Cálculo</span>
+                <div class="formula-text">
+                    IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+                </div>
+            </div>
+
+            <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Variables
+                del
+                Modelo</h3>
+
+            <!-- CLEAN VARIABLE GRID -->
+            <div class="variable-grid">
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Criticidad (CA)</span>
+                        <span class="var-badge">x4</span>
+                    </div>
+                    <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Exposición (ET)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Superficie (SE)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Impacto (IM)</span>
+                        <span class="var-badge">x4</span>
+                    </div>
+                    <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Explotación (FE)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Detección (DV)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: IRD -->
+        <div class="annex-section">
+            <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
+            <p class="annex-p">
+                El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores
+                activos
+                mediante
+                un promedio ponderado por severidad.
+            </p>
+
+            <!-- CLEAN FORMULA BLOCK -->
+            <div class="formula-block">
+                <span class="formula-label">Agregación Ponderada</span>
+                <div class="formula-text">
+                    IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
+                </div>
+            </div>
+
+            <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Matriz de
+                Pesos
+            </h3>
+
+            <!-- COMPONENT: CLEAN SEVERITY ROW -->
+            <div class="severity-row">
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #74b9ff;"></div>
+                    <span class="sev-label">Bajo</span>
+                    <span class="sev-mult">Multiplicador x1</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #ffeaa7;"></div>
+                    <span class="sev-label">Medio</span>
+                    <span class="sev-mult">Multiplicador x2</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #ff9f43;"></div>
+                    <span class="sev-label">Alto</span>
+                    <span class="sev-mult">Multiplicador x3</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #ff7675;"></div>
+                    <span class="sev-label">Crítico</span>
+                    <span class="sev-mult">Multiplicador x4</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #a29bfe;"></div>
+                    <span class="sev-label">Máximo</span>
+                    <span class="sev-mult">Multiplicador x5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER NOTE -->
+        <div class="annex-footer">
+            Protegiendo la información que importa · <a
+                href="https://private.felipemiramontesr.net/aviso-privacidad.html" target="_blank"
+                class="privacy-link">Aviso de Privacidad</a>
+        </div>
+    </div>
+
+    </div>
+</body>
+
+</html>

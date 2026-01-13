@@ -68,7 +68,7 @@ Esta metodología es oficial y aplica a todos los reportes MAPA-RD.
 - **Metodología IRD**: Derivación exclusiva desde IRV, Cálculo ponderado por severidad.
 - **Principios**: Objetividad, No edición manual, No ajuste subjetivo, Reproducibilidad.
 - **Estrictamente Confidencial**: Todos los reportes generados contienen datos sensibles simulados o reales.
-- **Fase HTML**: Durante esta fase, TODAS las modificaciones deben reflejarse únicamente en `C:/Felipe/Projects/Mapa-rd/report_engine/out/MAPA-RD_ACMECorpEXE20260111v10RPT-2026-001.html`. Ningún otro archivo de salida debe ser generado o modificado.idez histórica.
+- **Fase HTML**: Durante esta fase, TODAS las modificaciones deben reflejarse únicamente en `MAPA-RD_Felipe_de_Jesús_Miramontes_Romero_20260112_v20RPT-2026-001.html`. Hasta que se indique textualmente el cambio de fase. Ningún otro archivo de salida debe ser generado o modificado.
 
 **Validación Histórica**: Los reportes generados bajo v1.0 conservan su validez histórica.
 

@@ -103,8 +103,8 @@ body {
     margin-bottom: 2rem;
     margin-bottom: 2rem;
     margin-bottom: 2rem;
-    margin-top: calc(-1.5rem - 20px);
-    /* Exact neutralization of ird-page padding for symmetric 1.6rem gap */
+    margin-bottom: 2rem;
+    margin-top: 0;
 }
 
 /* Typography */
@@ -338,8 +338,9 @@ h1 {
     align-items: center;
     justify-content: flex-start;
     /* Moved from center to flex-start to lift content */
-    padding-top: calc(1.5rem + 20px);
-    /* Lowered by 20px from previous 1.5rem per user request */
+    /* Moved from center to flex-start to lift content */
+    padding-top: 2rem;
+    /* Clean reset */
     text-align: center;
 }
 
