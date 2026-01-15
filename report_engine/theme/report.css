@@ -1202,14 +1202,136 @@ h3,
     font-weight: 400;
 }
 
-.timeline-container {
-    max-width: 800px;
+/* =========================================
+   SECTION 4: VERTICAL TIMELINE (Scrollable)
+   ========================================= */
+
+.timeline-container-vertical {
+    width: 100%;
+    max-width: 1000px;
+    /* Reduced for tighter control */
+    height: auto;
     margin: 0 auto;
-    position: relative;
-    padding: 2rem 0;
+    position: relative !important;
+    /* Force reference frame */
+    padding: 4rem 0;
+
+    display: flex;
+    /* Establish flex context */
+    flex-direction: column;
+
+    /* Removed Internal Scroll Logic */
+    overflow: visible;
+    box-sizing: border-box;
 }
 
-/* Navigation Control Widget (Elegant Bi-Directional) */
+/* Scrollbar Styling */
+.timeline-container-vertical::-webkit-scrollbar {
+    width: 6px;
+}
+
+.timeline-container-vertical::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.timeline-container-vertical::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+
+/* --- ZIGZAG TREE ITEM (Restored & Enhanced) --- */
+.timeline-item {
+    width: 50% !important;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: normal;
+
+    /* Reset Margins/Positioning */
+    margin: 0 !important;
+    margin-bottom: 4rem !important;
+    left: auto !important;
+    right: auto !important;
+}
+
+/* Branch Connector */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: 3rem;
+    /* Width of the padding gap */
+    z-index: 1;
+}
+
+/* ODD ITEMS (Left Side) */
+.timeline-item.t-left {
+    align-self: flex-start !important;
+    justify-content: flex-end !important;
+    padding-right: 3rem !important;
+    text-align: right !important;
+    border-right: none;
+}
+
+/* Left Branch */
+.timeline-item.t-left::before {
+    right: 0;
+    /* Starts from right edge of item box (which is center of container) */
+    background: #a29bfe;
+    /* Match border */
+}
+
+/* EVEN ITEMS (Right Side) */
+.timeline-item.t-right {
+    align-self: flex-end !important;
+    justify-content: flex-start !important;
+    padding-left: 3rem !important;
+    text-align: left !important;
+    border-left: none;
+}
+
+/* Right Branch */
+.timeline-item.t-right::before {
+    left: 0;
+    /* Starts from left edge of item box (center) */
+    background: #ff7675;
+    /* Match border */
+}
+
+/* The Vertical Line - STRICT CENTER */
+.timeline-line {
+    position: absolute;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 2rem;
+    bottom: 2rem;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    margin: 0 !important;
+    /* Reset any ghost margins */
+}
+
+.timeline-line-fill {
+    position: absolute;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 2rem;
+    width: 2px;
+    background: linear-gradient(to bottom, #74b9ff, #a29bfe, #ff7675);
+    height: 0%;
+    transition: height 0.5s linear;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
+    margin: 0 !important;
+}
+
+/* ... Navigation Widget code remains ... */
+
+/* Navigation Control Widget (Restored) */
 .nav-widget {
     position: fixed;
     bottom: 2rem;
@@ -1218,13 +1340,13 @@ h3,
     flex-direction: column;
     gap: 8px;
     z-index: 9999;
+    /* Supreme visual layer */
 }
 
-.nav-btn {
+.nav-widget .nav-btn {
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    /* Soft square */
     background: rgba(10, 14, 39, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);
@@ -1237,7 +1359,7 @@ h3,
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.nav-btn:hover {
+.nav-widget .nav-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.5);
     color: #fff;
@@ -1245,225 +1367,243 @@ h3,
     box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
 }
 
-.nav-btn:active {
-    transform: scale(0.95);
-}
-
-.nav-btn svg {
+.nav-widget .nav-btn svg {
     width: 20px;
     height: 20px;
     stroke-width: 2;
 }
 
-.nav-btn.disabled {
-    opacity: 0.3;
+/* DOTS - STRICT ALIGNMENT */
+.timeline-dot {
+    position: absolute;
+    top: 50%;
+    /* Original: translate(-50%, -50%). But we want explicit control per side */
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-color: currentColor;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 10px currentColor;
+    display: block;
+}
+
+/* Left Item: Dot at Right Edge (Center) */
+.timeline-item.t-left .timeline-dot {
+    right: 0 !important;
+    left: auto !important;
+    /* Move right by 50% of own width to center on line */
+    transform: translate(50%, -50%) !important;
+}
+
+/* Right Item: Dot at Left Edge (Center) */
+.timeline-item.t-right .timeline-dot {
+    left: 0 !important;
+    right: auto !important;
+    /* Move left by 50% of own width to center on line */
+    transform: translate(-50%, -50%) !important;
+}
+
+/* Year Positioning Update (Inside Card) */
+.timeline-year {
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.03);
+    position: absolute;
+    top: -1rem;
+    line-height: 1;
     pointer-events: none;
-    border-color: transparent;
-    background: rgba(0, 0, 0, 0.2);
+    z-index: 0;
 }
 
-@keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(-5px);
-    }
-
-    60% {
-        transform: translateY(-3px);
-    }
+.timeline-item.t-left .timeline-year {
+    right: -1rem;
+    /* Locked to right edge of card */
+    left: auto;
 }
 
-/* Vertical Line */
-.timeline-line {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 1;
+.timeline-item.t-right .timeline-year {
+    left: -1rem;
+    /* Locked to left edge of card */
+    right: auto;
 }
 
-.timeline-line-fill {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, #74b9ff, #a29bfe, #ff7675);
-    height: 0%;
-    transition: height 0.5s linear;
-    z-index: 1;
-    box-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
-}
-
-/* Timeline Item (Layout) */
-.timeline-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 3rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease-out;
+/* Typography Restore */
+.timeline-header {
+    text-align: center;
+    margin-bottom: 2rem !important;
+    /* Reduced spacing */
     position: relative;
     z-index: 2;
 }
 
-.timeline-item.visible {
-    opacity: 1;
-    transform: translateY(0);
+.timeline-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
 }
 
-.timeline-dot {
-    width: 16px;
-    height: 16px;
-    background-color: #2d3436;
-    border: 2px solid #636e72;
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    /* Centered on line */
-    transform: translateX(-50%);
-    z-index: 3;
-    transition: all 0.3s ease;
+.timeline-subtitle {
+    font-size: 1.1rem;
+    color: #a8adc7;
+    font-weight: 400;
 }
 
-.timeline-item.active .timeline-dot {
-    background-color: #fff;
-    box-shadow: 0 0 15px currentColor;
-    transform: translateX(-50%) scale(1.2);
-    border-color: transparent;
-}
 
-/* Content Layout (Alternating) */
-.timeline-content {
-    width: 45%;
-    /* Padding/Border/BG handled by Global VEC-001 Class */
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-/* Alternating Logic */
-.timeline-item:nth-child(odd) .timeline-content {
-    margin-right: auto;
-    text-align: right;
-}
-
-.timeline-item:nth-child(even) .timeline-content {
-    margin-left: auto;
-    text-align: left;
-}
-
-/* Mobile Fix */
-@media (max-width: 768px) {
-
-    .timeline-line,
-    .timeline-line-fill,
-    .timeline-dot {
-        left: 20px;
-    }
-
-    .timeline-content {
-        width: calc(100% - 50px);
-        margin-left: 50px !important;
-        text-align: left !important;
-    }
-}
-
-/* Typography (Specifics not covered by global) */
 .t-date {
     font-family: 'Courier New', monospace;
     color: #a29bfe;
-    font-size: 0.9rem;
-    display: block;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .t-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: #fff;
-    line-height: 1.2;
+    line-height: 1.3;
 }
 
 .t-desc {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #b2bec3;
+    margin-bottom: 1rem;
+    display: block;
 }
 
 .t-badge {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 700;
-    margin-top: 0.5rem;
     text-transform: uppercase;
-    /* BG/Glow handled by global */
+    letter-spacing: 1px;
+    margin-top: 0;
+    width: auto;
 }
 
 
+
 /* --- Dossier Section Layout (Restored) --- */
+/* --- Dossier Section Layout (Premium Refinement) --- */
 .dossier-container {
     position: relative;
     padding-left: 3rem;
-    /* Space for spine */
-    max-width: 900px;
+    max-width: 1000px;
+    /* Match Invoice Width */
     margin: 0 auto;
 }
 
 .dossier-spine {
     position: absolute;
     left: 1rem;
-    top: 0;
-    bottom: 0;
+    top: 20px;
+    bottom: 20px;
     width: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
 }
 
 .dossier-step {
-    /* Background/Border handled by Global VEC-001 */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: 3.5rem 2.5rem;
+    /* Increased height */
     display: flex;
     align-items: center;
     gap: 2rem;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    /* Increased spacing */
+    position: relative;
+    /* For z-index context */
 }
 
 .dossier-step:hover {
     transform: translateX(5px);
+    border-color: rgba(255, 215, 0, 0.3);
+    /* Gold highlight on hover */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .spine-icon-wrapper {
     position: absolute;
     left: -2rem;
-    /* Pull back to spine */
-    width: 32px;
-    height: 32px;
+    /* Center on spine (3rem padding - 1rem spine = 2rem, so -2rem centers it) */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
     background: #0a0e27;
-    /* Match body to hide line behind */
-    border: 2px solid #5a6fa0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     z-index: 2;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
 }
 
 .spine-icon-wrapper svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    color: #a8adc7;
+    transition: all 0.3s ease;
+}
+
+/* Specific Hover Colors */
+/* Recon - Blue */
+.step-recon:hover {
+    border-color: rgba(116, 185, 255, 0.3);
+}
+
+.step-recon:hover .spine-icon-wrapper {
+    border-color: #74b9ff;
+    box-shadow: 0 0 20px rgba(116, 185, 255, 0.4);
+}
+
+.step-recon:hover .spine-icon-wrapper svg {
+    color: #74b9ff;
+}
+
+/* Weapon - Yellow/Gold */
+.step-weapon:hover {
+    border-color: rgba(255, 234, 167, 0.3);
+}
+
+.step-weapon:hover .spine-icon-wrapper {
+    border-color: #ffeaa7;
+    box-shadow: 0 0 20px rgba(255, 234, 167, 0.4);
+}
+
+.step-weapon:hover .spine-icon-wrapper svg {
+    color: #ffeaa7;
+}
+
+/* Impact - Red */
+.step-impact:hover {
+    border-color: rgba(255, 118, 117, 0.3);
+}
+
+.step-impact:hover .spine-icon-wrapper {
+    border-color: #ff7675;
+    box-shadow: 0 0 20px rgba(255, 118, 117, 0.4);
+}
+
+.step-impact:hover .spine-icon-wrapper svg {
+    color: #ff7675;
 }
 
 /* Columns */
@@ -1473,20 +1613,29 @@ h3,
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding-right: 1.5rem;
+    margin-right: 0.5rem;
 }
 
 .dossier-icon {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 700;
     color: #a8adc7;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .dossier-phase-label {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     color: #5a6fa0;
     font-family: 'Courier New', monospace;
     font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    background: rgba(90, 111, 160, 0.1);
+    border-radius: 4px;
 }
 
 .step-content-col {
@@ -1494,21 +1643,53 @@ h3,
 }
 
 .dossier-title {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
 }
 
 .dossier-desc {
-    font-size: 0.95rem;
-    color: #a8adc7;
-    line-height: 1.5;
+    font-size: 1rem;
+    color: #b2bec3;
+    line-height: 1.6;
+}
+
+.dossier-desc strong {
+    color: #fff;
+    font-weight: 600;
 }
 
 .step-evidence-col {
-    flex: 0 0 200px;
-    /* Fixed width for badge */
+    flex: 0 0 240px;
+    /* Slightly wider */
+    display: flex;
+    justify-content: flex-end;
+}
+
+.evidence-badge {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    width: 100%;
+    text-align: right;
+}
+
+.evidence-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #636e72;
+    margin-bottom: 0.4rem;
+    letter-spacing: 1px;
+}
+
+.evidence-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* Mobile */
@@ -1517,10 +1698,28 @@ h3,
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .step-visual-col {
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-right: 0;
+        padding-bottom: 1rem;
+        margin-right: 0;
+        margin-bottom: 1rem;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 1rem;
     }
 
     .step-evidence-col {
         width: 100%;
+    }
+
+    .evidence-badge {
+        text-align: left;
     }
 
     .dossier-container {
@@ -1634,7 +1833,8 @@ h3,
 .closing-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    gap: 5px !important;
+    /* Aggressive reduction */
 }
 
 .closing-card {
@@ -1786,68 +1986,276 @@ h3,
 
 /* --- POST-HOC LINEARIZATION (USER REQUEST: VERTICAL ROWS) --- */
 
-/* 1. Linear Timeline (Strict Vertical) */
-.timeline-line {
-    left: 2rem !important;
-    transform: none !important;
-}
-
-.timeline-line-fill {
-    left: 2rem !important;
-    transform: none !important;
-}
-
-.timeline-dot {
-    left: 2rem !important;
-    transform: translateX(-50%) !important;
-}
-
-.timeline-item {
-    justify-content: flex-start !important;
-    padding-left: 5rem !important;
-    /* Space for line */
-    margin-bottom: 3rem !important;
-}
-
-/* Reset Alternating Logic */
-.timeline-item:nth-child(odd) .timeline-content,
-.timeline-item:nth-child(even) .timeline-content {
-    margin: 0 !important;
-    text-align: left !important;
-    width: 100% !important;
-}
+/* 1. Linear Timeline (Strict Vertical) - REMOVED FOR ZIGZAG TREE RESTORATION */
+/* The user explicitly requested the Tree/ZigZag layout for the Timeline, 
+   so we remove the forcing of left-alignment here. */
 
 /* 2. Linear Impact & Inaction (Rows not Grids) */
 .impact-grid,
 .inaction-grid,
 .closing-grid {
     grid-template-columns: 1fr !important;
-    /* Force Single Column */
-    gap: 1.5rem !important;
+    gap: 1rem !important;
 }
 
-/* Flex Row Layout for Cards (Icon | Content) */
+/* Flex Row Layout for Cards (Icon | Content) - Premium Redesign */
 .impact-card {
     flex-direction: row !important;
-    align-items: flex-start !important;
+    align-items: center !important;
     text-align: left !important;
-    gap: 2rem !important;
+    gap: 2.5rem !important;
+
+    /* Premium Styling - Base */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: 2.25rem 2.5rem !important;
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.impact-card:hover {
+    transform: translateX(8px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Detail: Subtle shine effect on hover */
+.impact-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.impact-card:hover::after {
+    left: 100%;
 }
 
 .impact-icon-box {
-    font-size: 2.5rem !important;
+    font-size: 3rem !important;
     margin-bottom: 0 !important;
-    color: var(--color-accent-core);
+    color: #fff;
     flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* Unique Accents Per Card Type (Full Borders & Gradients) */
+
+/* Financial - Gold/Yellow */
+.impact-financial {
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    border-left: 4px solid #ffd700 !important;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-financial .impact-icon-box {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.impact-financial:hover {
+    border-color: rgba(255, 215, 0, 0.8) !important;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+}
+
+/* Operational - Blue/Electric */
+.impact-operational {
+    border: 1px solid rgba(116, 185, 255, 0.3) !important;
+    border-left: 4px solid #74b9ff !important;
+    background: linear-gradient(90deg, rgba(116, 185, 255, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-operational .impact-icon-box {
+    text-shadow: 0 0 20px rgba(116, 185, 255, 0.4);
+}
+
+.impact-operational:hover {
+    border-color: rgba(116, 185, 255, 0.8) !important;
+    box-shadow: 0 0 30px rgba(116, 185, 255, 0.15);
+}
+
+/* Reputational - Purple/Violet */
+.impact-reputational {
+    border: 1px solid rgba(162, 155, 254, 0.3) !important;
+    border-left: 4px solid #a29bfe !important;
+    background: linear-gradient(90deg, rgba(162, 155, 254, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-reputational .impact-icon-box {
+    text-shadow: 0 0 20px rgba(162, 155, 254, 0.4);
+}
+
+.impact-reputational:hover {
+    border-color: rgba(162, 155, 254, 0.8) !important;
+    box-shadow: 0 0 30px rgba(162, 155, 254, 0.15);
+}
+
+/* Regulatory - Red/Orange */
+.impact-regulatory {
+    border: 1px solid rgba(255, 118, 117, 0.3) !important;
+    border-left: 4px solid #ff7675 !important;
+    background: linear-gradient(90deg, rgba(255, 118, 117, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-regulatory .impact-icon-box {
+    text-shadow: 0 0 20px rgba(255, 118, 117, 0.4);
+}
+
+.impact-regulatory:hover {
+    border-color: rgba(255, 118, 117, 0.8) !important;
+    box-shadow: 0 0 30px rgba(255, 118, 117, 0.15);
 }
 
 /* Inaction Row Styling */
+/* Inaction Row Styling */
+.inaction-grid {
+    gap: 10px !important;
+    /* Reduced from 20px */
+}
+
+/* New 3-Column Layout using display: contents on wrapper */
 .inaction-card {
     display: grid !important;
-    grid-template-columns: 100px 1fr auto !important;
-    /* Time | Desc | Cost */
+    grid-template-columns: 200px 1fr auto !important;
+    /* Col 1: Phase, Col 2: Desc, Col 3: Impact */
     align-items: center !important;
     gap: 2rem !important;
+
+    /* Premium Styling - Base */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-subtle);
+    border-left: 4px solid var(--color-border-subtle);
+    border-radius: var(--card-radius);
+    padding: 2.35rem 2.5rem !important;
+    /* Micro-adjustment for fit */
+    /* Increased height by ~20px per request */
+    /* Heavily optimized for fit */
+    /* Removed min-height relative logic */
+    box-shadow: var(--card-shadow);
+    backdrop-filter: var(--card-blur);
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.inaction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.inaction-header-row {
+    display: contents !important;
+    /* Unwrap children to grid */
+}
+
+/* Col 1: Phase Info */
+.inaction-phase-wrapper {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-right: 2rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    /* Separator */
+    text-align: left !important;
+    align-items: flex-start !important;
+}
+
+/* Col 2: Narrative Description */
+.inaction-desc {
+    grid-column: 2;
+    margin: 0 !important;
+    text-align: left;
+}
+
+/* Col 3: Impact/Cost Badge */
+.cost-indicator {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.time-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.inaction-phase {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Varied Risk Colors (Progression) */
+
+/* T+7 (1 Week) - Warning/Erosion (Amber/Orange) */
+.t-7 {
+    border-left-color: #ff9f43 !important;
+    border-color: rgba(255, 159, 67, 0.2);
+    background: linear-gradient(90deg, rgba(255, 159, 67, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.t-7:hover {
+    border-color: rgba(255, 159, 67, 0.6);
+    background: linear-gradient(90deg, rgba(255, 159, 67, 0.08) 0%, rgba(30, 30, 40, 0.6) 100%);
+}
+
+.t-7 .time-badge {
+    color: #ff9f43;
+}
+
+/* T+30 (1 Month) - Danger/Loss (Orange/Red) */
+.t-30 {
+    border-left-color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.2);
+    background: linear-gradient(90deg, rgba(255, 107, 107, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.t-30:hover {
+    border-color: rgba(255, 107, 107, 0.6);
+    background: linear-gradient(90deg, rgba(255, 107, 107, 0.08) 0%, rgba(30, 30, 40, 0.6) 100%);
+}
+
+.t-30 .time-badge {
+    color: #ff6b6b;
+}
+
+/* T+90 (3 Months) - Critical/Permanent (Deep Red/Crimson) */
+.t-90 {
+    border-left-color: #ee5253 !important;
+    border-color: rgba(238, 82, 83, 0.2);
+    background: linear-gradient(90deg, rgba(238, 82, 83, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.t-90:hover {
+    border-color: rgba(238, 82, 83, 0.6);
+    background: linear-gradient(90deg, rgba(238, 82, 83, 0.08) 0%, rgba(30, 30, 40, 0.6) 100%);
+}
+
+.t-90 .time-badge {
+    color: #ee5253;
 }
 
 .inaction-header-row {
@@ -1861,24 +2269,133 @@ h3,
 }
 
 /* Closing Row Styling */
+/* Closing Row Styling */
 .closing-card {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 2rem 3rem !important;
+    padding: 1.35rem 3rem !important;
+    /* Ultra-compact */
+    /* Reduced for fit */
+    text-align: left !important;
+    /* Force left alignment */
+
+    /* Premium Base */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: var(--card-blur);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--color-border-subtle);
+    /* Default accent */
+}
+
+.closing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Phase Specific Accents */
+/* Phase 1: Containment (Urgent/Blue) */
+.closing-card:nth-of-type(1) {
+    border-left-color: #74b9ff !important;
+    background: linear-gradient(90deg, rgba(116, 185, 255, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.closing-card:nth-of-type(1):hover {
+    border-color: rgba(116, 185, 255, 0.5);
+}
+
+/* Phase 2: Sanitation (Process/Purple) */
+.closing-card:nth-of-type(2) {
+    border-left-color: #a29bfe !important;
+    background: linear-gradient(90deg, rgba(162, 155, 254, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.closing-card:nth-of-type(2):hover {
+    border-color: rgba(162, 155, 254, 0.5);
+}
+
+/* Phase 3: Shielding (Secure/Green-Teal) */
+.closing-card:nth-of-type(3) {
+    border-left-color: #55efc4 !important;
+    background: linear-gradient(90deg, rgba(85, 239, 196, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.closing-card:nth-of-type(3):hover {
+    border-color: rgba(85, 239, 196, 0.5);
 }
 
 .closing-meta-col {
     border-bottom: none !important;
     border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding-bottom: 0 !important;
-    padding-right: 2rem !important;
-    margin-right: 2rem !important;
-    min-width: 150px;
+    padding-right: 2.5rem !important;
+    /* More breathing room */
+    margin-right: 2.5rem !important;
+    min-width: 180px;
+    /* Wider label area */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.closing-time {
+    font-size: 2rem !important;
+    /* Larger Impact Time */
+    font-weight: 800;
+    line-height: 1;
+    margin: 0.5rem 0;
+    background: -webkit-linear-gradient(#fff, #a8adc7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.closing-content-col {
+    text-align: left !important;
+    flex: 1;
+}
+
+.action-list {
+    display: grid;
+    gap: 0.4rem;
+    /* Ultra tight */
+    text-align: left !important;
+    justify-content: start !important;
+}
+
+.action-item {
+    font-size: 0.95rem;
+    color: #b2bec3;
+    line-height: 1.5;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.action-item::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+}
+
+.action-bold {
+    color: #fff;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
 }
 
 /* Mobile Adjusts for Rows */
+#closing-window-section .timeline-header {
+    margin-bottom: 3rem !important;
+    /* Increased by ~50px per request */
+}
+
 @media (max-width: 768px) {
 
     .inaction-card,
@@ -1897,4 +2414,270 @@ h3,
         margin-right: 0 !important;
         width: 100%;
     }
+}
+
+/* Standardize Inaction Section as a Slide */
+#inaction-scenario-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Standardize Closing Section as a Slide (New Request) */
+#closing-window-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    page-break-before: always;
+    /* Force new page */
+    break-before: page;
+}
+
+/* PREMIUM INVOICE COMPONENT (GOLD EDITION - COMPACT) */
+.invoice-wrapper {
+    max-width: 1000px;
+    /* Increased by 200px as requested */
+    margin: 0 auto;
+    position: relative;
+    /* Standard Card Style Match */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: 0;
+}
+
+
+/* Specific spacing override for this section */
+#exposure-value-section {
+    padding-top: 40px;
+    /* Reduced from 100px per user "red line" request */
+}
+
+#attack-vector-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    margin-top: 0;
+}
+
+#business-impact-section {
+    padding-top: 60px;
+    /* Reduced to fit content */
+    min-height: 100vh;
+    /* Make it a full slide */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#exposure-value-section .timeline-header {
+    margin-bottom: 2rem !important;
+}
+
+.invoice-container {
+    background: transparent;
+    border-radius: var(--card-radius);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Watermark */
+.invoice-container::before {
+    content: 'CONFIDENTIAL';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 8rem;
+    font-weight: 800;
+    color: rgba(255, 215, 0, 0.03);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+}
+
+/* Header */
+.invoice-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.inv-brand {
+    text-align: center;
+}
+
+.inv-brand h1 {
+    font-size: 1.8rem;
+    color: #e5e5e5;
+    letter-spacing: 3px;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.inv-brand p {
+    color: #a8adc7;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    letter-spacing: 1px;
+}
+
+/* Grid Table */
+.invoice-body {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1rem;
+}
+
+.inv-table-header {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    padding: 1rem 1.5rem;
+    color: #ffd700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    background: rgba(255, 215, 0, 0.02);
+    border-radius: 6px 6px 0 0;
+}
+
+.inv-row {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    padding: 1.8rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.inv-row:last-child {
+    border-bottom: none;
+}
+
+.inv-row:hover {
+    background: rgba(255, 215, 0, 0.02);
+    transform: translateX(5px);
+}
+
+.item-desc {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.item-sub {
+    display: block;
+    color: #8b9bb4;
+    font-size: 0.85rem;
+    margin-top: 6px;
+}
+
+.item-source {
+    color: #b2bec3;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.col-risk {
+    display: flex;
+    justify-content: center;
+}
+
+.item-price {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #e2e8f0;
+}
+
+/* Footer */
+.invoice-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 2.5rem;
+    background: rgba(255, 215, 0, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.total-label {
+    color: #ffd700;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.total-value {
+    color: #ffd700;
+    font-family: 'Courier New', monospace;
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+}
+
+/* Badges (Re-enforcing standard colors) */
+.demand-badge.demand-high {
+    background: rgba(255, 118, 117, 0.15);
+    color: #ff7675;
+    border: 1px solid rgba(255, 118, 117, 0.3);
+    box-shadow: 0 0 10px rgba(255, 118, 117, 0.1);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.demand-badge.demand-med {
+    background: rgba(255, 234, 167, 0.15);
+    color: #ffeaa7;
+    border: 1px solid rgba(255, 234, 167, 0.3);
+    box-shadow: 0 0 10px rgba(255, 234, 167, 0.1);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+}
+
+.inv-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.item-price {
+    text-align: left;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
 }

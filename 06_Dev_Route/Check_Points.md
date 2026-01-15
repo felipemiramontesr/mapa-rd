@@ -59,6 +59,8 @@
 *   **V89:** Secciones de Impacto (Línea de Tiempo & Kill Chain).
 *   **V90:** Desglose de "Factura Dark Web" (Valor de Mercado Detallado).
 *   **V91:** QA Visual & Final Polish (Timeline Watermark Removed, Strict Vector Styling, CI Passed).
+*   **V92:** Inaction Section Refinement (3-Col Layout, Height Optimization).
+*   **V93:** Closing Window Section (Full-Slide Isolation, Premium Redesign, Aggressive Compaction).
 
 ---
 

@@ -57,137 +57,7 @@
 
         </div>
 
-        <!-- Fixed Navigation Widget -->
-        <div class="nav-widget">
-            <div class="nav-btn" id="navUp" onclick="navigateSection(-1)" title="Anterior">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M18 15l-6-6-6 6" />
-                </svg>
-            </div>
-            <div class="nav-btn" id="navDown" onclick="navigateSection(1)" title="Siguiente">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M6 9l6 6 6-6" />
-                </svg>
-            </div>
-        </div>
 
-        <script>
-            // Section Registry (Order Matters)
-            const sections = [
-                'hero-section',
-                'ird-section',
-                'vectors-section',
-                'timeline-section',
-                'exposure-value-section',
-                'attack-vector-section',
-                'business-impact-section',
-                'inaction-scenario-section',
-                'closing-window-section',
-                'remediation-route-section',
-                'annex-section'
-            ];
-
-            let currentSectionIndex = 0;
-            let isManualScrolling = false;
-            let scrollTimeout;
-
-            function updateNavState() {
-                const navUp = document.getElementById('navUp');
-                const navDown = document.getElementById('navDown');
-
-                // Disable Up if at start
-                if (currentSectionIndex <= 0) {
-                    navUp.classList.add('disabled');
-                    currentSectionIndex = 0; // Clamp
-                } else {
-                    navUp.classList.remove('disabled');
-                }
-
-                // Disable Down if at end
-                if (currentSectionIndex >= sections.length - 1) {
-                    navDown.classList.add('disabled');
-                    currentSectionIndex = sections.length - 1; // Clamp
-                } else {
-                    navDown.classList.remove('disabled');
-                }
-            }
-
-            function detectActiveSection() {
-                if (isManualScrolling) return;
-
-                const viewHeight = window.innerHeight;
-                const viewCenter = viewHeight / 2;
-
-                let closestIndex = 0;
-                let minDistance = Infinity;
-
-                sections.forEach((id, index) => {
-                    const el = document.getElementById(id);
-                    if (!el) return;
-
-                    const rect = el.getBoundingClientRect();
-
-                    // Check if section covers the center line
-                    if (rect.top <= viewCenter && rect.bottom >= viewCenter) {
-                        closestIndex = index;
-                        minDistance = 0;
-                    } else {
-                        // If not covering center, check distance to center
-                        const elCenter = rect.top + (rect.height / 2);
-                        const distance = Math.abs(viewCenter - elCenter);
-
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            closestIndex = index;
-                        }
-                    }
-                });
-
-                if (currentSectionIndex !== closestIndex) {
-                    currentSectionIndex = closestIndex;
-                    updateNavState();
-                }
-            }
-
-            function navigateSection(direction) {
-                const nextIndex = currentSectionIndex + direction;
-                if (nextIndex >= 0 && nextIndex < sections.length) {
-                    const id = sections[nextIndex];
-                    const el = document.getElementById(id);
-                    if (el) {
-                        isManualScrolling = true;
-                        el.scrollIntoView({ behavior: 'smooth' });
-
-                        currentSectionIndex = nextIndex;
-                        updateNavState();
-
-                        // Reset manual scroll lock after animation
-                        clearTimeout(scrollTimeout);
-                        scrollTimeout = setTimeout(() => {
-                            isManualScrolling = false;
-                        }, 1000);
-                    }
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                // Initial check
-                detectActiveSection();
-                updateNavState();
-
-                // Scroll Listener (Throttled via requestAnimationFrame)
-                let ticking = false;
-                window.addEventListener('scroll', () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(() => {
-                            detectActiveSection();
-                            ticking = false;
-                        });
-                        ticking = true;
-                    }
-                });
-            });
-        </script>
 
 
         <!-- IRD Section (Premium Page) -->
@@ -210,10 +80,13 @@
                 <div class="ird-interpretation">
                     <div class="ird-context-card" id="irdContext">
                         <span class="ird-context-label">Diagnóstico Operativo</span>
-                        <p><strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un MÁXIMO riesgo sistémico. Datos
-                            sensibles (financieros/accesos) están expuestos activamente. Se requiere <strong>contención
+                        <p><strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un MÁXIMO riesgo
+                            sistémico. Datos
+                            sensibles (financieros/accesos) están expuestos activamente. Se requiere
+                            <strong>contención
                                 de
-                                emergencia</strong> para evitar fraude inminente.</p>
+                                emergencia</strong> para evitar fraude inminente.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -320,7 +193,7 @@
             });
         </script>
 
-        <hr class="section-divider">
+
 
 
 
@@ -395,9 +268,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Exposición crítica de datos personales y financieros
+                                    <p class="description-text">Exposición crítica de datos personales y
+                                        financieros
                                         incluyendo
-                                        saldos de cuenta, RFC, domicilio físico y números de teléfono. Esta información
+                                        saldos de cuenta, RFC, domicilio físico y números de teléfono.
+                                        Esta información
                                         facilita el
                                         robo de identidad y fraude bancario directo.</p>
                                 </div>
@@ -442,7 +317,8 @@
 
                                             <li>Cambio global de contraseñas de manera inmediata.</li>
 
-                                            <li>Uso gestor de contraseñas para evitar reutilización.</li>
+                                            <li>Uso gestor de contraseñas para evitar reutilización.
+                                            </li>
 
                                             <li>Habilitar 2FA/MFA en todos los servicios críticos.</li>
 
@@ -453,7 +329,8 @@
                                         <h4 class="sub-header">Impacto</h4>
                                         <ul class="impact-list">
 
-                                            <li>Compromiso automatizado de cuentas en diversos servicios.</li>
+                                            <li>Compromiso automatizado de cuentas en diversos
+                                                servicios.</li>
 
                                             <li>Evasión de controles de seguridad básicos.</li>
 
@@ -466,9 +343,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">El correo y contraseñas asociadas aparecen en listas de
+                                    <p class="description-text">El correo y contraseñas asociadas
+                                        aparecen en listas de
                                         amenazas
-                                        activas de 'Credential Stuffing' (Synthient). Esto indica que los datos están
+                                        activas de 'Credential Stuffing' (Synthient). Esto indica que
+                                        los datos están
                                         siendo
                                         probados activamente contra múltiples servicios.</p>
                                 </div>
@@ -508,7 +387,8 @@
                                         <h4 class="sub-header">Ruta de Cierre</h4>
                                         <ol class="remediation-list">
 
-                                            <li>Abandonar el uso de esa contraseña específica definitivamente.</li>
+                                            <li>Abandonar el uso de esa contraseña específica
+                                                definitivamente.</li>
 
                                             <li>Verificar integridad de sitios web antiguos.</li>
 
@@ -534,9 +414,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Filtración de base de datos completa exponiendo
+                                    <p class="description-text">Filtración de base de datos completa
+                                        exponiendo
                                         contraseñas
-                                        almacenadas en texto plano, junto con nombres y direcciones IP. Permite acceso
+                                        almacenadas en texto plano, junto con nombres y direcciones IP.
+                                        Permite acceso
                                         directo sin
                                         necesidad de descifrado.</p>
                                 </div>
@@ -578,7 +460,8 @@
 
                                             <li>Actualizar cuenta de Adobe si sigue activa.</li>
 
-                                            <li>No utilizar pistas de contraseña que revelen información real.</li>
+                                            <li>No utilizar pistas de contraseña que revelen información
+                                                real.</li>
 
                                         </ol>
                                     </div>
@@ -589,7 +472,8 @@
 
                                             <li>Deducción de patrones de contraseñas personales.</li>
 
-                                            <li>Ataques dirigidos a cuentas creativas/profesionales.</li>
+                                            <li>Ataques dirigidos a cuentas creativas/profesionales.
+                                            </li>
 
                                             <li>Spam y phishing dirigido.</li>
 
@@ -600,9 +484,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Brecha histórica masiva exponiendo usuarios, contraseñas
+                                    <p class="description-text">Brecha histórica masiva exponiendo
+                                        usuarios, contraseñas
                                         cifradas y,
-                                        críticamente, las pistas de contraseña (password hints) en texto plano, lo que
+                                        críticamente, las pistas de contraseña (password hints) en texto
+                                        plano, lo que
                                         facilita la
                                         deducción de claves.</p>
                                 </div>
@@ -654,9 +540,11 @@
                                         <h4 class="sub-header">Impacto</h4>
                                         <ul class="impact-list">
 
-                                            <li>Alta probabilidad de intentos de acceso automatizados.</li>
+                                            <li>Alta probabilidad de intentos de acceso automatizados.
+                                            </li>
 
-                                            <li>Reutilización de credenciales en servicios bancarios/correo.</li>
+                                            <li>Reutilización de credenciales en servicios
+                                                bancarios/correo.</li>
 
                                         </ul>
                                     </div>
@@ -665,9 +553,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Aparición en 'Combo Lists' utilizadas por
+                                    <p class="description-text">Aparición en 'Combo Lists' utilizadas
+                                        por
                                         cibercriminales para
-                                        ataques de fuerza bruta automatizados contra múltiples plataformas.</p>
+                                        ataques de fuerza bruta automatizados contra múltiples
+                                        plataformas.</p>
                                 </div>
                             </div>
                         </div>
@@ -730,9 +620,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Su correo forma parte de una de las colecciones más
+                                    <p class="description-text">Su correo forma parte de una de las
+                                        colecciones más
                                         grandes de
-                                        credenciales robadas (773 millones de registros Unique), distribuidas
+                                        credenciales robadas (773 millones de registros Unique),
+                                        distribuidas
                                         ampliamente en foros
                                         de hacking.</p>
                                 </div>
@@ -797,8 +689,10 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Compromiso de servicio de gestión documental. Además de
-                                        credenciales, existe riesgo sobre metadatos de documentos procesados.</p>
+                                    <p class="description-text">Compromiso de servicio de gestión
+                                        documental. Además de
+                                        credenciales, existe riesgo sobre metadatos de documentos
+                                        procesados.</p>
                                 </div>
                             </div>
                         </div>
@@ -861,9 +755,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Filtración que incluye direcciones físicas, teléfonos y
+                                    <p class="description-text">Filtración que incluye direcciones
+                                        físicas, teléfonos y
                                         direcciones
-                                        IP, combinados con datos de cuenta. Aumenta la superficie para ataques de
+                                        IP, combinados con datos de cuenta. Aumenta la superficie para
+                                        ataques de
                                         ingeniería social.
                                     </p>
                                 </div>
@@ -926,9 +822,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Exposición de correos, usuarios y contraseñas. Aunque no
+                                    <p class="description-text">Exposición de correos, usuarios y
+                                        contraseñas. Aunque no
                                         incluye
-                                        datos financieros, permite correlacionar hábitos y rutinas del usuario.</p>
+                                        datos financieros, permite correlacionar hábitos y rutinas del
+                                        usuario.</p>
                                 </div>
                             </div>
                         </div>
@@ -989,7 +887,8 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Exposición de datos de usuario, ubicación geográfica y
+                                    <p class="description-text">Exposición de datos de usuario,
+                                        ubicación geográfica y
                                         hashes de
                                         contraseña.</p>
                                 </div>
@@ -1030,7 +929,8 @@
                                         <h4 class="sub-header">Ruta de Cierre</h4>
                                         <ol class="remediation-list">
 
-                                            <li>Monitorear preguntas de seguridad en otros servicios.</li>
+                                            <li>Monitorear preguntas de seguridad en otros servicios.
+                                            </li>
 
                                         </ol>
                                     </div>
@@ -1039,7 +939,8 @@
                                         <h4 class="sub-header">Impacto</h4>
                                         <ul class="impact-list">
 
-                                            <li>Uso de fecha de nacimiento para recuperar otras cuentas.</li>
+                                            <li>Uso de fecha de nacimiento para recuperar otras cuentas.
+                                            </li>
 
                                             <li>Suplantación de identidad básica.</li>
 
@@ -1050,9 +951,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Inclusión de fechas de nacimiento y geolocalización
+                                    <p class="description-text">Inclusión de fechas de nacimiento y
+                                        geolocalización
                                         junto a
-                                        credenciales. La fecha de nacimiento es un dato crítico para verificaciones de
+                                        credenciales. La fecha de nacimiento es un dato crítico para
+                                        verificaciones de
                                         seguridad.
                                     </p>
                                 </div>
@@ -1115,7 +1018,8 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Brecha antigua pero relevante por la popularidad del
+                                    <p class="description-text">Brecha antigua pero relevante por la
+                                        popularidad del
                                         servicio. Se
                                         filtraron hashes de contraseñas.</p>
                                 </div>
@@ -1167,7 +1071,8 @@
                                         <h4 class="sub-header">Impacto</h4>
                                         <ul class="impact-list">
 
-                                            <li>Recepción de correos maliciosos altamente personalizados.</li>
+                                            <li>Recepción de correos maliciosos altamente
+                                                personalizados.</li>
 
                                             <li>Riesgo de infección por malware.</li>
 
@@ -1178,9 +1083,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Su dirección de correo ha sido identificada en listas de
+                                    <p class="description-text">Su dirección de correo ha sido
+                                        identificada en listas de
                                         objetivos
-                                        de la campaña de phishing 'Manipulated Caiman', enfocada en usuarios de México.
+                                        de la campaña de phishing 'Manipulated Caiman', enfocada en
+                                        usuarios de México.
                                     </p>
                                 </div>
                             </div>
@@ -1240,9 +1147,11 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Exposición de datos profesionales: habilidades,
+                                    <p class="description-text">Exposición de datos profesionales:
+                                        habilidades,
                                         experiencia y
-                                        ubicación. Útil para reclutadores falsos o ingeniería social corporativa.</p>
+                                        ubicación. Útil para reclutadores falsos o ingeniería social
+                                        corporativa.</p>
                                 </div>
                             </div>
                         </div>
@@ -1305,7 +1214,8 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Asociación del correo electrónico con el perfil de
+                                    <p class="description-text">Asociación del correo electrónico con el
+                                        perfil de
                                         Twitter (X).
                                         Permite vincular la identidad seudónima con la real.</p>
                                 </div>
@@ -1346,7 +1256,8 @@
                                         <h4 class="sub-header">Ruta de Cierre</h4>
                                         <ol class="remediation-list">
 
-                                            <li>Hacer tableros privados si contienen datos sensibles.</li>
+                                            <li>Hacer tableros privados si contienen datos sensibles.
+                                            </li>
 
                                             <li>Ignorar correos genéricos de soporte de Trello.</li>
 
@@ -1368,7 +1279,8 @@
                                 <!-- Row 2: Description (Sober & Elegant) -->
                                 <div class="description-card">
                                     <h4 class="sub-header-simple">Descripción del Evento</h4>
-                                    <p class="description-text">Confirmación de que el correo tiene una cuenta de Trello
+                                    <p class="description-text">Confirmación de que el correo tiene una
+                                        cuenta de Trello
                                         asociada
                                         mediante enumeración de API.</p>
                                 </div>
@@ -1454,7 +1366,7 @@
                 <p class="timeline-subtitle">Profundidad Histórica de la Huella Digital</p>
             </div>
 
-            <div class="timeline-container">
+            <div class="timeline-container-vertical">
                 <div class="timeline-line"></div>
                 <div class="timeline-line-fill" id="timelineFill"></div>
 
@@ -1465,7 +1377,8 @@
                         <span class="timeline-year">2012</span>
                         <span class="t-date">2012</span>
                         <h3 class="t-title">Dropbox</h3>
-                        <p class="t-desc">Inicio de la huella rastreable. Filtración masiva de hashes de contraseña.</p>
+                        <p class="t-desc">Inicio de la huella rastreable. Filtración masiva de hashes de
+                            contraseña.</p>
                         <span class="t-badge" style="background: rgba(255, 159, 67, 0.2); color: #ff9f43;">Riesgo
                             Alto</span>
                     </div>
@@ -1478,7 +1391,8 @@
                         <span class="timeline-year">2013</span>
                         <span class="t-date">2013</span>
                         <h3 class="t-title">Adobe</h3>
-                        <p class="t-desc">Compromiso crítico de credenciales y pistas de contraseña en texto plano.</p>
+                        <p class="t-desc">Compromiso crítico de credenciales y pistas de contraseña en
+                            texto plano.</p>
                         <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
                             Crítico</span>
                     </div>
@@ -1491,7 +1405,8 @@
                         <span class="timeline-year">2014</span>
                         <span class="t-date">2014</span>
                         <h3 class="t-title">Banorte</h3>
-                        <p class="t-desc">Exposición financiera mayor. Datos bancarios y personales (PII) comprometidos.
+                        <p class="t-desc">Exposición financiera mayor. Datos bancarios y personales
+                            (PII) comprometidos.
                         </p>
                         <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">Riesgo
                             Máximo</span>
@@ -1505,7 +1420,8 @@
                         <span class="timeline-year">2015</span>
                         <span class="t-date">2015</span>
                         <h3 class="t-title">000webhost</h3>
-                        <p class="t-desc">Contraseñas en texto plano expuestas. Acceso directo sin desencriptación.</p>
+                        <p class="t-desc">Contraseñas en texto plano expuestas. Acceso directo sin
+                            desencriptación.</p>
                         <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">Riesgo
                             Máximo</span>
                     </div>
@@ -1518,7 +1434,8 @@
                         <span class="timeline-year">2016</span>
                         <span class="t-date">2016</span>
                         <h3 class="t-title">Exploit.In & GeekedIn</h3>
-                        <p class="t-desc">Datos agregados en 'Combo Lists' del mercado negro y perfiles profesionales.
+                        <p class="t-desc">Datos agregados en 'Combo Lists' del mercado negro y perfiles
+                            profesionales.
                         </p>
                         <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Crítico /
                             Medio</span>
@@ -1532,7 +1449,8 @@
                         <span class="timeline-year">2019</span>
                         <span class="t-date">2019</span>
                         <h3 class="t-title">Collection #1 & Canva</h3>
-                        <p class="t-desc">Mega-brechas globales. El correo se vuelve públicamente conocido en bases de
+                        <p class="t-desc">Mega-brechas globales. El correo se vuelve públicamente
+                            conocido en bases de
                             datos masivas.</p>
                         <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
                             Crítico</span>
@@ -1559,7 +1477,8 @@
                         <span class="timeline-year">2025</span>
                         <span class="t-date">2025 - PRESENTE</span>
                         <h3 class="t-title">Synthient (Stealer Logs)</h3>
-                        <p class="t-desc">Actividad reciente de malware/stealers. Credenciales probadas activamente.</p>
+                        <p class="t-desc">Actividad reciente de malware/stealers. Credenciales probadas
+                            activamente.</p>
                         <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">ACTIVO
                             AHORA</span>
                     </div>
@@ -1570,7 +1489,8 @@
                 document.addEventListener("DOMContentLoaded", function () {
                     const items = document.querySelectorAll('.timeline-item');
                     const lineFill = document.getElementById('timelineFill');
-                    const container = document.querySelector('.timeline-container');
+                    /* Fix Selector: Match the actual HTML class */
+                    const container = document.querySelector('.timeline-container-vertical');
 
                     const observerOptions = {
                         root: null,
@@ -1587,9 +1507,16 @@
                         });
                     }, observerOptions);
 
-                    items.forEach(item => {
+                    items.forEach((item, index) => {
+                        // Explicitly assign ZigZag classes to avoid nth-child issues
+                        if (index % 2 === 0) {
+                            item.classList.add('t-left'); // Item 1, 3, 5...
+                        } else {
+                            item.classList.add('t-right'); // Item 2, 4, 6...
+                        }
                         observer.observe(item);
                     });
+
 
                     // Scroll Progress for Line
                     window.addEventListener('scroll', () => {
@@ -1623,53 +1550,100 @@
             </script>
         </section>
 
-        <hr class="section-divider">
+
 
         <!-- Value of Exposure Section (Dark Market Invoice) -->
         <section id="exposure-value-section" class="value-exposure-section">
             <div class="timeline-header">
                 <h2 class="timeline-title">Valor de Exposición</h2>
-                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">¿Cuánto vale tu
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">
+                    ¿Cuánto vale tu
                     seguridad?</div>
                 <p class="timeline-subtitle">Tasación de Activos en Mercados Ilegales y la Deep Web</p>
             </div>
 
             <!-- Ledger Styles moved to HEAD (VEC-001 Standard) -->
 
-            <div class="ledger-container">
-                <div class="trx-id">TRX-2026-EXP-A4</div>
+            <!-- Premium Invoice Component -->
+            <div class="invoice-wrapper">
+                <div class="invoice-container">
+                    <!-- Invoice Header -->
+                    <div class="invoice-header">
+                        <div class="inv-brand">
+                            <h1>Black Market Invoice</h1>
+                            <p>Tasación de Activos Expuestos</p>
+                        </div>
 
-                <div class="ledger-header">
-                    <div>Activo Identificado</div>
-                    <div>Fuente</div>
-                    <div style="text-align: center;">Demanda</div>
-                    <div style="text-align: right;">Valuación</div>
-                </div>
+                    </div>
 
-                <div class="ledger-row">
-                    <div class="asset-name">Credenciales Bancarias (Fullz)</div>
-                    <div class="asset-source">Banorte Leak</div>
-                    <div style="text-align: center;"><span class="demand-badge demand-high">ALTA</span></div>
-                    <div class="asset-value">$45.00 USD</div>
-                </div>
-                <div class="ledger-row">
-                    <div class="asset-name">Acceso Correo Corporativo</div>
-                    <div class="asset-source">Synthient</div>
-                    <div style="text-align: center;"><span class="demand-badge demand-high">ALTA</span></div>
-                    <div class="asset-value">$80.00 USD</div>
-                </div>
-                <div class="ledger-row">
-                    <div class="asset-name">Identidad Fiscal (RFC/Docs)</div>
-                    <div class="asset-source">SAT/Gov</div>
-                    <div style="text-align: center;"><span class="demand-badge demand-med">MEDIA</span></div>
-                    <div class="asset-value">$20.00 USD</div>
-                </div>
+                    <div class="invoice-body">
+                        <!-- Table Headers -->
+                        <div class="inv-table-header">
+                            <div>Concepto / Activo</div>
+                            <div>Fuente</div>
+                            <div style="text-align: center;">Demanda</div>
+                            <div style="text-align: right;">Valuación</div>
+                        </div>
 
-                <div class="ledger-total">
-                    <div class="total-label">VALOR TOTAL DE EXPOSICIÓN</div>
-                    <div class="total-amount" id="exposure-total">$0.00 USD</div>
+                        <!-- Row 1 -->
+                        <div class="inv-row">
+                            <div class="col-item">
+                                <div class="item-desc">Credenciales Bancarias (Fullz)</div>
+                                <span class="item-sub">Acceso total a banca en línea + Token</span>
+                            </div>
+                            <div class="col-source">
+                                <span class="item-source">Banorte Leak</span>
+                            </div>
+                            <div class="col-risk">
+                                <span class="demand-badge demand-high">ALTA</span>
+                            </div>
+                            <div class="col-price">
+                                <div class="item-price">$45.00 USD</div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="inv-row">
+                            <div class="col-item">
+                                <div class="item-desc">Acceso Correo Corporativo</div>
+                                <span class="item-sub">Dominio empresarial verificado</span>
+                            </div>
+                            <div class="col-source">
+                                <span class="item-source">Synthient Log</span>
+                            </div>
+                            <div class="col-risk">
+                                <span class="demand-badge demand-high">ALTA</span>
+                            </div>
+                            <div class="col-price">
+                                <div class="item-price">$80.00 USD</div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="inv-row">
+                            <div class="col-item">
+                                <div class="item-desc">Identidad Fiscal (RFC + Docs)</div>
+                                <span class="item-sub">Kit de suplantación de identidad</span>
+                            </div>
+                            <div class="col-source">
+                                <span class="item-source">SAT / Gov</span>
+                            </div>
+                            <div class="col-risk">
+                                <span class="demand-badge demand-med">MEDIA</span>
+                            </div>
+                            <div class="col-price">
+                                <div class="item-price">$20.00 USD</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer / Total -->
+                    <div class="invoice-footer">
+                        <div class="total-label">Valor Total de Exposición</div>
+                        <div class="total-value" id="exposure-total">$0.00 USD</div>
+                    </div>
                 </div>
-            </div> <!-- End ledger-container -->
+            </div>
         </section>
 
         <!-- Upcount Animation Script -->
@@ -1716,13 +1690,14 @@
             });
         </script>
 
-        <hr class="section-divider">
+
 
         <!-- Threat Actor Playbook (Vertical Dossier) -->
         <section id="attack-vector-section" class="value-exposure-section">
             <div class="timeline-header">
                 <h2 class="timeline-title">Vector de Ataque</h2>
-                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Cómo un Atacante
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">
+                    Cómo un Atacante
                     Usaría Esta Información</div>
                 <p class="timeline-subtitle">Expediente de Ataque (Attack Dossier)</p>
             </div>
@@ -1750,15 +1725,18 @@
                     </div>
                     <div class="step-content-col">
                         <h3 class="dossier-title">LOCALIZACIÓN</h3>
-                        <p class="dossier-desc">El atacante utiliza bases de datos públicas para correlacionar tu
-                            <strong>Nombre Completo</strong> y <strong>Domicilio</strong> físico, creando un perfil
+                        <p class="dossier-desc">El atacante utiliza bases de datos públicas para
+                            correlacionar tu
+                            <strong>Nombre Completo</strong> y <strong>Domicilio</strong> físico,
+                            creando un perfil
                             base.
                         </p>
                     </div>
                     <div class="step-evidence-col">
                         <div class="evidence-badge">
                             <span class="evidence-label">Fuente Evidencial</span>
-                            <span class="evidence-value" style="color: #74b9ff;">Banorte Leak + SAT</span>
+                            <span class="evidence-value" style="color: #74b9ff;">Banorte Leak +
+                                SAT</span>
                         </div>
                     </div>
                 </div>
@@ -1778,13 +1756,16 @@
                     </div>
                     <div class="step-content-col">
                         <h3 class="dossier-title">ARMADO</h3>
-                        <p class="dossier-desc">Validación automatizada de tus credenciales contra servicios
-                            financieros. Se configuran scripts con tus <strong>Contraseñas Reales</strong>.</p>
+                        <p class="dossier-desc">Validación automatizada de tus credenciales contra
+                            servicios
+                            financieros. Se configuran scripts con tus <strong>Contraseñas
+                                Reales</strong>.</p>
                     </div>
                     <div class="step-evidence-col">
                         <div class="evidence-badge">
                             <span class="evidence-label">Log de Malware</span>
-                            <span class="evidence-value" style="color: #ffeaa7;">Synthient Stealer</span>
+                            <span class="evidence-value" style="color: #ffeaa7;">Synthient
+                                Stealer</span>
                         </div>
                     </div>
                 </div>
@@ -1807,14 +1788,16 @@
                     </div>
                     <div class="step-content-col">
                         <h3 class="dossier-title">IMPACTO</h3>
-                        <p class="dossier-desc">Ejecución del fraude. Acceso no autorizado a banca móvil, suplantación
+                        <p class="dossier-desc">Ejecución del fraude. Acceso no autorizado a banca
+                            móvil, suplantación
                             ante el SAT y extracción de recursos financieros.</p>
                     </div>
                     <div class="step-evidence-col">
                         <div class="evidence-badge"
                             style="background: rgba(255, 118, 117, 0.1); border-color: rgba(255, 118, 117, 0.3);">
                             <span class="evidence-label">Estado de Riesgo</span>
-                            <span class="evidence-value" style="color: #ff7675;">EJECUCIÓN INMINENTE</span>
+                            <span class="evidence-value" style="color: #ff7675;">EJECUCIÓN
+                                INMINENTE</span>
                         </div>
                     </div>
                 </div>
@@ -1822,7 +1805,7 @@
             </div>
         </section>
 
-        <hr class="section-divider">
+
 
         <!-- Executive Impact Section (New 2x2 Grid) -->
         <section id="business-impact-section" class="impact-section">
@@ -1830,7 +1813,8 @@
 
             <div class="timeline-header">
                 <h2 class="timeline-title">Impacto Directo al Negocio</h2>
-                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Visión Ejecutiva
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">
+                    Visión Ejecutiva
                     de Riesgo</div>
                 <p class="timeline-subtitle">Traducción de Riesgo Técnico a Estratégico</p>
             </div>
@@ -1840,7 +1824,8 @@
                 <div class="impact-card impact-financial">
                     <div class="impact-icon-box">💰</div>
                     <div class="impact-card-title">FINANCIERO</div>
-                    <p class="impact-card-desc">Pérdida directa por fraude bancario, costos elevados de remediación y
+                    <p class="impact-card-desc">Pérdida directa por fraude bancario, costos elevados de
+                        remediación y
                         posibles multas por incumplimiento.</p>
                 </div>
 
@@ -1848,7 +1833,8 @@
                 <div class="impact-card impact-operational">
                     <div class="impact-icon-box">⚡</div>
                     <div class="impact-card-title">OPERATIVO</div>
-                    <p class="impact-card-desc">Interrupción de servicios críticos, parálisis de sistemas y pérdida de
+                    <p class="impact-card-desc">Interrupción de servicios críticos, parálisis de
+                        sistemas y pérdida de
                         productividad empresarial.</p>
                 </div>
 
@@ -1856,7 +1842,8 @@
                 <div class="impact-card impact-reputational">
                     <div class="impact-icon-box">🛡️</div>
                     <div class="impact-card-title">REPUTACIONAL</div>
-                    <p class="impact-card-desc">Pérdida catastrófica de confianza del cliente y daño irreversible a la
+                    <p class="impact-card-desc">Pérdida catastrófica de confianza del cliente y daño
+                        irreversible a la
                         imagen de marca en el mercado.</p>
                 </div>
 
@@ -1864,13 +1851,14 @@
                 <div class="impact-card impact-regulatory">
                     <div class="impact-icon-box">⚖️</div>
                     <div class="impact-card-title">REGULATORIO</div>
-                    <p class="impact-card-desc">Sanciones legales severas por violaciones a la LFPDPPP, GDPR y
+                    <p class="impact-card-desc">Sanciones legales severas por violaciones a la LFPDPPP,
+                        GDPR y
                         normativas de protección de datos.</p>
                 </div>
             </div>
         </section>
 
-        <hr class="section-divider">
+
 
         <!-- Inaction Scenario Section (The Risk Fuse) -->
         <section id="inaction-scenario-section" class="inaction-section">
@@ -1878,9 +1866,11 @@
 
             <div class="timeline-header">
                 <h2 class="timeline-title">Escenario de Inacción</h2>
-                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">El Costo
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">
+                    El Costo
                     Compuesto de la Indecisión</div>
-                <p class="timeline-subtitle">Proyección basada en la fusión de datos históricos y amenazas activas</p>
+                <p class="timeline-subtitle">Proyección basada en la fusión de datos históricos y
+                    amenazas activas</p>
             </div>
 
             <div class="inaction-grid">
@@ -1897,8 +1887,10 @@
                         </div>
                     </div>
                     <p class="inaction-desc">
-                        El atacante correlaciona tus <strong>datos históricos</strong> (domicilio, INE) para dar
-                        legitimidad a las <strong>credenciales nuevas</strong>. La brecha comienza a solidificarse.
+                        El atacante correlaciona tus <strong>datos históricos</strong> (domicilio, INE)
+                        para dar
+                        legitimidad a las <strong>credenciales nuevas</strong>. La brecha comienza a
+                        solidificarse.
                     </p>
                 </div>
 
@@ -1915,7 +1907,8 @@
                         </div>
                     </div>
                     <p class="inaction-desc">
-                        Tu identidad "verificada" se vende al mayoreo. Préstamos y fraudes se ejecutan usando tu
+                        Tu identidad "verificada" se vende al mayoreo. Préstamos y fraudes se ejecutan
+                        usando tu
                         historial crediticio real como aval involuntario.
                     </p>
                 </div>
@@ -1933,14 +1926,15 @@
                         </div>
                     </div>
                     <p class="inaction-desc">
-                        Tu identidad digital queda marcada en listas negras de riesgo ("Buró Profundo"). Bloqueos en
+                        Tu identidad digital queda marcada en listas negras de riesgo ("Buró Profundo").
+                        Bloqueos en
                         servicios financieros legítimos de por vida.
                     </p>
                 </div>
             </div>
         </section>
 
-        <hr class="section-divider">
+
 
         <!-- Closing Window Section (Cognitive Relief) -->
         <section id="closing-window-section" class="closing-section">
@@ -1949,8 +1943,7 @@
 
             <div class="timeline-header">
                 <h2 class="timeline-title">Ventana de Cierre</h2>
-                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Ruta de
-                    Recuperación</div>
+
                 <p class="timeline-subtitle">Plan de Acción Recomendado</p>
             </div>
 
@@ -1966,14 +1959,18 @@
                         <ul class="action-list">
                             <li class="action-item">
                                 <span class="action-bold">Cambio Inteligente de Credenciales</span>
-                                No uses contraseñas cortas. Implementa una <strong>"Frase de Seguridad"</strong> robusta
-                                (ej. "MiPerroComeCereal2024") en tu cuenta de correo principal para detener el acceso
+                                No uses contraseñas cortas. Implementa una <strong>"Frase de
+                                    Seguridad"</strong> robusta
+                                (ej. "MiPerroComeCereal2024") en tu cuenta de correo principal para
+                                detener el acceso
                                 inmediato.
                             </li>
                             <li class="action-item">
                                 <span class="action-bold">Doble Candado (2FA)</span>
-                                Activa la "Verificación en 2 Pasos" en WhatsApp y Banca Móvil. Prioriza el uso de una
-                                <strong>App Autenticadora</strong> sobre los mensajes SMS para evitar intercepciones.
+                                Activa la "Verificación en 2 Pasos" en WhatsApp y Banca Móvil. Prioriza
+                                el uso de una
+                                <strong>App Autenticadora</strong> sobre los mensajes SMS para evitar
+                                intercepciones.
                             </li>
                         </ul>
                     </div>
@@ -1990,14 +1987,18 @@
                         <ul class="action-list">
                             <li class="action-item">
                                 <span class="action-bold">Cierre Global de Sesiones</span>
-                                Accede a la configuración de seguridad de Google, Facebook y Bancos. Busca la opción
-                                "Dispositivos Conectados" y fuerza el <strong>Cierre de Sesión</strong> en todos los
+                                Accede a la configuración de seguridad de Google, Facebook y Bancos.
+                                Busca la opción
+                                "Dispositivos Conectados" y fuerza el <strong>Cierre de Sesión</strong>
+                                en todos los
                                 equipos que no tengas en tu mano.
                             </li>
                             <li class="action-item">
                                 <span class="action-bold">Alertas Transaccionales Totales</span>
-                                Configura tu banca móvil para recibir notificaciones push o SMS por <strong>cargos de
-                                    cualquier monto</strong> (incluso $1.00 peso) para detectar intentos de validación
+                                Configura tu banca móvil para recibir notificaciones push o SMS por
+                                <strong>cargos de
+                                    cualquier monto</strong> (incluso $1.00 peso) para detectar intentos
+                                de validación
                                 de tarjeta.
                             </li>
                         </ul>
@@ -2015,17 +2016,21 @@
                         <ul class="action-list">
                             <li class="action-item">
                                 <span class="action-bold">Candado Crediticio (Buró)</span>
-                                Solicita el servicio de <strong>"Bloqueo"</strong> en Buró de Crédito. Esto actúa como
+                                Solicita el servicio de <strong>"Bloqueo"</strong> en Buró de Crédito.
+                                Esto actúa como
                                 un
-                                interruptor maestro que impide que cualquier institución consulte tu historial o
+                                interruptor maestro que impide que cualquier institución consulte tu
+                                historial o
                                 autorice
                                 créditos sin tu desbloqueo manual.
                             </li>
                             <li class="action-item">
                                 <span class="action-bold">Higiene Digital Recurrente</span>
-                                Establece una rutina de revisión semanal de estados de cuenta. Los atacantes suelen
+                                Establece una rutina de revisión semanal de estados de cuenta. Los
+                                atacantes suelen
                                 realizar
-                                <strong>"cargos hormiga"</strong> imperceptibles antes de ejecutar el fraude mayor.
+                                <strong>"cargos hormiga"</strong> imperceptibles antes de ejecutar el
+                                fraude mayor.
                             </li>
                         </ul>
                     </div>
@@ -2262,6 +2267,58 @@
     </div>
 
     </div>
+    <!-- Navigation Widget -->
+    <div class="nav-widget">
+        <div class="nav-btn" id="navUp" onclick="scrollToSection(-1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 15l-6-6-6 6" />
+            </svg>
+        </div>
+        <div class="nav-btn" id="navDown" onclick="scrollToSection(1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Navigation Logic -->
+    <script>
+        function scrollToSection(direction) {
+            // Get all major functional sections in visual order
+            const query = '#hero-section, section, #annex-section';
+            // We use spread to ensure it's an array and sort by DOM position just in case
+            const sections = Array.from(document.querySelectorAll(query))
+                .sort((a, b) => {
+                    return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+                });
+            const currentScroll = window.scrollY;
+            const viewportHeight = window.innerHeight;
+
+            // Find current section index
+            // We define "current" as the section taking up most of the screen
+            let currentIndex = 0;
+
+            // Simple proximity check
+            let minDistance = Infinity;
+
+            sections.forEach((sec, index) => {
+                const rect = sec.getBoundingClientRect();
+                const dist = Math.abs(rect.top);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    currentIndex = index;
+                }
+            });
+
+            let nextIndex = currentIndex + direction;
+
+            // Clamp
+            if (nextIndex < 0) nextIndex = 0;
+            if (nextIndex >= sections.length) nextIndex = sections.length - 1;
+
+            sections[nextIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 
 </html>
