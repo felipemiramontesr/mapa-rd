@@ -2709,18 +2709,41 @@ h3,
     letter-spacing: 1px;
 }
 
+/* --- Compact Slide Layout --- */
+#exposure-value-section {
+    padding-top: 20px;
+    /* Minimized safety padding */
+}
+
+/* Reduced spacing for Slide Fit */
+.invoice-container {
+    padding: 1.5rem;
+    /* Reduced from 2.5rem */
+}
+
+.invoice-header {
+    margin-bottom: 1.5rem;
+    /* Reduced from 3rem */
+    padding-bottom: 1rem;
+}
 
 .inv-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    text-align: left;
+    padding: 1rem 1.2rem;
+    /* Reduced from 1.8rem */
 }
 
-.item-price {
-    text-align: left;
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
-}
+/* Force Horizontal Grid (No Mobile Stacking) */
+@media (max-width: 768px) {
+
+    /* Keep grid structure on mobile, maybe scroll if needed, but DO NOT STACK */
+    .inv-table-header,
+    .inv-row {
+        min-width: 600px;
+        /* Ensure columns don't squash too much */
+    }
+
+    .invoice-body {
+        overflow-x: auto;
+        /* Allow horizontal scroll if really needed */
+    }
 }
