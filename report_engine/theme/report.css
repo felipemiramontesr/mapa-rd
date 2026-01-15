@@ -1208,8 +1208,8 @@ h3,
 .t-badge,
 .demand-badge {
     background: rgba(10, 14, 39, 0.9);
-    text-shadow: 0 0 5px currentColor;
-    box-shadow: 0 0 10px currentColor;
+    text-shadow: none;
+    box-shadow: 0 0 4px currentColor;
     border-width: 1px;
     border-style: solid;
 }
