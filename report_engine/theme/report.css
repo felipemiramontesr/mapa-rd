@@ -2501,7 +2501,11 @@ h3,
 /* Specific spacing override for this section */
 #exposure-value-section {
     padding-top: 40px;
-    /* Reduced from 100px per user "red line" request */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
 }
 
 #attack-vector-section {
