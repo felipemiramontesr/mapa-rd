@@ -1,61 +1,129 @@
-<section class="vectors-section report-section">
+<section class="vectors-section report-section" id="vectors-section">
     <h2 class="section-title">Vectores de Vulnerabilidad</h2>
     <div class="divider-left"></div>
 
-    {% for vector in vectors %}
-    <div class="vector-card {{ vector.irv_class }}">
-        <div class="vector-header">
-            <div class="vector-id">{{ vector.id }}</div>
-            <div class="vector-title">{{ vector.title }}</div>
-            <div class="vector-irv-badge {{ vector.irv_class }}">
-                <span class="irv-value">{{ vector.irv_score }}</span>
-                <span class="irv-level">{{ vector.irv_level }}</span>
-            </div>
-        </div>
+    <div class="carousel-container" id="vectorCarousel">
+        <!-- Flex Wrapper: Button | Track | Button -->
+        <div class="carousel-main-wrapper">
+            <button class="carousel-btn prev" id="btnPrev" aria-label="Anterior">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
 
-        <div class="vector-meta-grid">
-            <div class="meta-item">
-                <span class="label">Activo:</span>
-                <span class="value">{{ vector.asset }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="label">Tipo:</span>
-                <span class="value">{{ vector.asset_type }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="label">Exposición:</span>
-                <span class="value">{{ vector.exposure_type }}</span>
-            </div>
-        </div>
+            <!-- Track Mask: The actual window for the slides -->
+            <div class="track-mask">
+                <div class="carousel-track" id="vectorTrack">
+                    {% for vector in vectors %}
+                    <div class="vector-slide">
+                        <div class="vector-card {{ vector.irv_class }}">
+                            <div class="vector-header">
+                                <div class="vector-id">{{ vector.id }}</div>
+                                <div class="vector-title">{{ vector.title }}</div>
+                                <div class="vector-irv-badge {{ vector.irv_class }}">
+                                    <span class="irv-value">{{ vector.irv_score }}</span>
+                                    <span class="irv-level">{{ vector.irv_level }}</span>
+                                </div>
+                            </div>
 
-        <div class="vector-body-new">
-            <!-- Row 1: Action Cards (Ruta & Impacto) -->
-            <div class="vector-action-grid">
-                <div class="action-card remediation">
-                    <h4 class="sub-header">Ruta de Cierre</h4>
-                    <ol class="remediation-list">
-                        {% for step in vector.remediation_steps %}
-                        <li>{{ step }}</li>
-                        {% endfor %}
-                    </ol>
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">{{ vector.asset }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">{{ vector.asset_type }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">{{ vector.exposure_type }}</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+                                            {% for step in vector.remediation_steps %}
+                                            <li>{{ step }}</li>
+                                            {% endfor %}
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+                                            {% for bullet in vector.impact_bullets %}
+                                            <li>{{ bullet }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">{{ vector.description }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Slide Counter (e.g., VEC 1 / 16) -->
+                            <div class="slide-counter">VEC {{ loop.index }} / {{ loop.length }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
+            </div> <!-- Close track-mask -->
 
-                <div class="action-card impact">
-                    <h4 class="sub-header">Impacto</h4>
-                    <ul class="impact-list">
-                        {% for bullet in vector.impact_bullets %}
-                        <li>{{ bullet }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Row 2: Description (Sober & Elegant) -->
-            <div class="description-card">
-                <h4 class="sub-header-simple">Descripción del Evento</h4>
-                <p class="description-text">{{ vector.description }}</p>
-            </div>
-        </div>
+            <button class="carousel-btn next" id="btnNext" aria-label="Siguiente">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div> <!-- Close carousel-main-wrapper -->
     </div>
-    {% endfor %}
 </section>
+
+<!-- Native Carousel Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const track = document.getElementById('vectorTrack');
+        const prevBtn = document.getElementById('btnPrev');
+        const nextBtn = document.getElementById('btnNext');
+
+        if (!track || !prevBtn || !nextBtn) return;
+
+        const slides = track.querySelectorAll('.vector-slide');
+        if (slides.length === 0) return;
+
+        let currentIndex = 0;
+
+        function updateCarousel() {
+            // Since we simply translate X%, this logic holds regardless of width changes
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop back to start
+            }
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = slides.length - 1; // Loop to end
+            }
+            updateCarousel();
+        });
+
+        window.addEventListener('resize', updateCarousel);
+    });
+</script>

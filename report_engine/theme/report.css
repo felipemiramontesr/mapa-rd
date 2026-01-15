@@ -478,27 +478,36 @@ h1 {
 .vectors-section {
     height: 100vh;
     min-height: 100vh;
-    padding: 0 2rem;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    /* Strict Window */
+    /* Strict Window - We keep this to clip everything at screen edge */
 }
 
 /* Carousel Container */
+/* Carousel Container: Now visible (to show buttons outside) */
 .carousel-container {
     width: 100%;
-    /* Strict Full Width */
     max-width: none;
-    /* Remove limit, let it fill screen */
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
+    /* CRITICAL: Allow buttons to hang out */
+}
+
+/* Track Mask: The actual window for the slides */
+.track-mask {
+    width: 100%;
     overflow: hidden;
-    /* STRICT MASK */
+    /* This clips the sliding content */
+    /* Ensure it takes full width of container essentially */
+    display: flex;
+    justify-content: center;
 }
 
 .carousel-track {
@@ -513,12 +522,12 @@ h1 {
     flex: 0 0 100%;
     display: flex;
     justify-content: center;
-    /* WIDTH INCREASED (+100px Total):
-       Previous Padding: 130px.
-       New Padding: 80px (5rem).
-       Difference: 50px per side = 100px wider card. 
-       Gap is now tighter but Card is King. */
-    padding: 0 5rem;
+    /* WIDTH INCREASED (+200px Total):
+       Old Padding: 5rem (80px). New: 1.5rem (24px).
+       Gain: 56px * 2 = 112px.
+       Section Padding Gain: 32px.
+       Total Gain: ~144px. */
+    padding: 0 1.5rem;
     box-sizing: border-box;
     position: relative;
 }
@@ -542,7 +551,7 @@ h1 {
     border-radius: 12px;
     padding: 3rem;
     width: 100%;
-    max-width: none;
+    max-width: 1200px;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 
     max-height: 85vh;
@@ -555,11 +564,35 @@ h1 {
 
 /* Internal Nav Buttons */
 /* Internal Nav Buttons */
+/* Flex Wrapper for Button | Track | Button */
+.carousel-main-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    /* STRICT 20px GAP */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Track Mask: The actual window for the slides */
+.track-mask {
+    flex: 1;
+    /* Allow it to grow/shrink between buttons */
+    max-width: 1200px;
+    /* The Card's Box max-width */
+    overflow: hidden;
+    position: relative;
+    border-radius: 12px;
+    /* Optional: Match card radius to clip nicely? Or just no radius. */
+    /* This clips the sliding content */
+    /* Ensure it takes full width of container essentially */
+    display: flex;
+    justify-content: center;
+}
+
+/* Internal Nav Buttons (Static Flex Items) */
 .carousel-btn {
-    position: absolute;
-    /* Static relative to section (Scrolls with page) */
-    top: 50%;
-    transform: translateY(-50%);
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -570,38 +603,28 @@ h1 {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 100;
-    /* Regular layer, not supreme overlay */
+    flex-shrink: 0;
+    /* Never shrink buttons */
+    pointer-events: auto;
+
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    position: relative;
+    /* Static flow */
+    transform: none;
+    top: auto;
+    left: auto;
+    right: auto;
+    z-index: 50;
 }
 
-.carousel-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-50%) scale(1.15);
-    border-color: #fff;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
+/* Clean up old positioning rules */
 
-/* Pushed to PHYSICAL LIMIT (5px) - Response to Step 604 */
-/* Card Padding: 80px. Button Ends: 5+60=65px. Gap: 15px. */
-/* This is the absolute maximum separation possible on screen. */
-.carousel-btn.prev {
-    left: 5px;
-}
-
-.carousel-btn.next {
-    right: 5px;
-}
-
-/*   If we want them at screen edges, we might need to adjust HTML structure or use fixed.
-   For now, let's put them INSIDE the container's visual padding or at the edges of the container 
-   but ensuring container has space. 
-   
-   Better: Let's make them fixed to the viewport edges for this section. */
-
-/* [CLEANED] No duplicate rules below */
+/* Remove old specific positioning */
+/* .carousel-btn.prev { left: 20px; } */
+/* .carousel-btn.next { right: 20px; } */
 
 .divider-left {
     height: 1px;
@@ -2665,7 +2688,7 @@ h3,
     font-weight: 700;
     letter-spacing: 1px;
 }
-}
+
 
 .inv-row {
     display: flex;
