@@ -2513,6 +2513,11 @@ h3,
     align-items: center;
     /* Center content horizontally */
     margin-bottom: 0;
+    /* Force Full Screen Width Check */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    left: 0;
 }
 
 #attack-vector-section {
