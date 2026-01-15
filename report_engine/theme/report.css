@@ -1438,26 +1438,36 @@ h3,
     transform: translate(-50%, -50%) !important;
 }
 
+/* Timeline Content Box - Clip the Watermark */
+.timeline-content {
+    overflow: hidden;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
 /* Year Positioning Update (Inside Card) */
 .timeline-year {
     font-size: 5rem;
     font-weight: 800;
     color: rgba(255, 255, 255, 0.03);
     position: absolute;
-    top: -1rem;
+    top: 1rem;
     line-height: 1;
     pointer-events: none;
     z-index: 0;
 }
 
 .timeline-item.t-left .timeline-year {
-    right: -1rem;
+    right: 1rem;
     /* Locked to right edge of card */
     left: auto;
 }
 
 .timeline-item.t-right .timeline-year {
-    left: -1rem;
+    left: 1rem;
     /* Locked to left edge of card */
     right: auto;
 }
