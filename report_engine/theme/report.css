@@ -2484,10 +2484,10 @@ h3,
 
 /* PREMIUM INVOICE COMPONENT (GOLD EDITION - COMPACT) */
 .invoice-wrapper {
-    width: 1400px;
-    /* Explicit width as requested */
-    min-height: 800px;
-    /* Explicit height increase (~+200px) */
+    width: 1200px;
+    /* Reduced by 200px as requested */
+    min-height: 700px;
+    /* Reduced by 100px as requested */
     margin: 0 auto;
     position: relative;
     /* Standard Card Style Match */
