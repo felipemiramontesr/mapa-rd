@@ -2510,6 +2510,8 @@ h3,
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    /* Center content horizontally */
     margin-bottom: 0;
 }
 
