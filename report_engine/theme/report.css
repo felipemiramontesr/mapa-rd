@@ -476,6 +476,13 @@ h1 {
 
 /* --- Vector Cards (Clean Navy Style) --- */
 .vectors-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+
     height: 100vh;
     min-height: 100vh;
     padding: 0 1rem;
@@ -484,7 +491,7 @@ h1 {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    /* Strict Window - We keep this to clip everything at screen edge */
+    /* Strict Window */
 }
 
 /* Carousel Container */
@@ -497,7 +504,10 @@ h1 {
     align-items: center;
     justify-content: center;
     overflow: visible;
-    /* CRITICAL: Allow buttons to hang out */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    /* CRITICAL: Allow buttons to hang out, no visual box */
 }
 
 /* Track Mask: The actual window for the slides */
@@ -551,7 +561,7 @@ h1 {
     border-radius: 12px;
     padding: 3rem;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 
     max-height: 85vh;
@@ -579,7 +589,7 @@ h1 {
 .track-mask {
     flex: 1;
     /* Allow it to grow/shrink between buttons */
-    max-width: 1200px;
+    max-width: 1100px;
     /* The Card's Box max-width */
     overflow: hidden;
     position: relative;
