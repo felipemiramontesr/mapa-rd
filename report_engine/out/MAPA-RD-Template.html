@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPA-RD | RPT-2026-002</title>
+    <link rel="stylesheet" href="../theme/report.css">
+    <link rel="stylesheet" href="../theme/report.print.css" media="print">
+
+</head>
+
+<body class="theme-dark">
+    <!-- STRICT LANDING PAGE ALIGNMENT -->
+    <!-- Styles moved to HEAD (VEC-001 Standard) -->
+    <div class="container">
+
+        <!-- Cover Section (100vh Hero) -->
+        <div id="hero-section" class="cover-wrapper">
+            <!-- Hero / Top -->
+            <div class="hero-top">
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+
+                <div class="tag">OSINT + ARCO + PROTECCIÓN DE DATOS</div>
+            </div>
+
+            <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+
+            <div class="divider"></div>
+
+            <p class="subtitle">
+                Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.
+            </p>
+
+            <p class="description">
+                MAPA-RD identifica exposición real (visible públicamente), prioriza riesgos y entrega una ruta de cierre
+                ejecutable.
+                <br>
+                Incluye base operativa para gestión ARCO y un esquema mensual de control continuo.
+                <br><br>
+                <strong>Sin auditorías genéricas. Sin promesas vacías.</strong>
+            </p>
+
+            <!-- Metadata Editorial Block -->
+            <div class="meta-block" style="margin-top: 2rem;">
+                <div class="meta-line-primary">
+                    Felipe de Jesús Miramontes Romero &middot; Reporte RPT-2026-002 &middot; 2026-01-12
+                </div>
+                <div class="meta-line-secondary">
+                    Reporte Ejecutivo de Seguridad &middot; Exposición pública &middot; Estrictamente Confidencial
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Fixed Navigation Widget -->
+        <div class="nav-widget">
+            <div class="nav-btn" id="navUp" onclick="navigateSection(-1)" title="Anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M18 15l-6-6-6 6" />
+                </svg>
+            </div>
+            <div class="nav-btn" id="navDown" onclick="navigateSection(1)" title="Siguiente">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M6 9l6 6 6-6" />
+                </svg>
+            </div>
+        </div>
+
+        <script>
+            // Section Registry (Order Matters)
+            const sections = [
+                'hero-section',
+                'ird-section',
+                'vectors-section',
+                'timeline-section',
+                'exposure-value-section',
+                'attack-vector-section',
+                'business-impact-section',
+                'inaction-scenario-section',
+                'closing-window-section',
+                'remediation-route-section',
+                'annex-section'
+            ];
+
+            let currentSectionIndex = 0;
+            let isManualScrolling = false;
+            let scrollTimeout;
+
+            function updateNavState() {
+                const navUp = document.getElementById('navUp');
+                const navDown = document.getElementById('navDown');
+
+                // Disable Up if at start
+                if (currentSectionIndex <= 0) {
+                    navUp.classList.add('disabled');
+                    currentSectionIndex = 0; // Clamp
+                } else {
+                    navUp.classList.remove('disabled');
+                }
+
+                // Disable Down if at end
+                if (currentSectionIndex >= sections.length - 1) {
+                    navDown.classList.add('disabled');
+                    currentSectionIndex = sections.length - 1; // Clamp
+                } else {
+                    navDown.classList.remove('disabled');
+                }
+            }
+
+            function detectActiveSection() {
+                if (isManualScrolling) return;
+
+                const viewHeight = window.innerHeight;
+                const viewCenter = viewHeight / 2;
+
+                let closestIndex = 0;
+                let minDistance = Infinity;
+
+                sections.forEach((id, index) => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+
+                    const rect = el.getBoundingClientRect();
+
+                    // Check if section covers the center line
+                    if (rect.top <= viewCenter && rect.bottom >= viewCenter) {
+                        closestIndex = index;
+                        minDistance = 0;
+                    } else {
+                        // If not covering center, check distance to center
+                        const elCenter = rect.top + (rect.height / 2);
+                        const distance = Math.abs(viewCenter - elCenter);
+
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestIndex = index;
+                        }
+                    }
+                });
+
+                if (currentSectionIndex !== closestIndex) {
+                    currentSectionIndex = closestIndex;
+                    updateNavState();
+                }
+            }
+
+            function navigateSection(direction) {
+                const nextIndex = currentSectionIndex + direction;
+                if (nextIndex >= 0 && nextIndex < sections.length) {
+                    const id = sections[nextIndex];
+                    const el = document.getElementById(id);
+                    if (el) {
+                        isManualScrolling = true;
+                        el.scrollIntoView({ behavior: 'smooth' });
+
+                        currentSectionIndex = nextIndex;
+                        updateNavState();
+
+                        // Reset manual scroll lock after animation
+                        clearTimeout(scrollTimeout);
+                        scrollTimeout = setTimeout(() => {
+                            isManualScrolling = false;
+                        }, 1000);
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initial check
+                detectActiveSection();
+                updateNavState();
+
+                // Scroll Listener (Throttled via requestAnimationFrame)
+                let ticking = false;
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            detectActiveSection();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                });
+            });
+        </script>
+
+
+        <!-- IRD Section (Premium Page) -->
+        <div class="page-break"></div>
+        <div class="page-break"></div>
+        <!-- IRD Section (Premium Page) -->
+        <section id="ird-section" class="ird-page">
+            <div class="ird-container">
+                <div class="timeline-header">
+                    <h2 class="timeline-title">Índice de Riesgo Digital</h2>
+                    <p class="timeline-subtitle">Evaluación Cuantitativa de Postura (Estado Global)</p>
+                </div>
+
+                <!-- IRD Box (Rounded Rectangle) -->
+                <div class="ird-box maximum" id="irdBox">
+                    <span class="ird-score" id="irdScore" data-target="94">94</span>
+                    <span class="ird-label maximum">Riesgo Máximo</span>
+                </div>
+
+                <div class="ird-interpretation">
+                    <div class="ird-context-card" id="irdContext">
+                        <span class="ird-context-label">Diagnóstico Operativo</span>
+                        <p><strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un MÁXIMO riesgo sistémico. Datos
+                            sensibles (financieros/accesos) están expuestos activamente. Se requiere <strong>contención
+                                de
+                                emergencia</strong> para evitar fraude inminente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progressive Animation Script (Browser Only - Ignored by PDF Renderer) -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Only run if elements exist
+                const scoreEl = document.getElementById('irdScore');
+                const boxEl = document.getElementById('irdBox');
+                const labelEl = boxEl ? boxEl.querySelector('.ird-label') : null;
+                const contextEl = document.getElementById('irdContext'); // NEW
+
+                if (!scoreEl || !boxEl || !labelEl) return;
+
+                const targetScore = parseInt(scoreEl.getAttribute('data-target'), 10);
+                if (isNaN(targetScore)) return;
+
+                // Animation Config
+                const duration = 4000; // 4 seconds
+                const startTimestamp = performance.now();
+
+                // Strict Range Logic (0-19, 20-39, 40-59, 60-79, 80-100)
+                // Colors: Low=Blue, Med=Yellow, High=Orange (#ff9f43), Crit=Red, Max=Purple
+                function getRiskData(s) {
+                    if (s >= 80) return { color: '#a29bfe', text: 'RIESGO MÁXIMO', glow: 'rgba(162, 155, 254, 0.2)' };
+                    if (s >= 60) return { color: '#ff7675', text: 'RIESGO CRÍTICO', glow: 'rgba(255, 118, 117, 0.2)' };
+                    if (s >= 40) return { color: '#ff9f43', text: 'RIESGO ALTO', glow: 'rgba(255, 159, 67, 0.2)' }; // Orange
+                    if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MEDIO', glow: 'rgba(255, 234, 167, 0.2)' };
+                    return { color: '#74b9ff', text: 'RIESGO BAJO', glow: 'rgba(116, 185, 255, 0.2)' };
+                }
+
+                function step(timestamp) {
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const currentScore = Math.floor(progress * targetScore);
+
+                    // Get Dynamic Data
+                    const riskData = getRiskData(currentScore);
+
+                    // Update Content
+                    scoreEl.innerText = currentScore;
+                    labelEl.innerText = riskData.text;
+
+                    // Update Styles (Dynamic Color & Glow)
+                    scoreEl.style.color = riskData.color;
+                    labelEl.style.color = riskData.color; // NEW: Explicilty sync label color
+
+                    // Label can inherit or be explicit. Let's be explicit to ensure sync.
+                    // boxEl.style.borderColor = riskData.color; 
+                    // Note: CSS might override if specific classes are present, but inline styles normally win.
+
+                    boxEl.style.borderColor = riskData.color;
+                    boxEl.style.boxShadow = `0 0 20px ${riskData.glow}`;
+                    // Optional: Subtle background tint
+                    boxEl.style.backgroundColor = riskData.glow.replace('0.2', '0.05');
+
+                    if (contextEl) {
+                        // Sync Context Card Border/Glow from 0%
+                        contextEl.style.borderColor = riskData.color;
+                        contextEl.style.boxShadow = `0 5px 15px ${riskData.glow.replace('0.2', '0.1')}`;
+                    }
+
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    } else {
+                        // Final State (Ensure exact match)
+                        scoreEl.innerText = targetScore;
+                        const finalData = getRiskData(targetScore);
+
+                        labelEl.innerText = finalData.text;
+                        labelEl.style.color = finalData.color; // NEW: Ensure final state is also colored
+                        scoreEl.style.color = finalData.color;
+                        boxEl.style.borderColor = finalData.color;
+                        boxEl.style.boxShadow = `0 0 20px ${finalData.glow}`;
+                        boxEl.style.backgroundColor = finalData.glow.replace('0.2', '0.05');
+
+                        // Final Sync for Context Card
+                        if (contextEl) {
+                            contextEl.style.borderColor = finalData.color;
+                            contextEl.style.boxShadow = `0 5px 15px ${finalData.glow.replace('0.2', '0.1')}`;
+                        }
+                    }
+                }
+
+                // Start Animation Trigger (Scroll-Based)
+                const observerOptions = {
+                    root: null, // viewport
+                    rootMargin: '0px 0px -50% 0px', // Trigger when top of element crosses middle of screen
+                    threshold: 0
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            window.requestAnimationFrame(step);
+                            observer.unobserve(entry.target); // Run only once
+                        }
+                    });
+                }, observerOptions);
+
+                scoreEl.innerText = '0'; // Initialize to 0
+                observer.observe(boxEl); // Observe the Risk Box itself
+            });
+        </script>
+
+        <hr class="section-divider">
+
+
+
+
+
+        <!-- Vectors Section (Premium Cards Carousel) -->
+        <section id="vectors-section" class="vectors-section">
+            <div class="timeline-header" style="margin-bottom: 0.5rem;">
+                <h2 class="timeline-title">Vectores de Vulnerabilidad</h2>
+                <p class="timeline-subtitle">Evidencia Técnica y Ruta de Cierre Priorizada</p>
+            </div>
+
+            <!-- Carousel Wrapper -->
+            <div class="carousel-container">
+                <!-- Prev Button -->
+                <div class="carousel-btn prev" onclick="moveCarousel(-1)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </div>
+
+                <div class="carousel-track" id="vectorsTrack">
+                    <!-- Slide 1: Banorte -->
+                    <div class="vector-slide">
+                        <div class="vector-card maximum">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-001</div>
+                                <div class="vector-title">Banorte: Fuga de Datos Bancarios y PII</div>
+                                <div class="vector-irv-badge maximum">
+                                    <span class="irv-value">95</span>
+                                    <span class="irv-level">Máximo</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Sector Financiero</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Identidad Bancaria</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Filtración Masiva</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+                                            <li>Activar alertas biométricas en banca móvil.</li>
+                                            <li>Revisar historial crediticio (Buró de Crédito).</li>
+                                            <li>Solicitar renovación de tarjetas y credenciales.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+                                            <li>Robo de Identidad Bancaria y Fiscal (RFC).</li>
+                                            <li>Ingeniería Social dirigida de alta precisión.</li>
+                                            <li>Riesgo de extorsión o fraude telefónico.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Exposición crítica de datos personales y financieros
+                                        incluyendo
+                                        saldos de cuenta, RFC, domicilio físico y números de teléfono. Esta información
+                                        facilita el
+                                        robo de identidad y fraude bancario directo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Ejemplo Demo (Hidden/Placeholder for Carousel effect proof) -->
+                    <!-- Un-commenting duplication to demonstrate carousel if user adds more -->
+                    <div class="vector-slide">
+                        <div class="vector-card maximum">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-002</div>
+                                <div class="vector-title">Synthient: Credenciales Activas</div>
+                                <div class="vector-irv-badge maximum">
+                                    <span class="irv-value">90</span>
+                                    <span class="irv-level">Máximo</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Identidad Digital</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Botnet Logs</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Credential Stuffing (2025)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Cambio global de contraseñas de manera inmediata.</li>
+
+                                            <li>Uso gestor de contraseñas para evitar reutilización.</li>
+
+                                            <li>Habilitar 2FA/MFA en todos los servicios críticos.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Compromiso automatizado de cuentas en diversos servicios.</li>
+
+                                            <li>Evasión de controles de seguridad básicos.</li>
+
+                                            <li>Acceso no autorizado persistente.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">El correo y contraseñas asociadas aparecen en listas de
+                                        amenazas
+                                        activas de 'Credential Stuffing' (Synthient). Esto indica que los datos están
+                                        siendo
+                                        probados activamente contra múltiples servicios.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card maximum">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-003</div>
+                                <div class="vector-title">000webhost: Contraseñas en Texto Plano</div>
+                                <div class="vector-irv-badge maximum">
+                                    <span class="irv-value">88</span>
+                                    <span class="irv-level">Máximo</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Hosting Web</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Servicio de Infraestructura</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Texto Plano (2015)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Abandonar el uso de esa contraseña específica definitivamente.</li>
+
+                                            <li>Verificar integridad de sitios web antiguos.</li>
+
+                                            <li>Monitorear accesos no reconocidos.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Acceso inmediato a cuentas con la misma contraseña.</li>
+
+                                            <li>Rastreo de actividad por dirección IP.</li>
+
+                                            <li>Compromiso de sitios web alojados.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Filtración de base de datos completa exponiendo
+                                        contraseñas
+                                        almacenadas en texto plano, junto con nombres y direcciones IP. Permite acceso
+                                        directo sin
+                                        necesidad de descifrado.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-004</div>
+                                <div class="vector-title">Adobe: Compromiso de Credenciales</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">75</span>
+                                    <span class="irv-level">Crítico</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Cuenta Adobe ID</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Software SaaS</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2013)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Actualizar cuenta de Adobe si sigue activa.</li>
+
+                                            <li>No utilizar pistas de contraseña que revelen información real.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Deducción de patrones de contraseñas personales.</li>
+
+                                            <li>Ataques dirigidos a cuentas creativas/profesionales.</li>
+
+                                            <li>Spam y phishing dirigido.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Brecha histórica masiva exponiendo usuarios, contraseñas
+                                        cifradas y,
+                                        críticamente, las pistas de contraseña (password hints) en texto plano, lo que
+                                        facilita la
+                                        deducción de claves.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-005</div>
+                                <div class="vector-title">Exploit.In: Listas de Combo</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">78</span>
+                                    <span class="irv-level">Crítico</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Identidad Digital</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Mercado Negro</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Agregador de Brechas (2016)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Eliminar cuentas en desuso.</li>
+
+                                            <li>Verificar actividad en correos secundarios.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Alta probabilidad de intentos de acceso automatizados.</li>
+
+                                            <li>Reutilización de credenciales en servicios bancarios/correo.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Aparición en 'Combo Lists' utilizadas por
+                                        cibercriminales para
+                                        ataques de fuerza bruta automatizados contra múltiples plataformas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-006</div>
+                                <div class="vector-title">Collection #1: Mega-Brecha</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">80</span>
+                                    <span class="irv-level">Crítico</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Múltiples Servicios</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Agregador de Brechas</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Data Dump Masivo (2019)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Higiene digital completa: cambio masivo de claves.</li>
+
+                                            <li>Uso estricto de gestor de contraseñas.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Exposición universal a actores de amenaza.</li>
+
+                                            <li>Saturación de intentos de login.</li>
+
+                                            <li>Venta de datos en lotes masivos.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Su correo forma parte de una de las colecciones más
+                                        grandes de
+                                        credenciales robadas (773 millones de registros Unique), distribuidas
+                                        ampliamente en foros
+                                        de hacking.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-007</div>
+                                <div class="vector-title">Nitro PDF: Documentos y Claves</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">82</span>
+                                    <span class="irv-level">Crítico</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Productividad</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Software SaaS</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2020)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Revisar documentos almacenados en la nube de Nitro.</li>
+
+                                            <li>Cambiar contraseña y desvincular sesiones.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Espionaje corporativo o personal.</li>
+
+                                            <li>Acceso a documentos sensibles almacenados.</li>
+
+                                            <li>Fraude documental.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Compromiso de servicio de gestión documental. Además de
+                                        credenciales, existe riesgo sobre metadatos de documentos procesados.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-008</div>
+                                <div class="vector-title">123RF: Datos Físicos y Digitales</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">70</span>
+                                    <span class="irv-level">Crítico</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Banco de Imágenes</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Servicio Web</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2020)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Verificar privacidad en redes sociales.</li>
+
+                                            <li>Estar alerta ante correos/llamadas sospechosas.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Doxing (publicación de datos privados).</li>
+
+                                            <li>Acoso o localización física.</li>
+
+                                            <li>Suplantación de identidad verificada.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Filtración que incluye direcciones físicas, teléfonos y
+                                        direcciones
+                                        IP, combinados con datos de cuenta. Aumenta la superficie para ataques de
+                                        ingeniería social.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-009</div>
+                                <div class="vector-title">MyFitnessPal: Datos de Perfil</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">65</span>
+                                    <span class="irv-level">Alta</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Salud / Lifestyle</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Aplicación Móvil</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Brecha Masiva (2018)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Cambiar contraseña si es compartida.</li>
+
+                                            <li>Desvincular integraciones con redes sociales.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Perflado de usuario para marketing o estafas.</li>
+
+                                            <li>Acceso lateral a otras cuentas.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Exposición de correos, usuarios y contraseñas. Aunque no
+                                        incluye
+                                        datos financieros, permite correlacionar hábitos y rutinas del usuario.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-010</div>
+                                <div class="vector-title">Canva: Datos de Diseño y Geo</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">68</span>
+                                    <span class="irv-level">Alta</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Diseño Gráfico</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">SaaS</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2019)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Cambiar contraseña y activar MFA.</li>
+
+                                            <li>Revisar actividad reciente en la cuenta.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Correlación geográfica.</li>
+
+                                            <li>Ataques de phishing temáticos (diseño/marketing).</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Exposición de datos de usuario, ubicación geográfica y
+                                        hashes de
+                                        contraseña.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card critical">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-011</div>
+                                <div class="vector-title">Animoto: Datos Personales</div>
+                                <div class="vector-irv-badge critical">
+                                    <span class="irv-value">60</span>
+                                    <span class="irv-level">Alta</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Edición de Video</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">SaaS</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2018)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Monitorear preguntas de seguridad en otros servicios.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Uso de fecha de nacimiento para recuperar otras cuentas.</li>
+
+                                            <li>Suplantación de identidad básica.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Inclusión de fechas de nacimiento y geolocalización
+                                        junto a
+                                        credenciales. La fecha de nacimiento es un dato crítico para verificaciones de
+                                        seguridad.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vector-slide">
+                        <div class="vector-card high">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-012</div>
+                                <div class="vector-title">Dropbox: Hash de Contraseñas</div>
+                                <div class="vector-irv-badge high">
+                                    <span class="irv-value">55</span>
+                                    <span class="irv-level">Alta</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Almacenamiento Cloud</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Infraestructura</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2012)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Asegurar que la contraseña fue cambiada post-2016.</li>
+
+                                            <li>Activar 2FA en Dropbox obligatoriamente.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Intento de descifrado de hashes antiguos.</li>
+
+                                            <li>Reutilización histórica.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Brecha antigua pero relevante por la popularidad del
+                                        servicio. Se
+                                        filtraron hashes de contraseñas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card high">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-013</div>
+                                <div class="vector-title">Manipulated Caiman: Blanco de Phishing</div>
+                                <div class="vector-irv-badge high">
+                                    <span class="irv-value">58</span>
+                                    <span class="irv-level">Alta</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Email Personal</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Campaña de Amenaza</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Target List (2023)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Extrema precaución con adjuntos y enlaces.</li>
+
+                                            <li>Mejorar filtros de spam/seguridad en el correo.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Recepción de correos maliciosos altamente personalizados.</li>
+
+                                            <li>Riesgo de infección por malware.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Su dirección de correo ha sido identificada en listas de
+                                        objetivos
+                                        de la campaña de phishing 'Manipulated Caiman', enfocada en usuarios de México.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vector-slide">
+                        <div class="vector-card medium">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-014</div>
+                                <div class="vector-title">GeekedIn: Perfil Profesional</div>
+                                <div class="vector-irv-badge medium">
+                                    <span class="irv-value">45</span>
+                                    <span class="irv-level">Media</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Desarrollo Profesional</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Scraping</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Base de Datos (2016)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Verificar legitimidad de reclutadores.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Ofertas de trabajo falsas (Job Scams).</li>
+
+                                            <li>Ingeniería social basada en perfil laboral.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Exposición de datos profesionales: habilidades,
+                                        experiencia y
+                                        ubicación. Útil para reclutadores falsos o ingeniería social corporativa.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card medium">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-015</div>
+                                <div class="vector-title">Twitter (200M): Identidad Social</div>
+                                <div class="vector-irv-badge medium">
+                                    <span class="irv-value">40</span>
+                                    <span class="irv-level">Media</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Red Social</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">Perfil Público</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Scraping/API (2021)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Desvincular teléfono/email de la búsqueda pública.</li>
+
+                                            <li>Usar alias de correo para redes sociales.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Desanonimización de cuentas.</li>
+
+                                            <li>Acoso selectivo.</li>
+
+                                            <li>Correlación de identidad cruzada.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Asociación del correo electrónico con el perfil de
+                                        Twitter (X).
+                                        Permite vincular la identidad seudónima con la real.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="vector-slide">
+                        <div class="vector-card medium">
+                            <div class="vector-header">
+                                <div class="vector-id">VEC-016</div>
+                                <div class="vector-title">Trello: Enumeración de Usuarios</div>
+                                <div class="vector-irv-badge medium">
+                                    <span class="irv-value">35</span>
+                                    <span class="irv-level">Media</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-meta-grid">
+                                <div class="meta-item">
+                                    <span class="label">Activo:</span>
+                                    <span class="value">Gestión de Proyectos</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Tipo:</span>
+                                    <span class="value">SaaS</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="label">Exposición:</span>
+                                    <span class="value">Scraping (2024)</span>
+                                </div>
+                            </div>
+
+                            <div class="vector-body-new">
+                                <!-- Row 1: Action Cards (Ruta & Impacto) -->
+                                <div class="vector-action-grid">
+                                    <div class="action-card remediation">
+                                        <h4 class="sub-header">Ruta de Cierre</h4>
+                                        <ol class="remediation-list">
+
+                                            <li>Hacer tableros privados si contienen datos sensibles.</li>
+
+                                            <li>Ignorar correos genéricos de soporte de Trello.</li>
+
+                                        </ol>
+                                    </div>
+
+                                    <div class="action-card impact">
+                                        <h4 class="sub-header">Impacto</h4>
+                                        <ul class="impact-list">
+
+                                            <li>Phishing temático de Atlassian/Trello.</li>
+
+                                            <li>Confirmación de cuenta activa.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Description (Sober & Elegant) -->
+                                <div class="description-card">
+                                    <h4 class="sub-header-simple">Descripción del Evento</h4>
+                                    <p class="description-text">Confirmación de que el correo tiene una cuenta de Trello
+                                        asociada
+                                        mediante enumeración de API.</p>
+                                </div>
+                            </div> <!-- Close Card -->
+                        </div> <!-- Close Slide -->
+                    </div>
+                </div> <!-- Close Track (Fixed Missing Div) -->
+
+                <!-- Slide Counter -->
+                <div class="slide-counter" id="vectorCounter">
+                    VEC 1 / 16
+                </div>
+
+                <!-- Controls (Now siblings of track for easier absolute positioning context if needed, 
+                 but keeping structure implies we might need to move them out if container limits them. 
+                 Actually, CSS changed to 'left: 20px' might need 'position: fixed' or relative to section?
+                 Let's keep them here but assume 'carousel-container' is wide enough or we change styling to 'fixed' for section active?
+                 No, let's use the CSS change we just made. -->
+
+                <div class="carousel-btn prev" onclick="moveCarousel(-1)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </div>
+                <div class="carousel-btn next" onclick="moveCarousel(1)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </div>
+
+            </div> <!-- Close Container -->
+
+            <script>
+                let currentSlide = 0;
+                const totalSlides = 16; // Explicitly known, or dynamic
+
+                function updateCounter() {
+                    const counter = document.getElementById('vectorCounter');
+                    // Format: VEC 1 / 16
+                    counter.innerText = `VEC ${currentSlide + 1} / ${totalSlides}`;
+                }
+
+                function moveCarousel(direction) {
+                    const track = document.getElementById('vectorsTrack');
+                    const slides = track.children; // Live collection
+                    const count = slides.length;
+
+                    currentSlide += direction;
+
+                    // Clamp
+                    if (currentSlide < 0) currentSlide = 0;
+                    if (currentSlide >= count) currentSlide = count - 1;
+
+                    // Move
+                    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+                    updateCounter();
+                }
+
+                // Keyboard Navigation (Arrow Keys)
+                document.addEventListener('keydown', (e) => {
+                    // Only if vectors section is visible? 
+                    // Simple check: if element is in view or just global. 
+                    // Global is fine for this report style.
+                    if (e.key === 'ArrowLeft') moveCarousel(-1);
+                    if (e.key === 'ArrowRight') moveCarousel(1);
+                });
+
+                // Init
+                document.addEventListener('DOMContentLoaded', () => {
+                    updateCounter();
+                });
+            </script>
+        </section>
+
+        <!-- NEW TIMELINE SECTION -->
+        <div class="page-break"></div>
+        <section id="timeline-section" class="timeline-section-wrapper">
+
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Línea de Tiempo de Exposición</h2>
+                <p class="timeline-subtitle">Profundidad Histórica de la Huella Digital</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                <div class="timeline-line-fill" id="timelineFill"></div>
+
+                <!-- 2012 -->
+                <div class="timeline-item" data-color="#ff9f43">
+                    <div class="timeline-dot" style="color: #ff9f43;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2012</span>
+                        <span class="t-date">2012</span>
+                        <h3 class="t-title">Dropbox</h3>
+                        <p class="t-desc">Inicio de la huella rastreable. Filtración masiva de hashes de contraseña.</p>
+                        <span class="t-badge" style="background: rgba(255, 159, 67, 0.2); color: #ff9f43;">Riesgo
+                            Alto</span>
+                    </div>
+                </div>
+
+                <!-- 2013 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2013</span>
+                        <span class="t-date">2013</span>
+                        <h3 class="t-title">Adobe</h3>
+                        <p class="t-desc">Compromiso crítico de credenciales y pistas de contraseña en texto plano.</p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
+                            Crítico</span>
+                    </div>
+                </div>
+
+                <!-- 2014 -->
+                <div class="timeline-item" data-color="#a29bfe">
+                    <div class="timeline-dot" style="color: #a29bfe;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2014</span>
+                        <span class="t-date">2014</span>
+                        <h3 class="t-title">Banorte</h3>
+                        <p class="t-desc">Exposición financiera mayor. Datos bancarios y personales (PII) comprometidos.
+                        </p>
+                        <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">Riesgo
+                            Máximo</span>
+                    </div>
+                </div>
+
+                <!-- 2015 -->
+                <div class="timeline-item" data-color="#a29bfe">
+                    <div class="timeline-dot" style="color: #a29bfe;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2015</span>
+                        <span class="t-date">2015</span>
+                        <h3 class="t-title">000webhost</h3>
+                        <p class="t-desc">Contraseñas en texto plano expuestas. Acceso directo sin desencriptación.</p>
+                        <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">Riesgo
+                            Máximo</span>
+                    </div>
+                </div>
+
+                <!-- 2016 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2016</span>
+                        <span class="t-date">2016</span>
+                        <h3 class="t-title">Exploit.In & GeekedIn</h3>
+                        <p class="t-desc">Datos agregados en 'Combo Lists' del mercado negro y perfiles profesionales.
+                        </p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Crítico /
+                            Medio</span>
+                    </div>
+                </div>
+
+                <!-- 2019 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2019</span>
+                        <span class="t-date">2019</span>
+                        <h3 class="t-title">Collection #1 & Canva</h3>
+                        <p class="t-desc">Mega-brechas globales. El correo se vuelve públicamente conocido en bases de
+                            datos masivas.</p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
+                            Crítico</span>
+                    </div>
+                </div>
+
+                <!-- 2020 -->
+                <div class="timeline-item" data-color="#ff7675">
+                    <div class="timeline-dot" style="color: #ff7675;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2020</span>
+                        <span class="t-date">2020</span>
+                        <h3 class="t-title">Nitro PDF & 123RF</h3>
+                        <p class="t-desc">Documentos, domicilios y teléfonos reales expuestos.</p>
+                        <span class="t-badge" style="background: rgba(255, 118, 117, 0.2); color: #ff7675;">Riesgo
+                            Crítico</span>
+                    </div>
+                </div>
+
+                <!-- 2025 -->
+                <div class="timeline-item" data-color="#a29bfe">
+                    <div class="timeline-dot" style="color: #a29bfe;"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2025</span>
+                        <span class="t-date">2025 - PRESENTE</span>
+                        <h3 class="t-title">Synthient (Stealer Logs)</h3>
+                        <p class="t-desc">Actividad reciente de malware/stealers. Credenciales probadas activamente.</p>
+                        <span class="t-badge" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">ACTIVO
+                            AHORA</span>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const items = document.querySelectorAll('.timeline-item');
+                    const lineFill = document.getElementById('timelineFill');
+                    const container = document.querySelector('.timeline-container');
+
+                    const observerOptions = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.2
+                    };
+
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                entry.target.classList.add('active');
+                            }
+                        });
+                    }, observerOptions);
+
+                    items.forEach(item => {
+                        observer.observe(item);
+                    });
+
+                    // Scroll Progress for Line
+                    window.addEventListener('scroll', () => {
+                        const containerRect = container.getBoundingClientRect();
+                        const windowHeight = window.innerHeight;
+
+                        // Calculate how much of the container has been scrolled through
+                        // Start drawing when container top hits middle of screen
+                        const start = windowHeight / 2;
+
+                        // Relative position of container top to viewport
+                        const relativeTop = containerRect.top;
+
+                        // Total scrollable height within container
+                        const totalHeight = containerRect.height;
+
+                        let progress = 0;
+
+                        if (relativeTop < start) {
+                            // We are scrolling past the start point
+                            const scrolled = start - relativeTop;
+                            progress = (scrolled / totalHeight) * 100;
+                        }
+
+                        // Clamp
+                        progress = Math.min(Math.max(progress, 0), 100);
+
+                        lineFill.style.height = `${progress}%`;
+                    });
+                });
+            </script>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Value of Exposure Section (Dark Market Invoice) -->
+        <section id="exposure-value-section" class="value-exposure-section">
+            <div class="timeline-header">
+                <h2 class="timeline-title">Valor de Exposición</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">¿Cuánto vale tu
+                    seguridad?</div>
+                <p class="timeline-subtitle">Tasación de Activos en Mercados Ilegales y la Deep Web</p>
+            </div>
+
+            <!-- Ledger Styles moved to HEAD (VEC-001 Standard) -->
+
+            <div class="ledger-container">
+                <div class="trx-id">TRX-2026-EXP-A4</div>
+
+                <div class="ledger-header">
+                    <div>Activo Identificado</div>
+                    <div>Fuente</div>
+                    <div style="text-align: center;">Demanda</div>
+                    <div style="text-align: right;">Valuación</div>
+                </div>
+
+                <div class="ledger-row">
+                    <div class="asset-name">Credenciales Bancarias (Fullz)</div>
+                    <div class="asset-source">Banorte Leak</div>
+                    <div style="text-align: center;"><span class="demand-badge demand-high">ALTA</span></div>
+                    <div class="asset-value">$45.00 USD</div>
+                </div>
+                <div class="ledger-row">
+                    <div class="asset-name">Acceso Correo Corporativo</div>
+                    <div class="asset-source">Synthient</div>
+                    <div style="text-align: center;"><span class="demand-badge demand-high">ALTA</span></div>
+                    <div class="asset-value">$80.00 USD</div>
+                </div>
+                <div class="ledger-row">
+                    <div class="asset-name">Identidad Fiscal (RFC/Docs)</div>
+                    <div class="asset-source">SAT/Gov</div>
+                    <div style="text-align: center;"><span class="demand-badge demand-med">MEDIA</span></div>
+                    <div class="asset-value">$20.00 USD</div>
+                </div>
+
+                <div class="ledger-total">
+                    <div class="total-label">VALOR TOTAL DE EXPOSICIÓN</div>
+                    <div class="total-amount" id="exposure-total">$0.00 USD</div>
+                </div>
+            </div> <!-- End ledger-container -->
+        </section>
+
+        <!-- Upcount Animation Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const totalEl = document.getElementById('exposure-total');
+                const targetValue = 145.00;
+                const duration = 4000; // 4 seconds (Slower, more dramatic)
+
+                const animateValue = (start, end, duration) => {
+                    let startTimestamp = null;
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+
+                        // Ease formatting
+                        // distinct easeOutQuart: 1 - Math.pow(1 - progress, 4)
+                        const ease = 1 - Math.pow(1 - progress, 4);
+
+                        const current = start + (end - start) * ease;
+
+                        // Format: $145.00 USD
+                        totalEl.innerText = `$${current.toFixed(2)} USD`;
+
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            totalEl.innerText = `$${end.toFixed(2)} USD`; // Ensure final value
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateValue(0, targetValue, duration);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                observer.observe(totalEl);
+            });
+        </script>
+
+        <hr class="section-divider">
+
+        <!-- Threat Actor Playbook (Vertical Dossier) -->
+        <section id="attack-vector-section" class="value-exposure-section">
+            <div class="timeline-header">
+                <h2 class="timeline-title">Vector de Ataque</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Cómo un Atacante
+                    Usaría Esta Información</div>
+                <p class="timeline-subtitle">Expediente de Ataque (Attack Dossier)</p>
+            </div>
+
+            <!-- Dossier Styles Removed (Part 1) -->
+
+            <!-- Leftover CSS Removed -->
+
+            <div class="dossier-container">
+                <div class="dossier-spine"></div>
+
+                <!-- Step 1 -->
+                <div class="dossier-step step-recon">
+                    <!-- Spine Icon -->
+                    <div class="spine-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+
+                    <div class="step-visual-col">
+                        <div class="dossier-icon">Target</div>
+                        <span class="dossier-phase-label">Fase 01</span>
+                    </div>
+                    <div class="step-content-col">
+                        <h3 class="dossier-title">LOCALIZACIÓN</h3>
+                        <p class="dossier-desc">El atacante utiliza bases de datos públicas para correlacionar tu
+                            <strong>Nombre Completo</strong> y <strong>Domicilio</strong> físico, creando un perfil
+                            base.
+                        </p>
+                    </div>
+                    <div class="step-evidence-col">
+                        <div class="evidence-badge">
+                            <span class="evidence-label">Fuente Evidencial</span>
+                            <span class="evidence-value" style="color: #74b9ff;">Banorte Leak + SAT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="dossier-step step-weapon">
+                    <div class="spine-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+
+                    <div class="step-visual-col">
+                        <div class="dossier-icon">Key</div>
+                        <span class="dossier-phase-label">Fase 02</span>
+                    </div>
+                    <div class="step-content-col">
+                        <h3 class="dossier-title">ARMADO</h3>
+                        <p class="dossier-desc">Validación automatizada de tus credenciales contra servicios
+                            financieros. Se configuran scripts con tus <strong>Contraseñas Reales</strong>.</p>
+                    </div>
+                    <div class="step-evidence-col">
+                        <div class="evidence-badge">
+                            <span class="evidence-label">Log de Malware</span>
+                            <span class="evidence-value" style="color: #ffeaa7;">Synthient Stealer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="dossier-step step-impact">
+                    <div class="spine-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+
+                    <div class="step-visual-col">
+                        <div class="dossier-icon">Strike</div>
+                        <span class="dossier-phase-label">Fase 03</span>
+                    </div>
+                    <div class="step-content-col">
+                        <h3 class="dossier-title">IMPACTO</h3>
+                        <p class="dossier-desc">Ejecución del fraude. Acceso no autorizado a banca móvil, suplantación
+                            ante el SAT y extracción de recursos financieros.</p>
+                    </div>
+                    <div class="step-evidence-col">
+                        <div class="evidence-badge"
+                            style="background: rgba(255, 118, 117, 0.1); border-color: rgba(255, 118, 117, 0.3);">
+                            <span class="evidence-label">Estado de Riesgo</span>
+                            <span class="evidence-value" style="color: #ff7675;">EJECUCIÓN INMINENTE</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Executive Impact Section (New 2x2 Grid) -->
+        <section id="business-impact-section" class="impact-section">
+            <!-- Impact Styles moved to HEAD (VEC-001 Standard) -->
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Impacto Directo al Negocio</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Visión Ejecutiva
+                    de Riesgo</div>
+                <p class="timeline-subtitle">Traducción de Riesgo Técnico a Estratégico</p>
+            </div>
+
+            <div class="impact-grid">
+                <!-- 1. Financiero -->
+                <div class="impact-card impact-financial">
+                    <div class="impact-icon-box">💰</div>
+                    <div class="impact-card-title">FINANCIERO</div>
+                    <p class="impact-card-desc">Pérdida directa por fraude bancario, costos elevados de remediación y
+                        posibles multas por incumplimiento.</p>
+                </div>
+
+                <!-- 2. Operativo -->
+                <div class="impact-card impact-operational">
+                    <div class="impact-icon-box">⚡</div>
+                    <div class="impact-card-title">OPERATIVO</div>
+                    <p class="impact-card-desc">Interrupción de servicios críticos, parálisis de sistemas y pérdida de
+                        productividad empresarial.</p>
+                </div>
+
+                <!-- 3. Reputacional -->
+                <div class="impact-card impact-reputational">
+                    <div class="impact-icon-box">🛡️</div>
+                    <div class="impact-card-title">REPUTACIONAL</div>
+                    <p class="impact-card-desc">Pérdida catastrófica de confianza del cliente y daño irreversible a la
+                        imagen de marca en el mercado.</p>
+                </div>
+
+                <!-- 4. Regulatorio -->
+                <div class="impact-card impact-regulatory">
+                    <div class="impact-icon-box">⚖️</div>
+                    <div class="impact-card-title">REGULATORIO</div>
+                    <p class="impact-card-desc">Sanciones legales severas por violaciones a la LFPDPPP, GDPR y
+                        normativas de protección de datos.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Inaction Scenario Section (The Risk Fuse) -->
+        <section id="inaction-scenario-section" class="inaction-section">
+            <!-- Inaction Styles moved to HEAD (VEC-001 Standard) -->
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Escenario de Inacción</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">El Costo
+                    Compuesto de la Indecisión</div>
+                <p class="timeline-subtitle">Proyección basada en la fusión de datos históricos y amenazas activas</p>
+            </div>
+
+            <div class="inaction-grid">
+                <!-- T+7 -->
+                <div class="inaction-card t-7">
+                    <div class="inaction-header-row">
+                        <div class="inaction-phase-wrapper">
+                            <div class="time-badge">1 SEMANA DESPUÉS</div>
+                            <div class="inaction-phase">La Fusión</div>
+                        </div>
+                        <div class="cost-indicator">
+                            <span class="cost-label">Impacto</span>
+                            <span class="cost-value">Operativo</span>
+                        </div>
+                    </div>
+                    <p class="inaction-desc">
+                        El atacante correlaciona tus <strong>datos históricos</strong> (domicilio, INE) para dar
+                        legitimidad a las <strong>credenciales nuevas</strong>. La brecha comienza a solidificarse.
+                    </p>
+                </div>
+
+                <!-- T+30 -->
+                <div class="inaction-card t-30">
+                    <div class="inaction-header-row">
+                        <div class="inaction-phase-wrapper">
+                            <div class="time-badge">1 MES DESPUÉS</div>
+                            <div class="inaction-phase">Monetización</div>
+                        </div>
+                        <div class="cost-indicator">
+                            <span class="cost-label">Impacto</span>
+                            <span class="cost-value">Financiero</span>
+                        </div>
+                    </div>
+                    <p class="inaction-desc">
+                        Tu identidad "verificada" se vende al mayoreo. Préstamos y fraudes se ejecutan usando tu
+                        historial crediticio real como aval involuntario.
+                    </p>
+                </div>
+
+                <!-- T+90 -->
+                <div class="inaction-card t-90">
+                    <div class="inaction-header-row">
+                        <div class="inaction-phase-wrapper">
+                            <div class="time-badge">3 MESES DESPUÉS</div>
+                            <div class="inaction-phase">Permanencia</div>
+                        </div>
+                        <div class="cost-indicator">
+                            <span class="cost-label">Impacto</span>
+                            <span class="cost-value">Estructural</span>
+                        </div>
+                    </div>
+                    <p class="inaction-desc">
+                        Tu identidad digital queda marcada en listas negras de riesgo ("Buró Profundo"). Bloqueos en
+                        servicios financieros legítimos de por vida.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Closing Window Section (Cognitive Relief) -->
+        <section id="closing-window-section" class="closing-section">
+            <!-- Closing Styles Removed (Start) -->
+            <!-- Closing Styles Removed (End) -->
+
+            <div class="timeline-header">
+                <h2 class="timeline-title">Ventana de Cierre</h2>
+                <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Ruta de
+                    Recuperación</div>
+                <p class="timeline-subtitle">Plan de Acción Recomendado</p>
+            </div>
+
+            <div class="closing-grid">
+                <!-- Fase 1 -->
+                <div class="closing-card">
+                    <div class="closing-meta-col">
+                        <div class="closing-phase">FASE 1: CONTENCIÓN</div>
+                        <div class="closing-time">0-24 H</div>
+                        <div class="closing-label-sm">Tiempo de Reacción</div>
+                    </div>
+                    <div class="closing-content-col">
+                        <ul class="action-list">
+                            <li class="action-item">
+                                <span class="action-bold">Cambio Inteligente de Credenciales</span>
+                                No uses contraseñas cortas. Implementa una <strong>"Frase de Seguridad"</strong> robusta
+                                (ej. "MiPerroComeCereal2024") en tu cuenta de correo principal para detener el acceso
+                                inmediato.
+                            </li>
+                            <li class="action-item">
+                                <span class="action-bold">Doble Candado (2FA)</span>
+                                Activa la "Verificación en 2 Pasos" en WhatsApp y Banca Móvil. Prioriza el uso de una
+                                <strong>App Autenticadora</strong> sobre los mensajes SMS para evitar intercepciones.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="closing-card">
+                    <div class="closing-meta-col">
+                        <div class="closing-phase">FASE 2: SANEAMIENTO</div>
+                        <div class="closing-time">24-72 H</div>
+                        <div class="closing-label-sm">Ventana Táctica</div>
+                    </div>
+                    <div class="closing-content-col">
+                        <ul class="action-list">
+                            <li class="action-item">
+                                <span class="action-bold">Cierre Global de Sesiones</span>
+                                Accede a la configuración de seguridad de Google, Facebook y Bancos. Busca la opción
+                                "Dispositivos Conectados" y fuerza el <strong>Cierre de Sesión</strong> en todos los
+                                equipos que no tengas en tu mano.
+                            </li>
+                            <li class="action-item">
+                                <span class="action-bold">Alertas Transaccionales Totales</span>
+                                Configura tu banca móvil para recibir notificaciones push o SMS por <strong>cargos de
+                                    cualquier monto</strong> (incluso $1.00 peso) para detectar intentos de validación
+                                de tarjeta.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="closing-card">
+                    <div class="closing-meta-col">
+                        <div class="closing-phase">FASE 3: BLINDAJE</div>
+                        <div class="closing-time">30 DÍAS</div>
+                        <div class="closing-label-sm">Estrategia a Largo Plazo</div>
+                    </div>
+                    <div class="closing-content-col">
+                        <ul class="action-list">
+                            <li class="action-item">
+                                <span class="action-bold">Candado Crediticio (Buró)</span>
+                                Solicita el servicio de <strong>"Bloqueo"</strong> en Buró de Crédito. Esto actúa como
+                                un
+                                interruptor maestro que impide que cualquier institución consulte tu historial o
+                                autorice
+                                créditos sin tu desbloqueo manual.
+                            </li>
+                            <li class="action-item">
+                                <span class="action-bold">Higiene Digital Recurrente</span>
+                                Establece una rutina de revisión semanal de estados de cuenta. Los atacantes suelen
+                                realizar
+                                <strong>"cargos hormiga"</strong> imperceptibles antes de ejecutar el fraude mayor.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Consolidated Closing Route (Execution Plan) -->
+    <section id="remediation-route-section" class="execution-section">
+
+
+        <div class="timeline-header">
+            <h2 class="timeline-title">Ruta de Cierre Consolidada</h2>
+            <div style="font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem;">Plan de Ejecución
+            </div>
+            <p class="timeline-subtitle">Resumen Estratégico & Asignación de Responsabilidades</p>
+        </div>
+
+        <div class="execution-container">
+            <div class="execution-header">
+                <div>Acción Clave</div>
+                <div style="text-align: center;">Responsable</div>
+                <div style="text-align: center;">Prioridad</div>
+            </div>
+
+            <!-- Row 1 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Contención de Incidentes</div>
+                    <span class="exec-sub">Invalidación de accesos comprometidos</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-joint">MAPA-RD + Cliente</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-crit">CRÍTICA</span>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Limpieza de Credenciales</div>
+                    <span class="exec-sub">Rotación segura y activación de 2FA</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-client">Cliente</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-high">ALTA</span>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Monitoreo Activo (12 Meses)</div>
+                    <span class="exec-sub">Vigilancia continua en Dark Web</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-mapa">Consultor (MAPA-RD)</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-high">ALTA</span>
+                </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="execution-row">
+                <div>
+                    <div class="exec-action">Asesoría Legal (Buró)</div>
+                    <span class="exec-sub">Gestión de alertas crediticias</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="resp-badge resp-client">Cliente</span>
+                </div>
+                <div style="text-align: center;">
+                    <span class="prio-badge prio-med">MEDIA</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Annex (Methodology) -->
+    <div id="annex-section" class="annex-page">
+        <div class="annex-header">
+            <div class="timeline-header">
+                <h2 class="timeline-title">Anexo Técnico</h2>
+                <p class="timeline-subtitle">Metodología, Definiciones y Estándares</p>
+            </div>
+        </div>
+
+        <!-- SECTION 1: IRV -->
+        <div class="annex-section">
+            <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
+            <p class="annex-p">
+                El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la
+                necesidad
+                operativa de cierre.
+                Se calcula internamente mediante un modelo ponderado de seis dimensiones.
+            </p>
+
+            <!-- CLEAN FORMULA BLOCK -->
+            <div class="formula-block">
+                <span class="formula-label">Fórmula de Cálculo</span>
+                <div class="formula-text">
+                    IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+                </div>
+            </div>
+
+            <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Variables
+                del
+                Modelo</h3>
+
+            <!-- CLEAN VARIABLE GRID -->
+            <div class="variable-grid">
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Criticidad (CA)</span>
+                        <span class="var-badge">x4</span>
+                    </div>
+                    <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Exposición (ET)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Superficie (SE)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Impacto (IM)</span>
+                        <span class="var-badge">x4</span>
+                    </div>
+                    <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Explotación (FE)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
+                </div>
+
+                <div class="annex-card">
+                    <div class="var-header">
+                        <span class="var-name">Detección (DV)</span>
+                        <span class="var-badge">x3</span>
+                    </div>
+                    <span class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: IRD -->
+        <div class="annex-section">
+            <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
+            <p class="annex-p">
+                El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores
+                activos
+                mediante
+                un promedio ponderado por severidad.
+            </p>
+
+            <!-- CLEAN FORMULA BLOCK -->
+            <div class="formula-block">
+                <span class="formula-label">Agregación Ponderada</span>
+                <div class="formula-text">
+                    IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
+                </div>
+            </div>
+
+            <h3 style="font-size:1rem; color:#fff; margin-top:3rem; margin-bottom:1rem; font-weight:700;">Matriz de
+                Pesos
+            </h3>
+
+            <!-- COMPONENT: CLEAN SEVERITY ROW -->
+            <div class="severity-row">
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #74b9ff;"></div>
+                    <span class="sev-label">Bajo</span>
+                    <span class="sev-mult">Multiplicador x1</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #ffeaa7;"></div>
+                    <span class="sev-label">Medio</span>
+                    <span class="sev-mult">Multiplicador x2</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #ff9f43;"></div>
+                    <span class="sev-label">Alto</span>
+                    <span class="sev-mult">Multiplicador x3</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #ff7675;"></div>
+                    <span class="sev-label">Crítico</span>
+                    <span class="sev-mult">Multiplicador x4</span>
+                </div>
+
+                <div class="severity-item">
+                    <div class="sev-dot" style="background: #a29bfe;"></div>
+                    <span class="sev-label">Máximo</span>
+                    <span class="sev-mult">Multiplicador x5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER NOTE -->
+        <div class="annex-footer">
+            Protegiendo la información que importa · <a
+                href="https://private.felipemiramontesr.net/aviso-privacidad.html" target="_blank"
+                class="privacy-link">Aviso de Privacidad</a>
+        </div>
+    </div>
+
+    </div>
+</body>
+
+</html>

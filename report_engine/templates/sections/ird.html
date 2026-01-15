@@ -1,4 +1,4 @@
-<section class="ird-page">
+<section class="ird-page report-section">
     <div class="ird-container">
         <h2 class="section-title-center">Índice de Riesgo Digital</h2>
 
@@ -9,25 +9,34 @@
             <span class="ird-label {{ ird.level_class }}">{{ ird.level }}</span>
         </div>
 
-        <div class="ird-interpretation">
-            {% if ird.score >= 80 %}
-            <p><strong>Urgencia Inmediata:</strong> Un IRD de {{ ird.score }} señala un MÁXIMO riesgo sistémico. Datos
-                sensibles (financieros/accesos) están expuestos activamente. Se requiere <strong>contención de
-                    emergencia</strong> para evitar fraude inminente.</p>
-            {% elif ird.score >= 60 %}
-            <p><strong>Estado Crítico:</strong> Un IRD de {{ ird.score }} indica una postura de riesgo activo.
-                Credenciales o datos privados están expuestos, con probabilidad elevada de impacto operativo o
-                regulatorio si no se actúa en el corto plazo.</p>
-            {% elif ird.score >= 40 %}
-            <p><strong>Riesgo Alto:</strong> Múltiples vectores de ataque están abiertos. Aunque la operación continúa,
-                la superficie de exposición es inaceptable y requiere corrección prioritaria.</p>
-            {% elif ird.score >= 20 %}
-            <p><strong>Atención Requerida:</strong> Exposición moderada detectada. Existen brechas específicas que deben
-                cerrarse programadamente para evitar una escalada de riesgo.</p>
-            {% else %}
-            <p><strong>Postura Robusta:</strong> El entorno digital se encuentra bajo control. Mantenga la vigilancia y
-                los controles actuales para preservar este nivel de seguridad.</p>
-            {% endif %}
+        <!-- Interpretation Card (Matches Vectors Description Style) -->
+        <div class="description-card"
+            style="margin-top: 3rem; text-align: left; background: var(--bg-card); padding: 2rem; border-radius: 4px; border: 1px solid var(--border-color);">
+            <h4 class="sub-header-simple">Interpretación de Riesgo</h4>
+            <div class="description-text">
+                {% if ird.score >= 80 %}
+                <p><strong>Urgencia Inmediata:</strong> Un IRD de {{ ird.score }} señala un MÁXIMO riesgo sistémico.
+                    Datos
+                    sensibles (financieros/accesos) están expuestos activamente. Se requiere <strong>contención de
+                        emergencia</strong> para evitar fraude inminente.</p>
+                {% elif ird.score >= 60 %}
+                <p><strong>Estado Crítico:</strong> Un IRD de {{ ird.score }} indica una postura de riesgo activo.
+                    Credenciales o datos privados están expuestos, con probabilidad elevada de impacto operativo o
+                    regulatorio si no se actúa en el corto plazo.</p>
+                {% elif ird.score >= 40 %}
+                <p><strong>Riesgo Alto:</strong> Múltiples vectores de ataque están abiertos. Aunque la operación
+                    continúa,
+                    la superficie de exposición es inaceptable y requiere corrección prioritaria.</p>
+                {% elif ird.score >= 20 %}
+                <p><strong>Atención Requerida:</strong> Exposición moderada detectada. Existen brechas específicas que
+                    deben
+                    cerrarse programadamente para evitar una escalada de riesgo.</p>
+                {% else %}
+                <p><strong>Postura Robusta:</strong> El entorno digital se encuentra bajo control. Mantenga la
+                    vigilancia y
+                    los controles actuales para preservar este nivel de seguridad.</p>
+                {% endif %}
+            </div>
         </div>
 
 
@@ -37,7 +46,6 @@
 <!-- Progressive Animation Script (Browser Only - Ignored by PDF Renderer) -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Only run if elements exist
         const scoreEl = document.getElementById('irdScore');
         const boxEl = document.getElementById('irdBox');
         const labelEl = boxEl ? boxEl.querySelector('.ird-label') : null;
@@ -47,61 +55,59 @@
         const targetScore = parseInt(scoreEl.getAttribute('data-target'), 10);
         if (isNaN(targetScore)) return;
 
-        // Animation Config
-        const duration = 4000; // 4 seconds
+        const duration = 4000;
         const startTimestamp = performance.now();
 
-        // Strict Range Logic (0-19, 20-39, 40-59, 60-79, 80-100)
-        // Colors: Low=Blue, Med=Yellow, High=Orange (#ff9f43), Crit=Red, Max=Purple
-        function getRiskData(s) {
-            if (s >= 80) return { color: '#a29bfe', text: 'RIESGO MÁXIMO', glow: 'rgba(162, 155, 254, 0.2)' };
-            if (s >= 60) return { color: '#ff7675', text: 'RIESGO CRÍTICO', glow: 'rgba(255, 118, 117, 0.2)' };
-            if (s >= 40) return { color: '#ff9f43', text: 'RIESGO ALTO', glow: 'rgba(255, 159, 67, 0.2)' }; // Orange
-            if (s >= 20) return { color: '#ffeaa7', text: 'RIESGO MEDIO', glow: 'rgba(255, 234, 167, 0.2)' };
-            return { color: '#74b9ff', text: 'RIESGO BAJO', glow: 'rgba(116, 185, 255, 0.2)' };
+        // Map scores to CSS variables (defined in tokens.css)
+        function getRiskConfig(s) {
+            if (s >= 80) return { var: '--risk-max', text: 'RIESGO MÁXIMO' };
+            if (s >= 60) return { var: '--risk-crit', text: 'RIESGO CRÍTICO' };
+            if (s >= 40) return { var: '--risk-high', text: 'RIESGO ALTO' };
+            if (s >= 20) return { var: '--risk-med', text: 'RIESGO MEDIO' };
+            return { var: '--risk-low', text: 'RIESGO BAJO' };
+        }
+
+        // Helper to get computed color from variable
+        function getColor(cssVar) {
+            return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
         }
 
         function step(timestamp) {
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             const currentScore = Math.floor(progress * targetScore);
 
-            // Get Dynamic Data
-            const riskData = getRiskData(currentScore);
+            const config = getRiskConfig(currentScore);
+            const color = getColor(config.var);
 
-            // Update Content
+            // Text Updates
             scoreEl.innerText = currentScore;
-            labelEl.innerText = riskData.text;
+            labelEl.innerText = config.text;
 
-            // Update Styles (Dynamic Color & Glow)
-            scoreEl.style.color = riskData.color;
-            labelEl.style.color = riskData.color; // NEW: Explicilty sync label color
-
-            // Label can inherit or be explicit. Let's be explicit to ensure sync.
-            // boxEl.style.borderColor = riskData.color; 
-            // Note: CSS might override if specific classes are present, but inline styles normally win.
-
-            boxEl.style.borderColor = riskData.color;
-            boxEl.style.boxShadow = `0 0 20px ${riskData.glow}`;
-            // Optional: Subtle background tint
-            boxEl.style.backgroundColor = riskData.glow.replace('0.2', '0.05');
+            // Style Updates
+            scoreEl.style.color = color;
+            labelEl.style.color = color;
+            boxEl.style.borderColor = color;
+            // Simple glow effect using the color with opacity
+            boxEl.style.boxShadow = `0 0 20px ${color}33`;
+            boxEl.style.backgroundColor = `${color}0D`;
 
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             } else {
-                // Final State (Ensure exact match)
+                // Final state exact match
                 scoreEl.innerText = targetScore;
-                const finalData = getRiskData(targetScore);
+                const finalConfig = getRiskConfig(targetScore);
+                const finalColor = getColor(finalConfig.var);
 
-                labelEl.innerText = finalData.text;
-                labelEl.style.color = finalData.color; // NEW: Ensure final state is also colored
-                scoreEl.style.color = finalData.color;
-                boxEl.style.borderColor = finalData.color;
-                boxEl.style.boxShadow = `0 0 20px ${finalData.glow}`;
-                boxEl.style.backgroundColor = finalData.glow.replace('0.2', '0.05');
+                labelEl.innerText = finalConfig.text;
+                labelEl.style.color = finalColor;
+                scoreEl.style.color = finalColor;
+                boxEl.style.borderColor = finalColor;
+                boxEl.style.boxShadow = `0 0 20px ${finalColor}33`;
+                boxEl.style.backgroundColor = `${finalColor}0D`;
             }
         }
 
-        // Start Animation
         window.requestAnimationFrame(step);
     });
 </script>

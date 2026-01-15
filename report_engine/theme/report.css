@@ -17,7 +17,18 @@ html {
     /* Fallback base color */
 }
 
-body,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background-attachment: fixed;
+    /* Prevent horizontal scroll from full-width sections */
+    overflow-x: hidden;
+    width: 100vw;
+}
+
 body.theme-dark {
     font-family: var(--font-family);
     /* Strict Landing Page Match: Gradient on Body ONLY */
@@ -31,6 +42,44 @@ body.theme-dark {
     print-color-adjust: exact;
 }
 
+/* --- Structural Isolation (Phase 0) --- */
+.report-section {
+    position: relative;
+    width: 100%;
+    /* min-height: 100vh; -- Removed to prevent empty space perception on screen */
+    padding: 2rem 2rem;
+    /* Reduced padding for tighter flow */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-bottom: 4rem;
+    /* Separation without full page break on screen */
+}
+
+@media print {
+    .report-section {
+        min-height: 100vh;
+        page-break-after: always;
+        break-after: page;
+        padding: 4rem 2rem;
+    }
+}
+
+/* Last section shouldn't force an empty page after it */
+.report-section:last-of-type {
+    page-break-after: auto;
+    break-after: auto;
+}
+
+/* Utility for explicit breaks if needed */
+.page-break {
+    page-break-after: always;
+    break-after: page;
+    height: 1px;
+    width: 100%;
+    visibility: hidden;
+}
+
 body {
     font-family: var(--font-family);
 }
@@ -39,19 +88,21 @@ body {
 .cover-wrapper {
     position: relative;
     /* For Pseudo-element (Halo) positioning */
-    min-height: auto;
-    /* Allow content to determine height, removing forced gap */
+    height: 100vh;
+    min-height: 100vh;
+    /* Strict Full Height */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    padding-top: calc(2.5vh + 15px);
-    /* V18: 2.5vh + 15px real pixels */
-    /* Initial positioning for visual balanced top margin */
+    justify-content: center;
+    /* Vertically Centered */
     align-items: center;
+    padding: 0 2rem;
     text-align: center;
     z-index: 1;
     overflow: hidden;
     /* Contain halo */
+    background-color: transparent;
+    /* Matches body gradient */
 }
 
 /* 3.1) Halo Radial (Quiet Depth Layer 1) */
@@ -329,74 +380,89 @@ h1 {
 
 /* --- IRD Page (Digital Risk Index) --- */
 .ird-page {
-    min-height: auto;
-    /* Allow content to dictate height */
-    padding-bottom: 2rem;
-    /* Add some breathing room before vectors */
+    /* Slide Deck: Full Height */
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    /* Moved from center to flex-start to lift content */
-    /* Moved from center to flex-start to lift content */
-    padding-top: 2rem;
-    /* Clean reset */
+    justify-content: center;
+    /* Vertically Centered */
     text-align: center;
+    background: transparent;
+    overflow: hidden;
 }
 
 .ird-container {
-    padding: 0 2rem 2rem 2rem;
-    /* Zero top padding */
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
-.section-title-center {
-    font-size: 3.0rem;
-    /* Match H1 size */
-    font-weight: 300;
-    /* Match H1 weight */
-    color: #fff;
-    margin-top: 0;
-    margin-bottom: 3rem;
-    letter-spacing: -0.02em;
-    /* Match H1 spacing */
-    line-height: 1.15;
-    /* Match H1 line-height */
+.timeline-header {
+    margin-bottom: 0.5rem;
+    /* Tightened Gap */
+    text-align: center;
+    z-index: 10;
 }
 
+.ird-page .timeline-header {
+    margin-bottom: 0;
+    /* Reset margins for flex control */
+}
+
+/* IRD Box (Rounded Rectangle) */
 .ird-box {
-    width: 536px;
-    /* Exact match to title width */
+    width: 100%;
+    max-width: 536px;
     height: 180px;
     border-radius: 12px;
-    /* Discrete rounded corners */
     border: 2px solid;
-    /* Elegant thin border */
-    /* Color comes from utility class */
-    margin: 0 auto 2.5rem;
+    margin: 0;
+    /* Controlled by container gap */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
     transition: all 0.3s ease;
-    /* Smooth transition */
+    background: rgba(255, 255, 255, 0.03);
+    /* Default glass */
 }
 
-/* Specific background resets are now handled by the generic class helpers above */
-/* No need to redeclare .maximum.ird-box etc individually if they share logic with vector badges */
-/* But keeping empty declaration if needed for specificity override in future, currently empty */
+/* IRD Context Card (Moved from Inline) */
+.ird-context-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 0;
+    /* Controlled by container gap */
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: border-color 1s ease, box-shadow 1s ease;
+}
 
-
+.ird-context-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #b2bec3;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    display: block;
+}
 
 .ird-score {
     font-size: 6rem;
-    /* Larger for the box */
     font-weight: 700;
     line-height: 1;
     color: #fff;
-    /* Default white, JS will override if needed */
     transition: color 0.1s;
 }
 
@@ -406,27 +472,136 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-top: 0.5rem;
-    /* Color inherits from parent utility class */
-}
-
-.ird-context {
-    color: #c5cae0;
-    font-size: 1.1rem;
-    font-weight: 300;
-    margin-bottom: 1rem;
-}
-
-.ird-date {
-    color: #4a5578;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
 /* --- Vector Cards (Clean Navy Style) --- */
 .vectors-section {
-    padding-top: 2rem;
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Strict Window */
 }
+
+/* Carousel Container */
+.carousel-container {
+    width: 100%;
+    /* Strict Full Width */
+    max-width: none;
+    /* Remove limit, let it fill screen */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* STRICT MASK */
+}
+
+.carousel-track {
+    display: flex;
+    gap: 0;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+}
+
+.vector-slide {
+    min-width: 100%;
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    /* WIDTH INCREASED (+100px Total):
+       Previous Padding: 130px.
+       New Padding: 80px (5rem).
+       Difference: 50px per side = 100px wider card. 
+       Gap is now tighter but Card is King. */
+    padding: 0 5rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.slide-counter {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    color: var(--text-muted);
+    font-family: monospace;
+    font-size: 0.9rem;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.vector-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 3rem;
+    width: 100%;
+    max-width: none;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+
+    max-height: 85vh;
+    margin-top: 2vh;
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+/* Internal Nav Buttons */
+/* Internal Nav Buttons */
+.carousel-btn {
+    position: absolute;
+    /* Static relative to section (Scrolls with page) */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    /* Regular layer, not supreme overlay */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.15);
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Pushed to PHYSICAL LIMIT (5px) - Response to Step 604 */
+/* Card Padding: 80px. Button Ends: 5+60=65px. Gap: 15px. */
+/* This is the absolute maximum separation possible on screen. */
+.carousel-btn.prev {
+    left: 5px;
+}
+
+.carousel-btn.next {
+    right: 5px;
+}
+
+/*   If we want them at screen edges, we might need to adjust HTML structure or use fixed.
+   For now, let's put them INSIDE the container's visual padding or at the edges of the container 
+   but ensuring container has space. 
+   
+   Better: Let's make them fixed to the viewport edges for this section. */
+
+/* [CLEANED] No duplicate rules below */
 
 .divider-left {
     height: 1px;
@@ -443,8 +618,8 @@ h1 {
     border-radius: 4px;
     /* Consistent with Annex */
     padding: 2rem;
-    margin-bottom: 2rem;
-    break-inside: avoid;
+    margin-bottom: 0;
+    /* Remove vertical margin for slide */
     position: relative;
     /* Clean, no left border accent, no glow */
 }
@@ -708,14 +883,28 @@ h1 {
     margin-bottom: 4rem;
 }
 
+/* Replaced by standardized .sub-header-simple or similar, but keeping for legacy compatibility if needed, updated to match style */
 .annex-h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    /* Slightly larger to define section */
     color: #fff;
     font-weight: 600;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.annex-h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
 /* 1.3 Paragraphs */
@@ -732,14 +921,12 @@ h1 {
 /* 2.0 Native Card System */
 .annex-card {
     background: var(--bg-card);
-    /* rgba(255, 255, 255, 0.03) */
     border: 1px solid var(--border-color);
-    /* #4a5578 */
     border-radius: 4px;
-    padding: 1.5rem;
+    padding: 2rem;
+    /* Match Vector Card */
     position: relative;
     height: 100%;
-    /* For grid filling */
     display: flex;
     flex-direction: column;
 }
@@ -838,6 +1025,26 @@ h1 {
     margin: 0 auto 0.5rem;
 }
 
+.sev-dot.risk-low {
+    background: var(--risk-low);
+}
+
+.sev-dot.risk-med {
+    background: var(--risk-med);
+}
+
+.sev-dot.risk-high {
+    background: var(--risk-high);
+}
+
+.sev-dot.risk-crit {
+    background: var(--risk-crit);
+}
+
+.sev-dot.risk-max {
+    background: var(--risk-max);
+}
+
 .sev-label {
     display: block;
     font-size: 0.75rem;
@@ -872,4 +1079,822 @@ h1 {
     color: #a29bfe;
     /* Discrete hover shift to purple/lighter tone */
     text-decoration: none;
+}
+
+/* --- VEC-001 NORTH STAR THEME OVERRIDES --- */
+:root {
+    --color-bg-panel: rgba(17, 19, 41, 0.6);
+    --color-border-strong: rgba(255, 255, 255, 0.1);
+    --color-bg-body: #0a0e27;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a8adc7;
+    --color-accent-core: #5a6fa0;
+    --card-radius: 4px;
+    --card-padding: 2.5rem;
+    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    --card-blur: blur(10px);
+}
+
+body {
+    background-color: var(--color-bg-body);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--color-text-primary);
+}
+
+/* Homologated Card Style (VEC-001) */
+.vector-card,
+.dossier-card,
+.inaction-card,
+.closing-card,
+.execution-container,
+.ird-context-card,
+.ledger-container,
+.timeline-content,
+.dossier-step,
+.impact-card {
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: var(--card-padding);
+    position: relative;
+    /* Reset specifics */
+    margin-bottom: 2rem;
+}
+
+/* Specific Cleanups */
+.closing-card,
+.ledger-container {
+    border-left-width: 1px;
+}
+
+.dossier-step {
+    margin-bottom: 3rem;
+}
+
+/* Micro-Grids & Badges */
+.evidence-badge {
+    background: rgba(17, 19, 41, 0.8);
+    border: 1px solid var(--color-border-strong);
+}
+
+.evidence-label,
+.meta-label {
+    color: #a8adc7;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* Typography */
+ul,
+ol,
+li,
+.action-item,
+.t-desc {
+    color: var(--color-text-secondary);
+}
+
+h1,
+h2,
+h3,
+.card-title,
+.timeline-title {
+    color: #ffffff;
+}
+
+.vector-id,
+.trx-id {
+    color: var(--color-accent-core);
+    font-family: 'Courier New', monospace;
+}
+
+/* Risk Badges (Glow) */
+.risk-badge,
+.t-badge,
+.demand-badge {
+    background: rgba(10, 14, 39, 0.9);
+    text-shadow: 0 0 5px currentColor;
+    box-shadow: 0 0 10px currentColor;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+/* --- Timeline Section Layout (Restored & Cleaned) --- */
+.timeline-section-wrapper {
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-subtitle {
+    font-size: 1.1rem;
+    color: #b2bec3;
+    font-weight: 400;
+}
+
+.timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding: 2rem 0;
+}
+
+/* Navigation Control Widget (Elegant Bi-Directional) */
+.nav-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+}
+
+.nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    /* Soft square */
+    background: rgba(10, 14, 39, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn:active {
+    transform: scale(0.95);
+}
+
+.nav-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+.nav-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    border-color: transparent;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-5px);
+    }
+
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+/* Vertical Line */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+}
+
+.timeline-line-fill {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #74b9ff, #a29bfe, #ff7675);
+    height: 0%;
+    transition: height 0.5s linear;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
+}
+
+/* Timeline Item (Layout) */
+.timeline-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    background-color: #2d3436;
+    border: 2px solid #636e72;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    /* Centered on line */
+    transform: translateX(-50%);
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.timeline-item.active .timeline-dot {
+    background-color: #fff;
+    box-shadow: 0 0 15px currentColor;
+    transform: translateX(-50%) scale(1.2);
+    border-color: transparent;
+}
+
+/* Content Layout (Alternating) */
+.timeline-content {
+    width: 45%;
+    /* Padding/Border/BG handled by Global VEC-001 Class */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+/* Alternating Logic */
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-right: auto;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-left: auto;
+    text-align: left;
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+
+    .timeline-line,
+    .timeline-line-fill,
+    .timeline-dot {
+        left: 20px;
+    }
+
+    .timeline-content {
+        width: calc(100% - 50px);
+        margin-left: 50px !important;
+        text-align: left !important;
+    }
+}
+
+/* Typography (Specifics not covered by global) */
+.t-date {
+    font-family: 'Courier New', monospace;
+    color: #a29bfe;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.t-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.t-desc {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.t-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    /* BG/Glow handled by global */
+}
+
+
+/* --- Dossier Section Layout (Restored) --- */
+.dossier-container {
+    position: relative;
+    padding-left: 3rem;
+    /* Space for spine */
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.dossier-spine {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dossier-step {
+    /* Background/Border handled by Global VEC-001 */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.dossier-step:hover {
+    transform: translateX(5px);
+}
+
+.spine-icon-wrapper {
+    position: absolute;
+    left: -2rem;
+    /* Pull back to spine */
+    width: 32px;
+    height: 32px;
+    background: #0a0e27;
+    /* Match body to hide line behind */
+    border: 2px solid #5a6fa0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    z-index: 2;
+}
+
+.spine-icon-wrapper svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Columns */
+.step-visual-col {
+    flex: 0 0 80px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dossier-icon {
+    font-size: 0.8rem;
+    color: #a8adc7;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.dossier-phase-label {
+    font-size: 0.7rem;
+    color: #5a6fa0;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+}
+
+.step-content-col {
+    flex: 1;
+}
+
+.dossier-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.dossier-desc {
+    font-size: 0.95rem;
+    color: #a8adc7;
+    line-height: 1.5;
+}
+
+.step-evidence-col {
+    flex: 0 0 200px;
+    /* Fixed width for badge */
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .dossier-step {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .step-evidence-col {
+        width: 100%;
+    }
+
+    .dossier-container {
+        padding-left: 1rem;
+    }
+
+    .dossier-spine,
+    .spine-icon-wrapper {
+        display: none;
+    }
+}
+
+
+/* --- Impact, Inaction & Closing Grids (Restored) --- */
+
+/* Impact Grid (2x2) */
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.impact-card {
+    /* BG/Border handled by Global */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.impact-icon-box {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.impact-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.impact-card-desc {
+    font-size: 0.9rem;
+    color: #a8adc7;
+    line-height: 1.5;
+}
+
+
+/* Inaction Grid (3 Columns) */
+.inaction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.inaction-card {
+    /* BG/Border handled by Global */
+    display: flex;
+    flex-direction: column;
+}
+
+.inaction-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.time-badge {
+    font-size: 0.7rem;
+    color: #5a6fa0;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+}
+
+.inaction-phase {
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+}
+
+.cost-indicator {
+    text-align: right;
+}
+
+.cost-label {
+    font-size: 0.7rem;
+    color: #a8adc7;
+    display: block;
+}
+
+.cost-value {
+    font-size: 0.9rem;
+    color: #ff7675;
+    /* Risk Color */
+    font-weight: 700;
+}
+
+.inaction-desc {
+    font-size: 0.95rem;
+    color: #a8adc7;
+    line-height: 1.5;
+}
+
+
+/* Closing Grid (3 Columns) */
+.closing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.closing-card {
+    /* BG/Border by Global */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.closing-meta-col {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.closing-phase {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #a29bfe;
+    /* Phase Color */
+    margin-bottom: 0.2rem;
+}
+
+.closing-time {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.2rem;
+}
+
+.closing-label-sm {
+    font-size: 0.8rem;
+    color: #a8adc7;
+}
+
+/* Execution Table (Rows) */
+.execution-header {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.execution-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+    transition: background 0.2s ease;
+}
+
+.execution-row:last-child {
+    border-bottom: none;
+}
+
+.execution-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.exec-action {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.exec-sub {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.2rem;
+}
+
+/* Responsible Badges (Exec) */
+.resp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.resp-mapa {
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+    border: 1px solid rgba(116, 185, 255, 0.2);
+}
+
+.resp-client {
+    background: rgba(255, 255, 255, 0.05);
+    color: #b2bec3;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resp-joint {
+    background: rgba(162, 155, 254, 0.1);
+    color: #a29bfe;
+    border: 1px solid rgba(162, 155, 254, 0.2);
+}
+
+/* Priority Badges (Exec) */
+.prio-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.prio-crit {
+    color: #ff7675;
+    background: rgba(255, 118, 117, 0.1);
+    border: 1px solid rgba(255, 118, 117, 0.2);
+}
+
+.prio-high {
+    color: #ffeaa7;
+    background: rgba(255, 234, 167, 0.1);
+    border: 1px solid rgba(255, 234, 167, 0.2);
+}
+
+.prio-med {
+    color: #74b9ff;
+    background: rgba(116, 185, 255, 0.1);
+    border: 1px solid rgba(116, 185, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .execution-header {
+        display: none;
+    }
+
+    .execution-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+
+/* --- POST-HOC LINEARIZATION (USER REQUEST: VERTICAL ROWS) --- */
+
+/* 1. Linear Timeline (Strict Vertical) */
+.timeline-line {
+    left: 2rem !important;
+    transform: none !important;
+}
+
+.timeline-line-fill {
+    left: 2rem !important;
+    transform: none !important;
+}
+
+.timeline-dot {
+    left: 2rem !important;
+    transform: translateX(-50%) !important;
+}
+
+.timeline-item {
+    justify-content: flex-start !important;
+    padding-left: 5rem !important;
+    /* Space for line */
+    margin-bottom: 3rem !important;
+}
+
+/* Reset Alternating Logic */
+.timeline-item:nth-child(odd) .timeline-content,
+.timeline-item:nth-child(even) .timeline-content {
+    margin: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+/* 2. Linear Impact & Inaction (Rows not Grids) */
+.impact-grid,
+.inaction-grid,
+.closing-grid {
+    grid-template-columns: 1fr !important;
+    /* Force Single Column */
+    gap: 1.5rem !important;
+}
+
+/* Flex Row Layout for Cards (Icon | Content) */
+.impact-card {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 2rem !important;
+}
+
+.impact-icon-box {
+    font-size: 2.5rem !important;
+    margin-bottom: 0 !important;
+    color: var(--color-accent-core);
+    flex-shrink: 0;
+}
+
+/* Inaction Row Styling */
+.inaction-card {
+    display: grid !important;
+    grid-template-columns: 100px 1fr auto !important;
+    /* Time | Desc | Cost */
+    align-items: center !important;
+    gap: 2rem !important;
+}
+
+.inaction-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin-bottom: 0 !important;
+}
+
+.inaction-desc {
+    margin-top: 0 !important;
+}
+
+/* Closing Row Styling */
+.closing-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 2rem 3rem !important;
+}
+
+.closing-meta-col {
+    border-bottom: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-bottom: 0 !important;
+    padding-right: 2rem !important;
+    margin-right: 2rem !important;
+    min-width: 150px;
+}
+
+/* Mobile Adjusts for Rows */
+@media (max-width: 768px) {
+
+    .inaction-card,
+    .closing-card {
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+    }
+
+    .closing-meta-col {
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding-bottom: 1rem !important;
+        margin-bottom: 1rem !important;
+        margin-right: 0 !important;
+        width: 100%;
+    }
 }

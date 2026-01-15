@@ -3,6 +3,13 @@
 > [!IMPORTANT]
 > These rules are MANDATORY for EVERY SINGLE ITERATION. No exceptions.
 
+## 0. Protocol Compliance & Evolution (META-RULE)
+**En cada interacción:**
+1.  **Revisar PROTOCOL.md**: Verificar si existe una regla aplicable a la tarea actual.
+    -   **Si existe**: Seguirla estrictamente.
+    -   **Si NO existe**: **DETENERSE**. Informar al usuario y proponer una mejora (automatización o nueva regla del protocolo) antes de ejecutar cualquier acción.
+2.  **Esperar aprobación**: No proceder hasta recibir luz verde o instrucciones específicas.
+
 ## 1. Security & Hygiene (.gitignore)
 - **Action**: Check and update `.gitignore` in every step.
 - **Goal**: Ensure no new temporary files, logs, or build artifacts provided by new tools are tracked.
@@ -30,8 +37,9 @@ Cualquier desviación futura se considera un error crítico.
 ---
 
 ## 3. Business Logic Integrity (CI/CD)
-- **Action**: Run `python 10_Tools/run_ci.py` (or `pipeline.py`).
-- **Goal**: Validate that Unit Tests pass and Business Logic is preserved BEFORE confirming any task.
+- **Action**: Run `python 10_Tools/run_ci.py` (or `pipeline.py`) **every 60 minutes**.
+- **Rule**: Check for changes every hour. If changes exist => Run CI. If no changes => Skip.
+- **Goal**: Periodic validation of Business Logic (Hourly Cadence).
 
 ## 4. Continuous Synchronization (Push)
 - **Action**: `git push origin main` after every relevant interaction.
@@ -43,13 +51,13 @@ Cualquier desviación futura se considera un error crítico.
 
 ## 6. Nomenclatura Final (Reportes)
 > [!IMPORTANT]
-> Strict naming convention for generated PDF files.
+> **MODO TEMPLATE ACTIVO**
 
-**Format**: MAPA-RD_<CLIENT_SLUG>_<CLIENT_ID>_<DOC_TYPE>_<SEQ>_<DATE>
+Por instrucción explícita, el único archivo de trabajo autorizado es:
+`out/MAPA-RD-Template.html`
 
-**Example**: MAPA-RD_ACME-CORP_CL-0001_RPT_001_2026-01-11
-
-**Filename**: MAPA-RD_ACME-CORP_CL-0001_RPT_001_2026-01-11.pdf
+Se mantiene este archivo único hasta nueva indicación textual de cambio en este Protocolo.
+Ignorar nomenclatura dinámica anterior.
 
 ## 7. MAPA-RD Risk Methodology v1.0 (OFFICIAL)
 
@@ -185,3 +193,19 @@ ANTES de CUALQUIER acción (código, diseño, lógica, contenido, naming):
 - rompe la trazabilidad del sistema
 
 **El PROTOCOL es mandatorio en CADA interacción.**
+
+### 7.5 Estructura Oficial del Reporte (MANDATORIA)
+El reporte DEBE contener estrictamente las siguientes secciones en este orden exacto. No se permiten omisiones ni reordenamientos.
+
+1.  **Hero** (Portada)
+2.  **Índice de Riesgo Digital** (IRD)
+3.  **Vectores de Vulnerabilidad**
+4.  **Línea de Tiempo de Exposición**
+5.  **Valor de Exposición**
+6.  **Vector de Ataque**
+7.  **Impacto Directo al Negocio**
+8.  **Escenario de Inacción**
+9.  **Ventana de Cierre**
+10. **Ruta de Cierre Consolidada**
+11. **Anexo Técnico**
+

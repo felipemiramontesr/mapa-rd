@@ -1,0 +1,22 @@
+:root {
+    /* Colors */
+    --border-color: #4a5578;
+    --bg-card: rgba(255, 255, 255, 0.03);
+
+    /* Text */
+    --text-main: #e0e6ed;
+    --text-muted: #c5cae0;
+    --text-tag: #8a9fca;
+
+    /* Typography */
+    --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    /* Functional */
+    --primary-color: #74b9ff;
+    --risk-max: #a29bfe;
+    --risk-crit: #ff7675;
+    --risk-high: #ff9f43;
+    --risk-med: #ffeaa7;
+    --risk-low: #74b9ff;
+    --risk-info: #48dbfb;
+}
