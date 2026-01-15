@@ -2484,15 +2484,15 @@ h3,
 
 /* PREMIUM INVOICE COMPONENT (GOLD EDITION - COMPACT) */
 .invoice-wrapper {
-    max-width: 1000px;
-    /* Increased by 200px as requested */
+    max-width: 1400px;
+    /* Increased to 1400px as requested */
     margin: 0 auto;
     position: relative;
     /* Standard Card Style Match */
     background: var(--color-bg-panel);
     border: 1px solid var(--color-border-strong);
     backdrop-filter: var(--card-blur);
-    box-shadow: var(--card-shadow);
+    box-shadow: none;
     border-radius: var(--card-radius);
     padding: 0;
 }
