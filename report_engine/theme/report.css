@@ -2484,10 +2484,10 @@ h3,
 
 /* PREMIUM INVOICE COMPONENT (GOLD EDITION - COMPACT) */
 .invoice-wrapper {
-    width: 90%;
-    /* Responsive width */
-    max-width: 1400px;
-    /* Cap at requested size */
+    width: 1400px;
+    /* Explicit width as requested */
+    min-height: 800px;
+    /* Explicit height increase (~+200px) */
     margin: 0 auto;
     position: relative;
     /* Standard Card Style Match */
@@ -2497,6 +2497,9 @@ h3,
     box-shadow: none;
     border-radius: var(--card-radius);
     padding: 0;
+    display: flex;
+    /* Ensure inner content stretches */
+    flex-direction: column;
 }
 
 
