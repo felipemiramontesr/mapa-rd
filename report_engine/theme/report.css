@@ -2858,10 +2858,10 @@ h3,
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 5rem 0;
+    padding: 2rem 0;
+    /* Reduced from 5rem */
     box-sizing: border-box;
     background: var(--bg-dark);
-    /* Ensure background matches if needed */
 }
 
 /* Constrain content width */
@@ -2870,12 +2870,24 @@ h3,
 .annex-footer {
     width: 1200px;
     max-width: 95vw;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    /* Reduced from 3rem */
 }
 
 .annex-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
+    /* Reduced from 4rem */
+    border: none !important;
+    /* Eliminate any border */
+}
+
+/* Force remove borders from inner timeline headers in this section */
+#annex-section .timeline-header,
+#annex-section .timeline-title,
+#annex-section .timeline-subtitle {
+    border: none !important;
+    margin-bottom: 0.5rem !important;
 }
 
 /* Card-like behavior for inner sections if they need bg */
@@ -2887,8 +2899,9 @@ h3,
 
 .annex-footer {
     text-align: center;
-    margin-top: auto;
-    /* Push to bottom if flex stretch allows, or just spacing */
+    margin-top: 1rem;
     opacity: 0.6;
     font-size: 0.8rem;
+    padding-top: 0;
+    border: none !important;
 }
