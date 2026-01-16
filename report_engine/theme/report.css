@@ -2971,3 +2971,22 @@ h3,
     padding-top: 0;
     border: none !important;
 }
+
+/* COMPACTION OVERRIDES FOR ANNEX SEVERITY MATRIX */
+#annex-section .severity-row {
+    margin-top: 1rem;
+    /* Reduced from 2rem */
+    gap: 0.5rem;
+    /* Tighter gap */
+}
+
+#annex-section .severity-item {
+    padding: 0.5rem;
+    /* Tighter padding */
+    min-width: auto;
+    /* Allow shrink */
+}
+
+#annex-section .sev-dot {
+    margin-bottom: 0.3rem;
+}
