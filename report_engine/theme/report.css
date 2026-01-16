@@ -2550,6 +2550,10 @@ h3,
     padding: 2.5rem;
     position: relative;
     overflow: hidden;
+    /* Flex adjustment to fill wrapper */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* Watermark */
@@ -2604,6 +2608,10 @@ h3,
     position: relative;
     z-index: 1;
     margin-bottom: 1rem;
+    /* Flex adjustment to fill container */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .inv-table-header {
@@ -2622,8 +2630,10 @@ h3,
 .inv-row {
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr;
-    padding: 3.5rem 1.5rem;
-    /* Increased vertical padding to fill height */
+    padding: 0 1.5rem;
+    /* Remove vertical padding, let flex-grow handle it */
+    flex: 1;
+    /* Grow to fill available space */
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     align-items: center;
     transition: all 0.3s ease;
