@@ -2843,7 +2843,52 @@ h3,
     margin-bottom: 0.3rem;
 }
 
-.exec-sub {
-    color: #a8adc7;
-    font-size: 0.85rem;
+
+/* =========================================
+    TECHNICAL ANNEX STYLES (SLIDE BEHAVIOR)
+   ========================================= */
+#annex-section {
+    min-height: 100vh;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    left: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem 0;
+    box-sizing: border-box;
+    background: var(--bg-dark);
+    /* Ensure background matches if needed */
+}
+
+/* Constrain content width */
+.annex-header,
+.annex-section,
+.annex-footer {
+    width: 1200px;
+    max-width: 95vw;
+    margin-bottom: 3rem;
+}
+
+.annex-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* Card-like behavior for inner sections if they need bg */
+.annex-section {
+    /* Optional: add slight separation or just keep as text blocks */
+    position: relative;
+    z-index: 2;
+}
+
+.annex-footer {
+    text-align: center;
+    margin-top: auto;
+    /* Push to bottom if flex stretch allows, or just spacing */
+    opacity: 0.6;
+    font-size: 0.8rem;
 }
