@@ -3045,3 +3045,98 @@ h3,
     width: 100%;
     margin-top: 0.5rem;
 }
+
+.annex-card {
+    padding: 0.75rem;
+    /* Reduced padding */
+    margin-bottom: 0;
+}
+
+/* PRINT / PDF GENERATION STYLES */
+@media print {
+    @page {
+        size: landscape;
+        margin: 0;
+    }
+
+    /* Force Full Page Background */
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #0a0e27 !important;
+        /* Hardcoded Dark Blue */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Hide Navigation and UI Elements */
+    .nav-widget,
+    .carousel-btn,
+    .slide-counter,
+    .controls-layer {
+        display: none !important;
+    }
+
+    /* Unroll Carousel (One Card Per Page) */
+    .carousel-main-wrapper,
+    .carousel-track,
+    .track-mask {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        transform: none !important;
+        position: static !important;
+        margin: 0 !important;
+    }
+
+    .vector-slide {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100% !important;
+        height: 100vh !important;
+        /* Full page per card */
+        break-after: page !important;
+        page-break-after: always !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #0a0e27 !important;
+    }
+
+    /* Force strict page breaks for main sections */
+    section,
+    #hero-section,
+    #annex-section,
+    #remediation-route-section {
+        break-after: page !important;
+        page-break-after: always !important;
+        height: 100vh !important;
+        /* Full height */
+        width: 100% !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        background-color: #0a0e27 !important;
+    }
+
+    /* Timeline Specifics */
+    #timeline-section {
+        height: auto !important;
+        /* Allow growth if needed, or fix to 100vh */
+        min-height: 100vh !important;
+    }
+
+    /* Prevent breaking inside cards */
+    .glass-card,
+    .vector-card,
+    .timeline-card {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+}

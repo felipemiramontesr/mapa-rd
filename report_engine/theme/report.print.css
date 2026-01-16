@@ -1,50 +1,102 @@
-@import "./tokens.css";
+/* PRINT STYLES - Enforced by report.print.css */
 
 @page {
-    size: A4;
+    size: 11in 8.5in;
+    /* Letter Landscape Explicit */
     margin: 0;
-    /* Remove margin from @page to let body background fill everything */
+    /* ZERO margins for full bleed */
 }
 
-/* Print Overrides for "Quiet Depth" */
+/* Force Full Page Background */
+html,
 body {
+    height: 100%;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #0a0e27 !important;
+    /* Hardcoded Dark Blue */
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+}
+
+/* CSS-Based Page Number (Repeats on every page in Chrome Print) */
+body::after {
+    content: "Página " counter(page);
+    position: fixed;
+    bottom: 1rem;
+    right: 2rem;
+    color: #57606f;
+    font-size: 10px;
+    font-family: 'Inter', sans-serif;
+    z-index: 9999;
+    background-color: transparent;
+}
+
+/* Hide Navigation and UI Elements */
+.nav-widget,
+.carousel-btn,
+.slide-counter,
+.controls-layer {
+    display: none !important;
+}
+
+/* Unroll Carousel (One Card Per Page) */
+.carousel-main-wrapper,
+.carousel-track,
+.track-mask {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    transform: none !important;
+    position: static !important;
+    margin: 0 !important;
+}
+
+.vector-slide {
+    display: block !important;
+    /* Disable flex to prevent shrinking */
+    width: 100% !important;
+    height: 100vh !important;
+    /* Full page per card */
+    break-after: page !important;
+    page-break-after: always !important;
+    margin: 0 !important;
+    padding-top: 2rem !important;
+    /* Center visually */
     background-color: #0a0e27 !important;
-    /* Force Solid Navy */
-    background: #0a0e27 !important;
-    color: #e8e8e8 !important;
-    padding: 16mm 14mm;
-    /* Apply padding instead of margin for content */
+    box-sizing: border-box;
 }
 
-/* Ensure Halo is subtle but present (or removed if too heavy, but user asked to preserve tonal) */
-.cover-wrapper::before {
-    opacity: 0.5;
-    /* Slightly reduced for print safety */
+/* Force strict page breaks for main sections */
+section,
+#hero-section,
+#annex-section,
+#remediation-route-section {
+    break-after: page !important;
+    page-break-after: always !important;
+    height: 100vh !important;
+    /* Full height */
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background-color: #0a0e27 !important;
 }
 
-/* No animations */
-*,
-*::before,
-*::after {
-    animation: none !important;
-    transition: none !important;
-    backdrop-filter: none !important;
+/* Timeline Specifics */
+#timeline-section {
+    height: auto !important;
+    /* Allow growth if needed */
+    min-height: 100vh !important;
 }
 
-/* Pagination & Breaks */
-.page-break {
-    page-break-before: always;
-}
-
-.card {
-    break-inside: avoid;
-    box-shadow: none;
-    /* Shadow usually prints badly, remove it for cleaner print */
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
+/* Prevent breaking inside cards */
+.glass-card,
+.vector-card,
+.timeline-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
 }

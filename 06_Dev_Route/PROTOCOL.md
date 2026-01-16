@@ -36,18 +36,27 @@ Cualquier desviación futura se considera un error crítico.
 
 ---
 
-## 3. Business Logic Integrity (CI/CD)
-- **Action**: Run `python 10_Tools/run_ci.py` (or `pipeline.py`) **every 60 minutes**.
-- **Rule**: Check for changes every hour. If changes exist => Run CI. If no changes => Skip.
-- **Goal**: Periodic validation of Business Logic (Hourly Cadence).
+## 3. Business Logic Integrity (CI/CD) [ON DEMAND]
+- **Action**: Run `python 10_Tools/run_ci.py` **ONLY when explicitly requested**.
+- **Rule**: Do NOT auto-run. Wait for user command "Ejecuta punto 3" or similar.
+- **Goal**: Validation on demand.
 
-## 4. Continuous Synchronization (Push)
-- **Action**: `git push origin main` after every relevant interaction.
-- **Goal**: Ensure the remote repository is always up-to-date with the latest valid code.
+## 4. Continuous Synchronization (Push) [ON DEMAND]
+- **Action**: `git push origin main` **ONLY when explicitly requested**.
+- **Rule**: Do NOT auto-push. Wait for user command "Ejecuta punto 4" or similar.
+- **Goal**: Remote sync on demand.
 
 ## 5. Auto-Confirmation (File Saves)
 - **Action**: Always default to "YES/ACCEPT" when the user asks about saving/updating a file.
 - **Goal**: Eliminate redundant confirmation loops and speed up development.
+
+## 8. Explicit Approval (Interaction Protocol)
+> [!IMPORTANT]
+> **RULE OF ENGAGEMENT**
+> Before executing any new task or significant change:
+> 1. **PROPOSE**: Explain clearly what you intend to do (Implementation Plan).
+> 2. **WAIT**: Do NOT proceed until the user gives explicit authorization (e.g., "Go", "Proceder").
+> 3. **EXCEPTION**: This rule does not apply to "Fix" requests where the content is obvious, but applies to all structural/logic changes.
 
 ## 6. Nomenclatura Final (Reportes)
 > [!IMPORTANT]
