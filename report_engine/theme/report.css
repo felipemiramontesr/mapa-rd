@@ -2972,24 +2972,30 @@ h3,
     border: none !important;
 }
 
-/* NEW: Side-by-Side Layout Wrapper */
-.annex-body-grid {
+/* NEW: Master Grid Layout (Flattened) */
+.annex-master-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* Split screen */
+    /* Strict 2 columns */
     gap: 2rem;
+    column-gap: 3rem;
+    /* Wider separation between columns */
     width: 1200px;
     max-width: 95vw;
     align-items: start;
+    /* Top alignment per row */
+    margin-bottom: 0;
+}
+
+/* Ensure all direct children fill their cell */
+.annex-master-grid>* {
+    width: 100%;
     margin-bottom: 1rem;
+    /* Uniform vertical rhythm */
 }
 
 /* Reset inner section width so it fits the grid column */
-.annex-body-grid .annex-section {
-    width: 100% !important;
-    max-width: none !important;
-    margin-bottom: 0;
-}
+
 
 /* COMPACTION OVERRIDES FOR ANNEX SEVERITY MATRIX */
 #annex-section .severity-row {
