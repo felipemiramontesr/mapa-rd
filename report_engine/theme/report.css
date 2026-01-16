@@ -2977,9 +2977,10 @@ h3,
     display: grid;
     grid-template-columns: 1fr 1fr;
     /* Strict 2 columns */
-    gap: 2rem;
-    column-gap: 3rem;
-    /* Wider separation between columns */
+    column-gap: 4rem;
+    /* Wide separation between columns */
+    row-gap: 0.5rem;
+    /* TIGHT vertical gap */
     width: 1200px;
     max-width: 95vw;
     align-items: start;
@@ -2990,34 +2991,47 @@ h3,
 /* Ensure all direct children fill their cell */
 .annex-master-grid>* {
     width: 100%;
-    margin-bottom: 1rem;
-    /* Uniform vertical rhythm */
+    margin-bottom: 0.5rem;
+    /* Reduced from 1rem */
 }
+
+/* Tighter Text Elements */
+.annex-h2 {
+    margin-bottom: 0.25rem !important;
+    font-size: 1.5rem;
+    /* Slightly smaller title */
+}
+
+.annex-p {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
 
 /* Reset inner section width so it fits the grid column */
 
 
 /* COMPACTION OVERRIDES FOR ANNEX SEVERITY MATRIX */
 #annex-section .severity-row {
-    margin-top: 1rem;
-    /* Reduced from 2rem */
-    gap: 0.5rem;
-    /* Tighter gap */
+    margin-top: 0.5rem;
+    /* Reduced from 1rem */
+    gap: 0.25rem;
     flex-wrap: wrap;
     /* Allow wrapping if needed */
     justify-content: center;
 }
 
 #annex-section .severity-item {
-    padding: 0.5rem;
+    padding: 0.4rem;
     /* Tighter padding */
-    min-width: 80px;
+    min-width: 70px;
     /* Allow shrink */
     flex: 1 1 auto;
 }
 
 #annex-section .sev-dot {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;
 }
 
 /* Override Variables Grid for Half-Width (2 Columns instead of 3) */
@@ -3025,7 +3039,8 @@ h3,
     display: grid;
     grid-template-columns: repeat(2, 1fr) !important;
     /* Back to 2 cols for half-width */
-    gap: 1rem;
+    gap: 0.5rem;
+    /* Tighter gap */
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
