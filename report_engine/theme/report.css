@@ -2972,21 +2972,45 @@ h3,
     border: none !important;
 }
 
+/* NEW: Side-by-Side Layout Wrapper */
+.annex-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Split screen */
+    gap: 2rem;
+    width: 100%;
+    align-items: start;
+}
+
 /* COMPACTION OVERRIDES FOR ANNEX SEVERITY MATRIX */
 #annex-section .severity-row {
     margin-top: 1rem;
     /* Reduced from 2rem */
     gap: 0.5rem;
     /* Tighter gap */
+    flex-wrap: wrap;
+    /* Allow wrapping if needed */
+    justify-content: center;
 }
 
 #annex-section .severity-item {
     padding: 0.5rem;
     /* Tighter padding */
-    min-width: auto;
+    min-width: 80px;
     /* Allow shrink */
+    flex: 1 1 auto;
 }
 
 #annex-section .sev-dot {
     margin-bottom: 0.3rem;
+}
+
+/* Override Variables Grid for Half-Width (2 Columns instead of 3) */
+.variable-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    /* Back to 2 cols for half-width */
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
 }

@@ -2124,128 +2124,130 @@
             </div>
         </div>
 
-        <!-- SECTION 1: IRV -->
-        <div class="annex-section">
-            <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
-            <p class="annex-p">
-                El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la
-                necesidad
-                operativa de cierre.
-                Se calcula internamente mediante un modelo ponderado de seis dimensiones.
-            </p>
+        <div class="annex-body-grid">
+            <!-- SECTION 1: IRV (Left) -->
+            <div class="annex-section">
+                <h2 class="annex-h2">Índice de Riesgo del Vector (IRV)</h2>
+                <p class="annex-p">
+                    El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la
+                    necesidad
+                    operativa de cierre.
+                    Se calcula internamente mediante un modelo ponderado de seis dimensiones.
+                </p>
 
-            <!-- CLEAN FORMULA BLOCK -->
-            <div class="formula-block">
-                <span class="formula-label">Fórmula de Cálculo</span>
-                <div class="formula-text">
-                    IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+                <!-- CLEAN FORMULA BLOCK -->
+                <div class="formula-block">
+                    <span class="formula-label">Fórmula de Cálculo</span>
+                    <div class="formula-text">
+                        IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+                    </div>
+                </div>
+
+                <h3 class="annex-h3">Variables del Modelo</h3>
+
+                <!-- CLEAN VARIABLE GRID -->
+                <div class="variable-grid">
+                    <div class="annex-card">
+                        <div class="var-header">
+                            <span class="var-name">Criticidad (CA)</span>
+                            <span class="var-badge">x4</span>
+                        </div>
+                        <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
+                    </div>
+
+                    <div class="annex-card">
+                        <div class="var-header">
+                            <span class="var-name">Exposición (ET)</span>
+                            <span class="var-badge">x3</span>
+                        </div>
+                        <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
+                    </div>
+
+                    <div class="annex-card">
+                        <div class="var-header">
+                            <span class="var-name">Superficie (SE)</span>
+                            <span class="var-badge">x3</span>
+                        </div>
+                        <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
+                    </div>
+
+                    <div class="annex-card">
+                        <div class="var-header">
+                            <span class="var-name">Impacto (IM)</span>
+                            <span class="var-badge">x4</span>
+                        </div>
+                        <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
+                    </div>
+
+                    <div class="annex-card">
+                        <div class="var-header">
+                            <span class="var-name">Explotación (FE)</span>
+                            <span class="var-badge">x3</span>
+                        </div>
+                        <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
+                    </div>
+
+                    <div class="annex-card">
+                        <div class="var-header">
+                            <span class="var-name">Detección (DV)</span>
+                            <span class="var-badge">x3</span>
+                        </div>
+                        <span class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</span>
+                    </div>
                 </div>
             </div>
 
-            <h3 class="annex-h3">Variables del Modelo</h3>
+            <!-- SECTION 2: IRD (Right) -->
+            <div class="annex-section">
+                <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
+                <p class="annex-p">
+                    El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores
+                    activos
+                    mediante
+                    un promedio ponderado por severidad.
+                </p>
 
-            <!-- CLEAN VARIABLE GRID -->
-            <div class="variable-grid">
-                <div class="annex-card">
-                    <div class="var-header">
-                        <span class="var-name">Criticidad (CA)</span>
-                        <span class="var-badge">x4</span>
+                <!-- CLEAN FORMULA BLOCK -->
+                <div class="formula-block">
+                    <span class="formula-label">Agregación Ponderada</span>
+                    <div class="formula-text">
+                        IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
                     </div>
-                    <span class="var-desc">Importancia crítica del activo para la continuidad del negocio.</span>
                 </div>
 
-                <div class="annex-card">
-                    <div class="var-header">
-                        <span class="var-name">Exposición (ET)</span>
-                        <span class="var-badge">x3</span>
+                <h3 class="annex-h3">Matriz de Pesos</h3>
+
+                <!-- COMPONENT: CLEAN SEVERITY ROW -->
+                <div class="severity-row">
+                    <div class="severity-item">
+                        <div class="sev-dot" style="background: #74b9ff;"></div>
+                        <span class="sev-label">Bajo</span>
+                        <span class="sev-mult">Multiplicador x1</span>
                     </div>
-                    <span class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</span>
-                </div>
 
-                <div class="annex-card">
-                    <div class="var-header">
-                        <span class="var-name">Superficie (SE)</span>
-                        <span class="var-badge">x3</span>
+                    <div class="severity-item">
+                        <div class="sev-dot" style="background: #ffeaa7;"></div>
+                        <span class="sev-label">Medio</span>
+                        <span class="sev-mult">Multiplicador x2</span>
                     </div>
-                    <span class="var-desc">Facilidad de acceso desde redes públicas o privadas.</span>
-                </div>
 
-                <div class="annex-card">
-                    <div class="var-header">
-                        <span class="var-name">Impacto (IM)</span>
-                        <span class="var-badge">x4</span>
+                    <div class="severity-item">
+                        <div class="sev-dot" style="background: #ff9f43;"></div>
+                        <span class="sev-label">Alto</span>
+                        <span class="sev-mult">Multiplicador x3</span>
                     </div>
-                    <span class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</span>
-                </div>
 
-                <div class="annex-card">
-                    <div class="var-header">
-                        <span class="var-name">Explotación (FE)</span>
-                        <span class="var-badge">x3</span>
+                    <div class="severity-item">
+                        <div class="sev-dot" style="background: #ff7675;"></div>
+                        <span class="sev-label">Crítico</span>
+                        <span class="sev-mult">Multiplicador x4</span>
                     </div>
-                    <span class="var-desc">Recursos y complejidad técnica requerida para el ataque.</span>
-                </div>
 
-                <div class="annex-card">
-                    <div class="var-header">
-                        <span class="var-name">Detección (DV)</span>
-                        <span class="var-badge">x3</span>
+                    <div class="severity-item">
+                        <div class="sev-dot" style="background: #a29bfe;"></div>
+                        <span class="sev-label">Máximo</span>
+                        <span class="sev-mult">Multiplicador x5</span>
                     </div>
-                    <span class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 2: IRD -->
-        <div class="annex-section">
-            <h2 class="annex-h2">Índice de Riesgo Digital (IRD)</h2>
-            <p class="annex-p">
-                El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores
-                activos
-                mediante
-                un promedio ponderado por severidad.
-            </p>
-
-            <!-- CLEAN FORMULA BLOCK -->
-            <div class="formula-block">
-                <span class="formula-label">Agregación Ponderada</span>
-                <div class="formula-text">
-                    IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
-                </div>
-            </div>
-
-            <h3 class="annex-h3">Matriz de Pesos</h3>
-
-            <!-- COMPONENT: CLEAN SEVERITY ROW -->
-            <div class="severity-row">
-                <div class="severity-item">
-                    <div class="sev-dot" style="background: #74b9ff;"></div>
-                    <span class="sev-label">Bajo</span>
-                    <span class="sev-mult">Multiplicador x1</span>
-                </div>
-
-                <div class="severity-item">
-                    <div class="sev-dot" style="background: #ffeaa7;"></div>
-                    <span class="sev-label">Medio</span>
-                    <span class="sev-mult">Multiplicador x2</span>
-                </div>
-
-                <div class="severity-item">
-                    <div class="sev-dot" style="background: #ff9f43;"></div>
-                    <span class="sev-label">Alto</span>
-                    <span class="sev-mult">Multiplicador x3</span>
-                </div>
-
-                <div class="severity-item">
-                    <div class="sev-dot" style="background: #ff7675;"></div>
-                    <span class="sev-label">Crítico</span>
-                    <span class="sev-mult">Multiplicador x4</span>
-                </div>
-
-                <div class="severity-item">
-                    <div class="sev-dot" style="background: #a29bfe;"></div>
-                    <span class="sev-label">Máximo</span>
-                    <span class="sev-mult">Multiplicador x5</span>
                 </div>
             </div>
         </div>
