@@ -21,17 +21,8 @@ body {
 }
 
 /* CSS-Based Page Number (Repeats on every page in Chrome Print) */
-body::after {
-    content: "Página " counter(page);
-    position: fixed;
-    bottom: 1rem;
-    right: 2rem;
-    color: #57606f;
-    font-size: 10px;
-    font-family: 'Inter', sans-serif;
-    z-index: 9999;
-    background-color: transparent;
-}
+/* CSS-Based Page Number REMOVED to avoid duplication */
+/* body::after { ... } */
 
 /* Hide Navigation and UI Elements */
 .nav-widget,

@@ -25,14 +25,25 @@ def render_pdf():
         # Render PDF
         page.pdf(
             path=output_path,
-            width="11in",   # Explicit Letter Landscape Width @ 96DPI
-            height="8.5in", # Explicit Letter Landscape Height
+            format="Letter",
+            landscape=True,
             print_background=True,
-            display_header_footer=False, # Disable Browser UI to remove margins
+            prefer_css_page_size=True,
+            display_header_footer=True, 
+            footer_template="""
+                <style>
+                    * { margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; }
+                </style>
+                <div style="width: 100%; height: 100%; position: relative; background-color: #0a0e27; -webkit-print-color-adjust: exact;">
+                    <div style="position: absolute; right: 1.0cm; bottom: 1.0cm; font-size: 12px; line-height: 1; font-family: 'Arial Narrow', sans-serif; color: rgba(255, 255, 255, 0.5); white-space: nowrap;">
+                        Página <span class="pageNumber"></span> de <span class="totalPages"></span>
+                    </div>
+                </div>
+            """,
             margin={
                 "top": "0px",
                 "right": "0px",
-                "bottom": "0px", 
+                "bottom": "1.5cm", # Safe Zone guarantees no overlap
                 "left": "0px"
             }
         )

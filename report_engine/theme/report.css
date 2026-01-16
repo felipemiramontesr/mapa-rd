@@ -1,4 +1,4 @@
-@import "./tokens.css";
+﻿@import "./tokens.css";
 
 /* Strict Override: Prevent solid navy token from layering over gradient */
 :root {
@@ -56,14 +56,7 @@ body.theme-dark {
     /* Separation without full page break on screen */
 }
 
-@media print {
-    .report-section {
-        min-height: 100vh;
-        page-break-after: always;
-        break-after: page;
-        padding: 4rem 2rem;
-    }
-}
+/* Old print block removed for strict centralized control */
 
 /* Last section shouldn't force an empty page after it */
 .report-section:last-of-type {
@@ -295,7 +288,7 @@ h1 {
 }
 
 .list li:before {
-    content: "•";
+    content: "â€¢";
     position: absolute;
     left: 0;
     color: #8a9fca;
@@ -478,10 +471,12 @@ h1 {
 .vectors-section {
     width: 100vw;
     position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    /* Fix: Remove negative margins in print to prevent right shift */
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+    max-width: 100vw;
 
     height: 100vh;
     min-height: 100vh;
@@ -2418,7 +2413,7 @@ h3,
 }
 
 .action-item::before {
-    content: '→';
+    content: 'â†’';
     position: absolute;
     left: 0;
     color: rgba(255, 255, 255, 0.3);
@@ -3052,91 +3047,48 @@ h3,
     margin-bottom: 0;
 }
 
-/* PRINT / PDF GENERATION STYLES */
+/* PRINT / PDF GENERATION STYLES (STRICT LANDSCAPE / FULL FULL) */
 @media print {
     @page {
         size: landscape;
         margin: 0;
     }
 
-    /* Force Full Page Background */
-    html,
-    body {
+    /* Force Full Page Background - SOLID COLOR NO GRADIENT */
+    html {
+        background-color: #0a0e27 !important;
+        background-image: none !important;
+        /* STRICT NO GRADIENT */
         height: 100%;
         width: 100%;
         margin: 0 !important;
         padding: 0 !important;
-        background-color: #0a0e27 !important;
-        /* Hardcoded Dark Blue */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
 
-    /* Hide Navigation and UI Elements */
-    .nav-widget,
-    .carousel-btn,
-    .slide-counter,
-    .controls-layer {
+    body,
+    body.theme-dark {
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #0a0e27 !important;
+        background-color: #0a0e27 !important;
+        background-image: none !important;
+        /* STRICT NO GRADIENT */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        overflow: hidden !important;
+    }
+
+    /* --- PHASE 0: EMPTY CANVAS (ERASER) --- */
+    /* Hide everything EXCEPT body/html background */
+    body * {
         display: none !important;
     }
-
-    /* Unroll Carousel (One Card Per Page) */
-    .carousel-main-wrapper,
-    .carousel-track,
-    .track-mask {
-        display: block !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-        transform: none !important;
-        position: static !important;
-        margin: 0 !important;
-    }
-
-    .vector-slide {
-        display: flex !important;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100% !important;
-        height: 100vh !important;
-        /* Full page per card */
-        break-after: page !important;
-        page-break-after: always !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background-color: #0a0e27 !important;
-    }
-
-    /* Force strict page breaks for main sections */
-    section,
-    #hero-section,
-    #annex-section,
-    #remediation-route-section {
-        break-after: page !important;
-        page-break-after: always !important;
-        height: 100vh !important;
-        /* Full height */
-        width: 100% !important;
-        min-height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        background-color: #0a0e27 !important;
-    }
-
-    /* Timeline Specifics */
-    #timeline-section {
-        height: auto !important;
-        /* Allow growth if needed, or fix to 100vh */
-        min-height: 100vh !important;
-    }
-
-    /* Prevent breaking inside cards */
-    .glass-card,
-    .vector-card,
-    .timeline-card {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
 }
+
+/* Custom Page Numbering Overlay - Start at 1 */
+/* Custom Page Numbering Overlay - REMOVED for Playwright Footer Template */
+/* @media print { body::after { ... } } */
