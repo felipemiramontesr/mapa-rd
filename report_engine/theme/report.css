@@ -2965,8 +2965,8 @@ h3,
 
 .annex-footer {
     text-align: center;
-    margin-top: 1.8rem;
-    /* Increased (+20px total) for breathing room */
+    margin-top: 2.5rem;
+    /* Increased (+30px total) for breathing room */
     opacity: 0.6;
     font-size: 0.75rem;
     padding-top: 0;
