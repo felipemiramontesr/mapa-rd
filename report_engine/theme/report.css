@@ -2858,8 +2858,8 @@ h3,
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem 0;
-    /* Reduced from 5rem */
+    padding: 1rem 0;
+    /* Ultra-Compact */
     box-sizing: border-box;
     background: var(--bg-dark);
 }
@@ -2870,16 +2870,15 @@ h3,
 .annex-footer {
     width: 1200px;
     max-width: 95vw;
-    margin-bottom: 2rem;
-    /* Reduced from 3rem */
+    margin-bottom: 1rem;
+    /* Reduced to 1rem */
 }
 
 .annex-header {
     text-align: center;
-    margin-bottom: 2rem;
-    /* Reduced from 4rem */
+    margin-bottom: 1rem;
+    /* Reduced to 1rem */
     border: none !important;
-    /* Eliminate any border */
 }
 
 /* Force remove borders from inner timeline headers in this section */
@@ -2887,31 +2886,66 @@ h3,
 #annex-section .timeline-title,
 #annex-section .timeline-subtitle {
     border: none !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.2rem !important;
+    /* Tighter */
+}
+
+#annex-section .timeline-title {
+    font-size: 2rem !important;
+    /* Slightly smaller for fit */
 }
 
 /* Card-like behavior for inner sections if they need bg */
 .annex-section {
-    /* Optional: add slight separation or just keep as text blocks */
     position: relative;
     z-index: 2;
     padding-top: 0;
     border: none !important;
 }
 
+.annex-h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formula-block {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--card-radius);
+    text-align: center;
+    width: 100%;
+}
+
+.formula-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #ffd700;
+    font-weight: 600;
+}
+
 /* Force 3-Column Grid for Symmetry */
 .variable-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 1.5rem;
+    gap: 1rem;
+    /* Tighter gap */
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    /* Tighter margin */
 }
 
 .annex-card {
     background: var(--color-bg-panel);
     border: 1px solid var(--color-border-strong);
-    padding: 1.5rem;
+    padding: 1rem;
+    /* Tighter padding */
     border-radius: var(--card-radius);
     height: 100%;
     display: flex;
@@ -2919,11 +2953,21 @@ h3,
     justify-content: space-between;
 }
 
+.annex-card .var-header {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.annex-card .var-desc {
+    font-size: 0.8rem;
+    /* Smaller text for compaction */
+}
+
 .annex-footer {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     opacity: 0.6;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding-top: 0;
     border: none !important;
 }
