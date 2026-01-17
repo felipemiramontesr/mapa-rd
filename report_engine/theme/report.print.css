@@ -1,5 +1,3553 @@
-/* 
- * PHASE 1: HERO ONLY
- * usage: Managed centrally by report.css @media print block.
- * This file is temporarily cleared to prevent conflicting overrides.
- */
+﻿/* --- Attack Vector (Kill Chain) --- */
+.attack-vector-page {
+    /* Full Page slide style similar to vector-page */
+    width: 100vw;
+    height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.chain-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+    gap: 0;
+    /* Connectors handle spacing */
+    margin-top: 2rem;
+}
+
+.chain-node {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    width: 200px;
+    height: 380px;
+    min-height: 380px;
+    max-height: 380px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.chain-node:hover {
+    transform: translateY(-5px);
+}
+
+.node-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.icon-svg {
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.node-title {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.node-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: auto;
+    margin-top: 1rem;
+}
+
+.node-source {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-weight: 600;
+    width: 100%;
+}
+
+/* Colors */
+.node-blue {
+    border-top: 3px solid #54a0ff;
+}
+
+.node-blue .node-icon {
+    color: #54a0ff;
+    border-color: #54a0ff;
+    box-shadow: 0 0 15px rgba(84, 160, 255, 0.2);
+}
+
+.node-yellow {
+    border-top: 3px solid #f1c40f;
+}
+
+.node-yellow .node-icon {
+    color: #f1c40f;
+    border-color: #f1c40f;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.2);
+}
+
+.node-orange {
+    border-top: 3px solid #ff9f43;
+}
+
+.node-orange .node-icon {
+    color: #ff9f43;
+    border-color: #ff9f43;
+    box-shadow: 0 0 15px rgba(255, 159, 67, 0.2);
+}
+
+.node-red {
+    border-top: 3px solid #ff4757;
+}
+
+.node-red .node-icon {
+    color: #ff4757;
+    border-color: #ff4757;
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.4);
+}
+
+.node-purple {
+    border-top: 3px solid #d63031;
+    /* Fallback base */
+    border-color: #a29bfe;
+}
+
+.node-purple {
+    border-top-color: #c44569;
+}
+
+/* Adjustment */
+.node-purple {
+    --neon-purple: #d980fa;
+    border-top: 3px solid var(--neon-purple);
+}
+
+.node-purple .node-icon {
+    color: var(--neon-purple);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 20px rgba(217, 128, 250, 0.4);
+}
+
+/* Connectors */
+.chain-connector {
+    flex-grow: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    margin: 0 10px;
+    top: -40px;
+    /* Align with icons roughly */
+    min-width: 40px;
+}
+
+.connector-arrow {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 8px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Gradients for connectors */
+.line-blue-orange {
+    background: linear-gradient(90deg, #54a0ff, #ff9f43);
+}
+
+.line-yellow-orange {
+    background: linear-gradient(90deg, #f1c40f, #ff9f43);
+}
+
+.line-orange-red {
+    background: linear-gradient(90deg, #ff9f43, #ff4757);
+}
+
+.line-red-purple {
+    background: linear-gradient(90deg, #ff4757, #d980fa);
+}
+
+
+/* Strict Override: Prevent solid navy token from layering over gradient */
+:root {
+    --bg-dark: transparent;
+}
+
+/* 0) Base Rules */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background: #0a0e27;
+    /* Fallback base color */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background-attachment: fixed;
+    /* Prevent horizontal scroll from full-width sections */
+    overflow-x: hidden;
+    width: 100vw;
+}
+
+body.theme-dark {
+    font-family: var(--font-family);
+    /* Strict Landing Page Match: Gradient on Body ONLY */
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%) !important;
+    color: var(--text-main);
+    min-height: 100vh;
+    margin: 0;
+    /* Ensure no margin on body causing white edges */
+    -webkit-print-color-adjust: exact;
+    /* Force faithful color rendering */
+    print-color-adjust: exact;
+}
+
+/* --- Structural Isolation (Phase 0) --- */
+.report-section {
+    position: relative;
+    width: 100%;
+    /* min-height: 100vh; -- Removed to prevent empty space perception on screen */
+    padding: 2rem 2rem;
+    /* Reduced padding for tighter flow */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-bottom: 4rem;
+    /* Separation without full page break on screen */
+}
+
+/* Old print block removed for strict centralized control */
+
+/* Last section shouldn't force an empty page after it */
+.report-section:last-of-type {
+    page-break-after: auto;
+    break-after: auto;
+}
+
+/* Utility for explicit breaks if needed */
+.page-break {
+    page-break-after: always;
+    break-after: page;
+    height: 1px;
+    width: 100%;
+    visibility: hidden;
+}
+
+body {
+    font-family: var(--font-family);
+}
+
+/* 1) Hero / Cover Wrapper (Quiet Depth aesthetics) */
+.cover-wrapper {
+    position: relative;
+    /* For Pseudo-element (Halo) positioning */
+    height: 100vh;
+    min-height: 100vh;
+    /* Strict Full Height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Vertically Centered */
+    align-items: center;
+    padding: 0 2rem;
+    text-align: center;
+    z-index: 1;
+    overflow: hidden;
+    /* Contain halo */
+    background-color: transparent;
+    /* Matches body gradient */
+}
+
+/* 3.1) Halo Radial (Quiet Depth Layer 1) */
+/* 3.1) Halo Radial REMOVED for Strict Solid Background */
+/* .cover-wrapper::before { ... removed ... } */
+
+/* Icons & Tags */
+.hero-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0 auto 1.6rem;
+}
+
+.lock-icon {
+    display: block;
+    width: 80px;
+    /* Scaled up */
+    height: 80px;
+    opacity: .85;
+    color: #cfd6ea;
+    /* Strict from style.css */
+    /* Ensure fill is none and stroke is currentColor in SVG */
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .55rem 1.15rem;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-size: .72rem;
+    letter-spacing: .16em;
+    color: var(--text-tag);
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Override for Layout Fluidity */
+.section-title-center {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-bottom: 2rem;
+    margin-bottom: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 0;
+}
+
+/* Typography */
+h1 {
+    font-size: 3.0rem;
+    /* Scaled up to Desktop size */
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    line-height: 1.15;
+}
+
+/* 3.2) Divider Landing Style */
+.divider {
+    width: 60px;
+    height: 1px;
+    background-color: #4a5578;
+    margin: 1.6rem auto;
+}
+
+.divider-fade {
+    display: none;
+    /* Hiding old divider fade */
+}
+
+.subtitle {
+    font-size: 1.15rem;
+    /* Scaled up to desktop size */
+    color: var(--text-muted);
+    font-weight: 300;
+    margin: 0 auto 1.2rem;
+    letter-spacing: -0.01em;
+    line-height: 1.7;
+    max-width: 760px;
+}
+
+.description {
+    font-size: .98rem;
+    color: #c5cae0;
+    /* Strict desc color */
+    max-width: 760px;
+    margin: 0 auto 0.75rem;
+    /* Reduced from 1.5rem to 0.75rem (Half) */
+    line-height: 1.85;
+    font-weight: 300;
+}
+
+/* 2.3 & 3.3) Metadata Block (Editorial, No Boxes) */
+.meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    /* Vertical clean spacing */
+    margin-top: 0.5rem;
+}
+
+.meta-line-primary {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-main);
+    letter-spacing: 0.03em;
+}
+
+.meta-line-secondary {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+/* General Layout helpers */
+.container {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Findings / Cards styles (Keeping consistent with rest of report) */
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-align: left;
+    text-align: left;
+    border-top: 1px solid rgba(74, 85, 120, .35);
+    padding-top: 20px;
+    /* Increased to 20px spacing as requested */
+    margin-top: 40px;
+    /* Exact 40px spacing as requested */
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.card {
+    border: 1px solid rgba(74, 85, 120, .55);
+    background: var(--bg-card);
+    padding: 1.25rem 1.25rem;
+    text-align: left;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .18);
+    break-inside: avoid;
+    margin-bottom: 16px;
+}
+
+.card h3 {
+    font-size: .95rem;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: .8rem;
+}
+
+.list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    margin-top: .6rem;
+    text-align: left;
+}
+
+.list li {
+    color: #c5cae0;
+    font-weight: 300;
+    line-height: 1.6;
+    position: relative;
+    padding-left: 1.1rem;
+}
+
+.list li:before {
+    content: "â€¢";
+    position: absolute;
+    left: 0;
+    color: #8a9fca;
+}
+
+
+/* =========================================
+   PHASE 2: PREMIUM REPORT COMPONENTS
+   ========================================= */
+
+/* --- Radioactive Color Palette (Accents Only) --- */
+:root {
+    --rad-max: #a29bfe;
+    /* Purple Maximum */
+    --rad-crit: #ff7675;
+    /* Red Critical */
+    --rad-high: #ff9f43;
+    /* Orange High (Updated per user request "etched in stone") */
+    --rad-med: #ffeaa7;
+    /* Yellow Medium */
+    --rad-low: #74b9ff;
+    /* Blue Low */
+}
+
+/* Helper Classes for radioactive accents */
+.maximum {
+    color: var(--rad-max);
+    border-color: var(--rad-max);
+}
+
+.critical {
+    color: var(--rad-crit);
+    border-color: var(--rad-crit);
+}
+
+.high {
+    color: var(--rad-high);
+    border-color: var(--rad-high);
+}
+
+.medium {
+    color: var(--rad-med);
+    border-color: var(--rad-med);
+}
+
+.low {
+    color: var(--rad-low);
+    border-color: var(--rad-low);
+}
+
+/* Background fills for badges (low opacity) and IRD Box Glow */
+.maximum.vector-irv-badge,
+.maximum.ird-box {
+    background: rgba(162, 155, 254, 0.05);
+    box-shadow: 0 0 20px rgba(162, 155, 254, 0.2);
+}
+
+.critical.vector-irv-badge,
+.critical.ird-box {
+    background: rgba(255, 118, 117, 0.05);
+    box-shadow: 0 0 20px rgba(255, 118, 117, 0.2);
+}
+
+.high.vector-irv-badge,
+.high.ird-box {
+    background: rgba(255, 159, 67, 0.05);
+    box-shadow: 0 0 20px rgba(255, 159, 67, 0.2);
+}
+
+.medium.vector-irv-badge,
+.medium.ird-box {
+    background: rgba(255, 234, 167, 0.05);
+    box-shadow: 0 0 20px rgba(255, 234, 167, 0.2);
+}
+
+.low.vector-irv-badge,
+.low.ird-box {
+    background: rgba(116, 185, 255, 0.05);
+    box-shadow: 0 0 20px rgba(116, 185, 255, 0.2);
+}
+
+
+/* --- IRD Page (Digital Risk Index) --- */
+.ird-page {
+    /* Slide Deck: Full Height */
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Vertically Centered */
+    text-align: center;
+    background: transparent;
+    overflow: hidden;
+}
+
+.ird-container {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.timeline-header {
+    margin-bottom: 0.5rem;
+    /* Tightened Gap */
+    text-align: center;
+    z-index: 10;
+}
+
+.ird-page .timeline-header {
+    margin-bottom: 0;
+    /* Reset margins for flex control */
+}
+
+/* IRD Box (Rounded Rectangle) */
+.ird-box {
+    width: 100%;
+    max-width: 536px;
+    height: 180px;
+    border-radius: 12px;
+    border: 2px solid;
+    margin: 0;
+    /* Controlled by container gap */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+    /* Default glass */
+}
+
+/* IRD Context Card (Moved from Inline) */
+.ird-context-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 0;
+    /* Controlled by container gap */
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: border-color 1s ease, box-shadow 1s ease;
+}
+
+.ird-context-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #b2bec3;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    display: block;
+}
+
+.ird-score {
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    transition: color 0.1s;
+}
+
+.ird-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+}
+
+/* --- Vector Cards (Clean Navy Style) --- */
+.vectors-section {
+    width: 100vw;
+    position: relative;
+    /* Fix: Remove negative margins in print to prevent right shift */
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+    max-width: 100vw;
+
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Strict Window */
+}
+
+/* Carousel Container */
+/* Carousel Container: Now visible (to show buttons outside) */
+.carousel-container {
+    width: 100%;
+    max-width: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    /* CRITICAL: Allow buttons to hang out, no visual box */
+}
+
+/* Track Mask: The actual window for the slides */
+.track-mask {
+    width: 100%;
+    overflow: hidden;
+    /* This clips the sliding content */
+    /* Ensure it takes full width of container essentially */
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 0;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+}
+
+.vector-slide {
+    min-width: 100%;
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    /* WIDTH INCREASED (+200px Total):
+       Old Padding: 5rem (80px). New: 1.5rem (24px).
+       Gain: 56px * 2 = 112px.
+       Section Padding Gain: 32px.
+       Total Gain: ~144px. */
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.slide-counter {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    color: var(--text-muted);
+    font-family: monospace;
+    font-size: 0.9rem;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.vector-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 1100px;
+    box-shadow: none !important;
+
+    max-height: 85vh;
+    margin-top: 2vh;
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+/* Internal Nav Buttons */
+/* Internal Nav Buttons */
+/* Flex Wrapper for Button | Track | Button */
+.carousel-main-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    /* STRICT 20px GAP */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Track Mask: The actual window for the slides */
+.track-mask {
+    flex: 1;
+    /* Allow it to grow/shrink between buttons */
+    max-width: 1100px;
+    /* The Card's Box max-width */
+    overflow: hidden;
+    position: relative;
+    border-radius: 12px;
+    /* Optional: Match card radius to clip nicely? Or just no radius. */
+    /* This clips the sliding content */
+    /* Ensure it takes full width of container essentially */
+    display: flex;
+    justify-content: center;
+}
+
+/* Internal Nav Buttons (Static Flex Items) */
+.carousel-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    /* Never shrink buttons */
+    pointer-events: auto;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    position: relative;
+    /* Static flow */
+    transform: none;
+    top: auto;
+    left: auto;
+    right: auto;
+    z-index: 50;
+}
+
+/* Clean up old positioning rules */
+
+/* Remove old specific positioning */
+/* .carousel-btn.prev { left: 20px; } */
+/* .carousel-btn.next { right: 20px; } */
+
+.divider-left {
+    height: 1px;
+    width: 60px;
+    background: var(--border-color);
+    margin: 1rem 0 2.5rem;
+}
+
+.vector-card {
+    background: var(--bg-card);
+    /* rgba(255, 255, 255, 0.03) */
+    border: 1px solid var(--border-color);
+    /* #4a5578 */
+    border-radius: 4px;
+    /* Consistent with Annex */
+    padding: 2rem;
+    margin-bottom: 0;
+    /* Remove vertical margin for slide */
+    position: relative;
+    /* Clean, no left border accent, no glow */
+}
+
+.vector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.vector-id {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-family: 'Courier New', monospace;
+    /* Tech accent but subtle */
+}
+
+.vector-title {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    flex-grow: 1;
+    margin: 0 1.5rem;
+    text-align: center;
+}
+
+/* Badge (Clean) */
+.vector-irv-badge {
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    /* Very subtle tint */
+}
+
+.irv-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.irv-level {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Vector Meta Grid (Individual Cards) */
+.vector-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    /* Grid container no longer has background/border */
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+    /* Individual card background */
+    padding: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.meta-item .label {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+    font-weight: 600;
+}
+
+.meta-item .value {
+    color: #fff;
+    font-weight: 500;
+}
+
+/* --- Risk Scale Colors --- */
+/* Defined strictly for text/accents */
+.vector-card.critical {
+    --risk-color: #ff6b6b;
+}
+
+/* Red */
+.vector-card.high {
+    --risk-color: #ff9f43;
+}
+
+/* Orange */
+.vector-card.medium {
+    --risk-color: #feca57;
+}
+
+/* Yellow */
+.vector-card.low {
+    --risk-color: #54a0ff;
+}
+
+/* Blue */
+.vector-card.info {
+    --risk-color: #48dbfb;
+}
+
+/* Cyan */
+
+/* --- Vector Body (New Layout) --- */
+.vector-body-new {
+    margin-top: 2rem;
+}
+
+.vector-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.action-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-card .sub-header {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--risk-color, var(--primary-color));
+    /* Use risk color if available, else primary */
+}
+
+/* Description Card (Sober & Elegant) */
+.description-card {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2rem;
+    text-align: left;
+}
+
+.sub-header-simple {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+/* --- Color Overrides for Visibility --- */
+.vector-id {
+    color: var(--risk-color) !important;
+    /* Force visibility */
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.irv-value {
+    color: var(--risk-color) !important;
+}
+
+.irv-level {
+    color: var(--risk-color) !important;
+    /* Match text color to risk */
+}
+
+/* Vector Body Columns */
+.vector-body {
+    display: flex;
+    gap: 3rem;
+    /* Simples y claras distribution */
+    margin-top: 1rem;
+}
+
+.vector-column {
+    flex: 1;
+}
+
+.sub-header {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.5rem;
+    display: block;
+    /* Ensure full width line */
+}
+
+.description-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+/* Lists */
+.impact-list,
+.remediation-list {
+    padding-left: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.impact-list li,
+.remediation-list li {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+
+/* --- TECHNICAL ANNEX (CLEAN NATIVE DESIGN) --- */
+.annex-page {
+    page-break-before: always;
+    color: var(--text-main);
+    padding: 3rem 0;
+    /* Native Background inherited from body */
+}
+
+/* 1.1 Header */
+.annex-header {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.annex-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+/* 1.2 Section Titles */
+.annex-section {
+    margin-bottom: 4rem;
+}
+
+/* Replaced by standardized .sub-header-simple or similar, but keeping for legacy compatibility if needed, updated to match style */
+.annex-h2 {
+    font-size: 1.2rem;
+    /* Slightly larger to define section */
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.annex-h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+/* 1.3 Paragraphs */
+.annex-p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text-muted);
+    max-width: 750px;
+    text-align: left;
+    /* Explicit left alignment */
+}
+
+/* 2.0 Native Card System */
+.annex-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2rem;
+    /* Match Vector Card */
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3.0 Formula Box (Clean) */
+.formula-block {
+    background: rgba(0, 0, 0, 0.2);
+    /* Slightly darker than card for contrast */
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.formula-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.formula-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* 4.0 Variable Grid (Clean Distribution) */
+.variable-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Clean distribution */
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.var-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.8rem;
+}
+
+.var-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.var-badge {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    /* #5a6fa0 */
+    font-weight: 700;
+    background: rgba(90, 111, 160, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+}
+
+.var-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* 5.0 Severity Scale (Simple Row) */
+.severity-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.severity-item {
+    flex: 1;
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-card);
+    min-width: 100px;
+}
+
+.sev-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 auto 0.5rem;
+}
+
+.sev-dot.risk-low {
+    background: var(--risk-low);
+}
+
+.sev-dot.risk-med {
+    background: var(--risk-med);
+}
+
+.sev-dot.risk-high {
+    background: var(--risk-high);
+}
+
+.sev-dot.risk-crit {
+    background: var(--risk-crit);
+}
+
+.sev-dot.risk-max {
+    background: var(--risk-max);
+}
+
+.sev-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+
+.sev-mult {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.annex-footer {
+    border-top: 1px solid var(--border-color);
+    margin-top: 6rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.privacy-link {
+    color: #74b9ff;
+    /* Soft Blue to distinguish it as a link */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.privacy-link:hover {
+    color: #a29bfe;
+    /* Discrete hover shift to purple/lighter tone */
+    text-decoration: none;
+}
+
+/* --- VEC-001 NORTH STAR THEME OVERRIDES --- */
+:root {
+    --color-bg-panel: rgba(17, 19, 41, 0.6);
+    --color-border-strong: rgba(255, 255, 255, 0.1);
+    --color-bg-body: #0a0e27;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a8adc7;
+    --color-accent-core: #5a6fa0;
+    --card-radius: 4px;
+    --card-padding: 2.5rem;
+    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    --card-blur: blur(10px);
+}
+
+body {
+    background-color: var(--color-bg-body);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--color-text-primary);
+}
+
+/* Homologated Card Style (VEC-001) */
+.vector-card,
+.dossier-card,
+.inaction-card,
+.closing-card,
+.execution-container,
+.ird-context-card,
+.ledger-container,
+.timeline-content,
+.dossier-step,
+.impact-card {
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: var(--card-padding);
+    position: relative;
+    /* Reset specifics */
+    margin-bottom: 2rem;
+}
+
+/* Specific Cleanups */
+.closing-card,
+.ledger-container {
+    border-left-width: 1px;
+}
+
+.dossier-step {
+    margin-bottom: 3rem;
+}
+
+/* Micro-Grids & Badges */
+.evidence-badge {
+    background: rgba(17, 19, 41, 0.8);
+    border: 1px solid var(--color-border-strong);
+}
+
+.evidence-label,
+.meta-label {
+    color: #a8adc7;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* Typography */
+ul,
+ol,
+li,
+.action-item,
+.t-desc {
+    color: var(--color-text-secondary);
+}
+
+h1,
+h2,
+h3,
+.card-title,
+.timeline-title {
+    color: #ffffff;
+}
+
+.vector-id,
+.trx-id {
+    color: var(--color-accent-core);
+    font-family: 'Courier New', monospace;
+}
+
+/* Risk Badges (Glow) */
+.risk-badge,
+.t-badge,
+.demand-badge {
+    background: rgba(10, 14, 39, 0.9);
+    text-shadow: none;
+    box-shadow: 0 0 4px currentColor;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+/* --- Timeline Section Layout (Restored & Cleaned) --- */
+.timeline-section-wrapper {
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-subtitle {
+    font-size: 1.1rem;
+    color: #b2bec3;
+    font-weight: 400;
+}
+
+/* =========================================
+   SECTION 4: VERTICAL TIMELINE (Scrollable)
+   ========================================= */
+
+.timeline-container-vertical {
+    width: 100%;
+    max-width: 1000px;
+    /* Reduced for tighter control */
+    height: auto;
+    margin: 0 auto;
+    position: relative !important;
+    /* Force reference frame */
+    padding: 4rem 0;
+
+    display: flex;
+    /* Establish flex context */
+    flex-direction: column;
+
+    /* Removed Internal Scroll Logic */
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+/* Scrollbar Styling */
+.timeline-container-vertical::-webkit-scrollbar {
+    width: 6px;
+}
+
+.timeline-container-vertical::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.timeline-container-vertical::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+
+/* --- ZIGZAG TREE ITEM (Restored & Enhanced) --- */
+.timeline-item {
+    width: 50% !important;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: normal;
+
+    /* Reset Margins/Positioning */
+    margin: 0 !important;
+    margin-bottom: 4rem !important;
+    left: auto !important;
+    right: auto !important;
+}
+
+/* Branch Connector */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: 3rem;
+    /* Width of the padding gap */
+    z-index: 1;
+}
+
+/* ODD ITEMS (Left Side) */
+.timeline-item.t-left {
+    align-self: flex-start !important;
+    justify-content: flex-end !important;
+    padding-right: 3rem !important;
+    text-align: right !important;
+    border-right: none;
+}
+
+/* Left Branch */
+.timeline-item.t-left::before {
+    right: 0;
+    /* Starts from right edge of item box (which is center of container) */
+    background: #a29bfe;
+    /* Match border */
+}
+
+/* EVEN ITEMS (Right Side) */
+.timeline-item.t-right {
+    align-self: flex-end !important;
+    justify-content: flex-start !important;
+    padding-left: 3rem !important;
+    text-align: left !important;
+    border-left: none;
+}
+
+/* Right Branch */
+.timeline-item.t-right::before {
+    left: 0;
+    /* Starts from left edge of item box (center) */
+    background: #ff7675;
+    /* Match border */
+}
+
+/* The Vertical Line - STRICT CENTER */
+.timeline-line {
+    position: absolute;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 2rem;
+    bottom: 2rem;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    margin: 0 !important;
+    /* Reset any ghost margins */
+}
+
+.timeline-line-fill {
+    position: absolute;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 2rem;
+    width: 2px;
+    background: linear-gradient(to bottom, #74b9ff, #a29bfe, #ff7675);
+    height: 0%;
+    transition: height 0.5s linear;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
+    margin: 0 !important;
+}
+
+/* ... Navigation Widget code remains ... */
+
+/* Navigation Control Widget (Restored) */
+.nav-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+    /* Supreme visual layer */
+}
+
+.nav-widget .nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(10, 14, 39, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-widget .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+.nav-widget .nav-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+/* DOTS - STRICT ALIGNMENT */
+.timeline-dot {
+    position: absolute;
+    top: 50%;
+    /* Original: translate(-50%, -50%). But we want explicit control per side */
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-color: currentColor;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 10px currentColor;
+    display: block;
+}
+
+/* Left Item: Dot at Right Edge (Center) */
+.timeline-item.t-left .timeline-dot {
+    right: 0 !important;
+    left: auto !important;
+    /* Move right by 50% of own width to center on line */
+    transform: translate(50%, -50%) !important;
+}
+
+/* Right Item: Dot at Left Edge (Center) */
+.timeline-item.t-right .timeline-dot {
+    left: 0 !important;
+    right: auto !important;
+    /* Move left by 50% of own width to center on line */
+    transform: translate(-50%, -50%) !important;
+}
+
+/* Timeline Content Box - Clip the Watermark */
+.timeline-content {
+    overflow: hidden;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+/* Year Positioning Update (Inside Card) */
+.timeline-year {
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.03);
+    position: absolute;
+    top: 1rem;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.timeline-item.t-left .timeline-year {
+    right: 1rem;
+    /* Locked to right edge of card */
+    left: auto;
+}
+
+.timeline-item.t-right .timeline-year {
+    left: 1rem;
+    /* Locked to left edge of card */
+    right: auto;
+}
+
+/* Typography Restore */
+.timeline-header {
+    text-align: center;
+    margin-bottom: 2rem !important;
+    /* Reduced spacing */
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+}
+
+.timeline-subtitle {
+    font-size: 1.1rem;
+    color: #a8adc7;
+    font-weight: 400;
+}
+
+
+.t-date {
+    font-family: 'Courier New', monospace;
+    color: #a29bfe;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.t-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.t-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #b2bec3;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.t-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0;
+    width: auto;
+}
+
+
+
+/* --- Dossier Section Layout (Restored) --- */
+/* --- Dossier Section Layout (Premium Refinement) --- */
+.dossier-container {
+    position: relative;
+    padding-left: 3rem;
+    max-width: 1000px;
+    /* Match Invoice Width */
+    margin: 0 auto;
+}
+
+.dossier-spine {
+    position: absolute;
+    left: 1rem;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+}
+
+.dossier-step {
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: 3.5rem 2.5rem;
+    /* Increased height */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    /* Increased spacing */
+    position: relative;
+    /* For z-index context */
+}
+
+.dossier-step:hover {
+    transform: translateX(5px);
+    border-color: rgba(255, 215, 0, 0.3);
+    /* Gold highlight on hover */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.spine-icon-wrapper {
+    position: absolute;
+    left: -2rem;
+    /* Center on spine (3rem padding - 1rem spine = 2rem, so -2rem centers it) */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: #0a0e27;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.spine-icon-wrapper svg {
+    width: 20px;
+    height: 20px;
+    color: #a8adc7;
+    transition: all 0.3s ease;
+}
+
+/* Specific Hover Colors */
+/* Recon - Blue */
+.step-recon:hover {
+    border-color: rgba(116, 185, 255, 0.3);
+}
+
+.step-recon:hover .spine-icon-wrapper {
+    border-color: #74b9ff;
+    box-shadow: 0 0 20px rgba(116, 185, 255, 0.4);
+}
+
+.step-recon:hover .spine-icon-wrapper svg {
+    color: #74b9ff;
+}
+
+/* Weapon - Yellow/Gold */
+.step-weapon:hover {
+    border-color: rgba(255, 234, 167, 0.3);
+}
+
+.step-weapon:hover .spine-icon-wrapper {
+    border-color: #ffeaa7;
+    box-shadow: 0 0 20px rgba(255, 234, 167, 0.4);
+}
+
+.step-weapon:hover .spine-icon-wrapper svg {
+    color: #ffeaa7;
+}
+
+/* Impact - Red */
+.step-impact:hover {
+    border-color: rgba(255, 118, 117, 0.3);
+}
+
+.step-impact:hover .spine-icon-wrapper {
+    border-color: #ff7675;
+    box-shadow: 0 0 20px rgba(255, 118, 117, 0.4);
+}
+
+.step-impact:hover .spine-icon-wrapper svg {
+    color: #ff7675;
+}
+
+/* Columns */
+.step-visual-col {
+    flex: 0 0 80px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding-right: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.dossier-icon {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #a8adc7;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dossier-phase-label {
+    font-size: 0.9rem;
+    color: #5a6fa0;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    background: rgba(90, 111, 160, 0.1);
+    border-radius: 4px;
+}
+
+.step-content-col {
+    flex: 1;
+}
+
+.dossier-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.dossier-desc {
+    font-size: 1rem;
+    color: #b2bec3;
+    line-height: 1.6;
+}
+
+.dossier-desc strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+.step-evidence-col {
+    flex: 0 0 240px;
+    /* Slightly wider */
+    display: flex;
+    justify-content: flex-end;
+}
+
+.evidence-badge {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    width: 100%;
+    text-align: right;
+}
+
+.evidence-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #636e72;
+    margin-bottom: 0.4rem;
+    letter-spacing: 1px;
+}
+
+.evidence-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .dossier-step {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .step-visual-col {
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-right: 0;
+        padding-bottom: 1rem;
+        margin-right: 0;
+        margin-bottom: 1rem;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+
+    .step-evidence-col {
+        width: 100%;
+    }
+
+    .evidence-badge {
+        text-align: left;
+    }
+
+    .dossier-container {
+        padding-left: 1rem;
+    }
+
+    .dossier-spine,
+    .spine-icon-wrapper {
+        display: none;
+    }
+}
+
+
+/* --- Impact, Inaction & Closing Grids (Restored) --- */
+
+/* Impact Grid (2x2) */
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.impact-card {
+    /* BG/Border handled by Global */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.impact-icon-box {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.impact-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.impact-card-desc {
+    font-size: 0.9rem;
+    color: #a8adc7;
+    line-height: 1.5;
+}
+
+
+/* Inaction Grid (3 Columns) */
+.inaction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.inaction-card {
+    /* BG/Border handled by Global */
+    display: flex;
+    flex-direction: column;
+}
+
+.inaction-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.time-badge {
+    font-size: 0.7rem;
+    color: #5a6fa0;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+}
+
+.inaction-phase {
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+}
+
+.cost-indicator {
+    text-align: right;
+}
+
+.cost-label {
+    font-size: 0.7rem;
+    color: #a8adc7;
+    display: block;
+}
+
+.cost-value {
+    font-size: 0.9rem;
+    color: #ff7675;
+    /* Risk Color */
+    font-weight: 700;
+}
+
+.inaction-desc {
+    font-size: 0.95rem;
+    color: #a8adc7;
+    line-height: 1.5;
+}
+
+
+/* Closing Grid (3 Columns) */
+.closing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 5px !important;
+    /* Aggressive reduction */
+}
+
+.closing-card {
+    /* BG/Border by Global */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.closing-meta-col {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.closing-phase {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #a29bfe;
+    /* Phase Color */
+    margin-bottom: 0.2rem;
+}
+
+.closing-time {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.2rem;
+}
+
+.closing-label-sm {
+    font-size: 0.8rem;
+    color: #a8adc7;
+}
+
+/* Execution Table (Rows) */
+.execution-header {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.execution-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+    transition: background 0.2s ease;
+}
+
+.execution-row:last-child {
+    border-bottom: none;
+}
+
+.execution-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.exec-action {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.exec-sub {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.2rem;
+}
+
+/* Responsible Badges (Exec) */
+.resp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.resp-mapa {
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+    border: 1px solid rgba(116, 185, 255, 0.2);
+}
+
+.resp-client {
+    background: rgba(255, 255, 255, 0.05);
+    color: #b2bec3;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resp-joint {
+    background: rgba(162, 155, 254, 0.1);
+    color: #a29bfe;
+    border: 1px solid rgba(162, 155, 254, 0.2);
+}
+
+/* Priority Badges (Exec) */
+.prio-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.prio-crit {
+    color: #ff7675;
+    background: rgba(255, 118, 117, 0.1);
+    border: 1px solid rgba(255, 118, 117, 0.2);
+}
+
+.prio-high {
+    color: #ffeaa7;
+    background: rgba(255, 234, 167, 0.1);
+    border: 1px solid rgba(255, 234, 167, 0.2);
+}
+
+.prio-med {
+    color: #74b9ff;
+    background: rgba(116, 185, 255, 0.1);
+    border: 1px solid rgba(116, 185, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .execution-header {
+        display: none;
+    }
+
+    .execution-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+
+/* --- POST-HOC LINEARIZATION (USER REQUEST: VERTICAL ROWS) --- */
+
+/* 1. Linear Timeline (Strict Vertical) - REMOVED FOR ZIGZAG TREE RESTORATION */
+/* The user explicitly requested the Tree/ZigZag layout for the Timeline, 
+   so we remove the forcing of left-alignment here. */
+
+/* 2. Linear Impact & Inaction (Rows not Grids) */
+.impact-grid,
+.inaction-grid,
+.closing-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+}
+
+/* Flex Row Layout for Cards (Icon | Content) - Premium Redesign */
+.impact-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    gap: 2.5rem !important;
+
+    /* Premium Styling - Base */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: var(--card-blur);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--card-radius);
+    padding: 2.25rem 2.5rem !important;
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.impact-card:hover {
+    transform: translateX(8px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Detail: Subtle shine effect on hover */
+.impact-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.impact-card:hover::after {
+    left: 100%;
+}
+
+.impact-icon-box {
+    font-size: 3rem !important;
+    margin-bottom: 0 !important;
+    color: #fff;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* Unique Accents Per Card Type (Full Borders & Gradients) */
+
+/* Financial - Gold/Yellow */
+.impact-financial {
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    border-left: 4px solid #ffd700 !important;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-financial .impact-icon-box {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.impact-financial:hover {
+    border-color: rgba(255, 215, 0, 0.8) !important;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+}
+
+/* Operational - Blue/Electric */
+.impact-operational {
+    border: 1px solid rgba(116, 185, 255, 0.3) !important;
+    border-left: 4px solid #74b9ff !important;
+    background: linear-gradient(90deg, rgba(116, 185, 255, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-operational .impact-icon-box {
+    text-shadow: 0 0 20px rgba(116, 185, 255, 0.4);
+}
+
+.impact-operational:hover {
+    border-color: rgba(116, 185, 255, 0.8) !important;
+    box-shadow: 0 0 30px rgba(116, 185, 255, 0.15);
+}
+
+/* Reputational - Purple/Violet */
+.impact-reputational {
+    border: 1px solid rgba(162, 155, 254, 0.3) !important;
+    border-left: 4px solid #a29bfe !important;
+    background: linear-gradient(90deg, rgba(162, 155, 254, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-reputational .impact-icon-box {
+    text-shadow: 0 0 20px rgba(162, 155, 254, 0.4);
+}
+
+.impact-reputational:hover {
+    border-color: rgba(162, 155, 254, 0.8) !important;
+    box-shadow: 0 0 30px rgba(162, 155, 254, 0.15);
+}
+
+/* Regulatory - Red/Orange */
+.impact-regulatory {
+    border: 1px solid rgba(255, 118, 117, 0.3) !important;
+    border-left: 4px solid #ff7675 !important;
+    background: linear-gradient(90deg, rgba(255, 118, 117, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%) !important;
+}
+
+.impact-regulatory .impact-icon-box {
+    text-shadow: 0 0 20px rgba(255, 118, 117, 0.4);
+}
+
+.impact-regulatory:hover {
+    border-color: rgba(255, 118, 117, 0.8) !important;
+    box-shadow: 0 0 30px rgba(255, 118, 117, 0.15);
+}
+
+/* Inaction Row Styling */
+/* Inaction Row Styling */
+.inaction-grid {
+    gap: 10px !important;
+    /* Reduced from 20px */
+}
+
+/* New 3-Column Layout using display: contents on wrapper */
+.inaction-card {
+    display: grid !important;
+    grid-template-columns: 200px 1fr auto !important;
+    /* Col 1: Phase, Col 2: Desc, Col 3: Impact */
+    align-items: center !important;
+    gap: 2rem !important;
+
+    /* Premium Styling - Base */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-subtle);
+    border-left: 4px solid var(--color-border-subtle);
+    border-radius: var(--card-radius);
+    padding: 2.35rem 2.5rem !important;
+    /* Micro-adjustment for fit */
+    /* Increased height by ~20px per request */
+    /* Heavily optimized for fit */
+    /* Removed min-height relative logic */
+    box-shadow: var(--card-shadow);
+    backdrop-filter: var(--card-blur);
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.inaction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.inaction-header-row {
+    display: contents !important;
+    /* Unwrap children to grid */
+}
+
+/* Col 1: Phase Info */
+.inaction-phase-wrapper {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-right: 2rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    /* Separator */
+    text-align: left !important;
+    align-items: flex-start !important;
+}
+
+/* Col 2: Narrative Description */
+.inaction-desc {
+    grid-column: 2;
+    margin: 0 !important;
+    text-align: left;
+}
+
+/* Col 3: Impact/Cost Badge */
+.cost-indicator {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.time-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.inaction-phase {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Varied Risk Colors (Progression) */
+
+/* T+7 (1 Week) - Warning/Erosion (Amber/Orange) */
+.t-7 {
+    border-left-color: #ff9f43 !important;
+    border-color: rgba(255, 159, 67, 0.2);
+    background: linear-gradient(90deg, rgba(255, 159, 67, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.t-7:hover {
+    border-color: rgba(255, 159, 67, 0.6);
+    background: linear-gradient(90deg, rgba(255, 159, 67, 0.08) 0%, rgba(30, 30, 40, 0.6) 100%);
+}
+
+.t-7 .time-badge {
+    color: #ff9f43;
+}
+
+/* T+30 (1 Month) - Danger/Loss (Orange/Red) */
+.t-30 {
+    border-left-color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.2);
+    background: linear-gradient(90deg, rgba(255, 107, 107, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.t-30:hover {
+    border-color: rgba(255, 107, 107, 0.6);
+    background: linear-gradient(90deg, rgba(255, 107, 107, 0.08) 0%, rgba(30, 30, 40, 0.6) 100%);
+}
+
+.t-30 .time-badge {
+    color: #ff6b6b;
+}
+
+/* T+90 (3 Months) - Critical/Permanent (Deep Red/Crimson) */
+.t-90 {
+    border-left-color: #ee5253 !important;
+    border-color: rgba(238, 82, 83, 0.2);
+    background: linear-gradient(90deg, rgba(238, 82, 83, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.t-90:hover {
+    border-color: rgba(238, 82, 83, 0.6);
+    background: linear-gradient(90deg, rgba(238, 82, 83, 0.08) 0%, rgba(30, 30, 40, 0.6) 100%);
+}
+
+.t-90 .time-badge {
+    color: #ee5253;
+}
+
+.inaction-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin-bottom: 0 !important;
+}
+
+.inaction-desc {
+    margin-top: 0 !important;
+}
+
+/* Closing Row Styling */
+/* Closing Row Styling */
+.closing-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 1.35rem 3rem !important;
+    /* Ultra-compact */
+    /* Reduced for fit */
+    text-align: left !important;
+    /* Force left alignment */
+
+    /* Premium Base */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: var(--card-blur);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--color-border-subtle);
+    /* Default accent */
+}
+
+.closing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Phase Specific Accents */
+/* Phase 1: Containment (Urgent/Blue) */
+.closing-card:nth-of-type(1) {
+    border-left-color: #74b9ff !important;
+    background: linear-gradient(90deg, rgba(116, 185, 255, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.closing-card:nth-of-type(1):hover {
+    border-color: rgba(116, 185, 255, 0.5);
+}
+
+/* Phase 2: Sanitation (Process/Purple) */
+.closing-card:nth-of-type(2) {
+    border-left-color: #a29bfe !important;
+    background: linear-gradient(90deg, rgba(162, 155, 254, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.closing-card:nth-of-type(2):hover {
+    border-color: rgba(162, 155, 254, 0.5);
+}
+
+/* Phase 3: Shielding (Secure/Green-Teal) */
+.closing-card:nth-of-type(3) {
+    border-left-color: #55efc4 !important;
+    background: linear-gradient(90deg, rgba(85, 239, 196, 0.05) 0%, rgba(20, 20, 30, 0.4) 100%);
+}
+
+.closing-card:nth-of-type(3):hover {
+    border-color: rgba(85, 239, 196, 0.5);
+}
+
+.closing-meta-col {
+    border-bottom: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-bottom: 0 !important;
+    padding-right: 2.5rem !important;
+    /* More breathing room */
+    margin-right: 2.5rem !important;
+    min-width: 180px;
+    /* Wider label area */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.closing-time {
+    font-size: 2rem !important;
+    /* Larger Impact Time */
+    font-weight: 800;
+    line-height: 1;
+    margin: 0.5rem 0;
+    background: -webkit-linear-gradient(#fff, #a8adc7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.closing-content-col {
+    text-align: left !important;
+    flex: 1;
+}
+
+.action-list {
+    display: grid;
+    gap: 0.4rem;
+    /* Ultra tight */
+    text-align: left !important;
+    justify-content: start !important;
+}
+
+.action-item {
+    font-size: 0.95rem;
+    color: #b2bec3;
+    line-height: 1.5;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.action-item::before {
+    content: 'â†’';
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+}
+
+.action-bold {
+    color: #fff;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+}
+
+/* Mobile Adjusts for Rows */
+#closing-window-section .timeline-header {
+    margin-bottom: 3rem !important;
+    /* Increased by ~50px per request */
+}
+
+@media (max-width: 768px) {
+
+    .inaction-card,
+    .closing-card {
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+    }
+
+    .closing-meta-col {
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding-bottom: 1rem !important;
+        margin-bottom: 1rem !important;
+        margin-right: 0 !important;
+        width: 100%;
+    }
+}
+
+/* Standardize Inaction Section as a Slide */
+#inaction-scenario-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Standardize Closing Section as a Slide (New Request) */
+#closing-window-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    page-break-before: always;
+    /* Force new page */
+    break-before: page;
+}
+
+/* PREMIUM INVOICE COMPONENT (GOLD EDITION - COMPACT) */
+.invoice-wrapper {
+    width: 1200px;
+    /* Reduced by 200px as requested */
+    height: 700px;
+    /* Rigid height */
+    /* Reduced by 100px as requested */
+    margin: 0 auto;
+    position: relative;
+    /* Standard Card Style Match */
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: var(--card-blur);
+    box-shadow: none;
+    border-radius: var(--card-radius);
+    padding: 0;
+    display: flex;
+    /* Ensure inner content stretches */
+    flex-direction: column;
+}
+
+
+/* Specific spacing override for this section */
+#exposure-value-section {
+    padding-top: 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Center content horizontally */
+    margin-bottom: 0;
+    /* Force Full Screen Width Check */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    left: 0;
+}
+
+#attack-vector-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    margin-top: 0;
+}
+
+#business-impact-section {
+    padding-top: 60px;
+    /* Reduced to fit content */
+    min-height: 100vh;
+    /* Make it a full slide */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#exposure-value-section .timeline-header {
+    margin-bottom: 2rem !important;
+}
+
+.invoice-container {
+    background: transparent;
+    border-radius: var(--card-radius);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    /* Flex adjustment to fill wrapper */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* Grow to fill wrapper exactly */
+}
+
+/* Watermark */
+.invoice-container::before {
+    content: 'CONFIDENTIAL';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 8rem;
+    font-weight: 800;
+    color: rgba(255, 215, 0, 0.03);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+}
+
+/* Header */
+.invoice-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.inv-brand {
+    text-align: center;
+}
+
+.inv-brand h1 {
+    font-size: 1.8rem;
+    color: #e5e5e5;
+    letter-spacing: 3px;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.inv-brand p {
+    color: #a8adc7;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    letter-spacing: 1px;
+}
+
+/* Grid Table */
+.invoice-body {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1rem;
+    /* Flex adjustment to fill container */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    /* Fix for nested flex overflow */
+    justify-content: space-between;
+    /* Force items to spread if flex-grow fails */
+}
+
+.inv-table-header {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    padding: 1rem 1.5rem;
+    color: #ffd700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    background: rgba(255, 215, 0, 0.02);
+    border-radius: 6px 6px 0 0;
+}
+
+.inv-row {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    padding: 0 1.5rem;
+    /* Remove vertical padding, let flex-grow handle it */
+    flex: 1;
+    /* Grow to fill available space */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.inv-row:last-child {
+    border-bottom: none;
+}
+
+.inv-row:hover {
+    background: rgba(255, 215, 0, 0.02);
+    transform: translateX(5px);
+}
+
+.item-desc {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.item-sub {
+    display: block;
+    color: #8b9bb4;
+    font-size: 0.85rem;
+    margin-top: 6px;
+}
+
+.item-source {
+    color: #b2bec3;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.col-risk {
+    display: flex;
+    justify-content: center;
+}
+
+.item-price {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #e2e8f0;
+}
+
+/* Footer */
+.invoice-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 2.5rem;
+    background: rgba(255, 215, 0, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.total-label {
+    color: #ffd700;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.total-value {
+    color: #ffd700;
+    font-family: 'Courier New', monospace;
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+}
+
+/* Badges (Re-enforcing standard colors) */
+.demand-badge.demand-high {
+    background: rgba(255, 118, 117, 0.15);
+    color: #ff7675;
+    border: 1px solid rgba(255, 118, 117, 0.3);
+    box-shadow: 0 0 10px rgba(255, 118, 117, 0.1);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.demand-badge.demand-med {
+    background: rgba(255, 234, 167, 0.15);
+    color: #ffeaa7;
+    border: 1px solid rgba(255, 234, 167, 0.3);
+    box-shadow: 0 0 10px rgba(255, 234, 167, 0.1);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* --- Compact Slide Layout --- */
+#exposure-value-section {
+    padding-top: 20px;
+    /* Minimized safety padding */
+}
+
+/* Reduced spacing for Slide Fit */
+.invoice-container {
+    padding: 1.5rem;
+    /* Reduced from 2.5rem */
+}
+
+.invoice-header {
+    margin-bottom: 1.5rem;
+    /* Reduced from 3rem */
+    padding-bottom: 1rem;
+}
+
+.inv-row {
+    padding: 1rem 1.2rem;
+    /* Reduced from 1.8rem */
+}
+
+/* Force Horizontal Grid (No Mobile Stacking) */
+@media (max-width: 768px) {
+
+    /* Keep grid structure on mobile, maybe scroll if needed, but DO NOT STACK */
+    .inv-table-header,
+    .inv-row {
+        min-width: 600px;
+        /* Ensure columns don't squash too much */
+    }
+
+    .invoice-body {
+        overflow-x: auto;
+        /* Allow horizontal scroll if really needed */
+    }
+}
+
+/* =========================================
+   CLOSING ROUTE / EXECUTION PLAN STYLES
+   ========================================= */
+#remediation-route-section {
+    min-height: 100vh;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    left: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+    box-sizing: border-box;
+}
+
+.execution-container {
+    width: 1200px;
+    max-width: 95vw;
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--card-radius);
+    padding: 3rem;
+    box-shadow: none;
+    position: relative;
+    z-index: 2;
+}
+
+.execution-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    font-weight: 600;
+    color: #ffd700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.execution-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+}
+
+.execution-row:last-child {
+    border-bottom: none;
+}
+
+.exec-action {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+
+/* =========================================
+    TECHNICAL ANNEX STYLES (SLIDE BEHAVIOR)
+   ========================================= */
+#annex-section {
+    min-height: 100vh;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    left: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    /* Ultra-Compact */
+    box-sizing: border-box;
+    background: var(--bg-dark);
+}
+
+/* Constrain content width */
+.annex-header,
+.annex-section,
+.annex-footer {
+    width: 1200px;
+    max-width: 95vw;
+    margin-bottom: 1rem;
+    /* Reduced to 1rem */
+}
+
+.annex-header {
+    text-align: center;
+    margin-bottom: 1rem;
+    /* Reduced to 1rem */
+    border: none !important;
+}
+
+/* Force remove borders from inner timeline headers in this section */
+#annex-section .timeline-header,
+#annex-section .timeline-title,
+#annex-section .timeline-subtitle {
+    border: none !important;
+    margin-bottom: 0.2rem !important;
+    /* Tighter */
+}
+
+#annex-section .timeline-title {
+    font-size: 2rem !important;
+    /* Slightly smaller for fit */
+}
+
+/* Card-like behavior for inner sections if they need bg */
+.annex-section {
+    position: relative;
+    z-index: 2;
+    padding-top: 0;
+    border: none !important;
+}
+
+.annex-h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formula-block {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--card-radius);
+    text-align: center;
+    width: 100%;
+}
+
+.formula-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #ffd700;
+    font-weight: 600;
+}
+
+/* Force 3-Column Grid for Symmetry */
+.variable-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1rem;
+    /* Tighter gap */
+    width: 100%;
+    margin-top: 1rem;
+    /* Tighter margin */
+}
+
+.annex-card {
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    padding: 1rem;
+    /* Tighter padding */
+    border-radius: var(--card-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.annex-card .var-header {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.annex-card .var-desc {
+    font-size: 0.8rem;
+    /* Smaller text for compaction */
+}
+
+.annex-footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    /* Increased (+30px total) for breathing room */
+    opacity: 0.6;
+    font-size: 0.75rem;
+    padding-top: 0;
+    border: none !important;
+}
+
+/* NEW: Master Grid Layout (Flattened) */
+.annex-master-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Strict 2 columns */
+    column-gap: 4rem;
+    /* Wide separation between columns */
+    row-gap: 0.5rem;
+    /* TIGHT vertical gap */
+    width: 1200px;
+    max-width: 95vw;
+    align-items: start;
+    /* Top alignment per row */
+    margin-bottom: 0;
+}
+
+/* Ensure all direct children fill their cell */
+.annex-master-grid>* {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    /* Reduced from 1rem */
+}
+
+/* Tighter Text Elements */
+.annex-h2 {
+    margin-bottom: 0.25rem !important;
+    font-size: 1.5rem;
+    /* Slightly smaller title */
+}
+
+.annex-p {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+
+/* Reset inner section width so it fits the grid column */
+
+
+/* COMPACTION OVERRIDES FOR ANNEX SEVERITY MATRIX */
+#annex-section .severity-row {
+    margin-top: 0.5rem;
+    /* Reduced from 1rem */
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    /* Allow wrapping if needed */
+    justify-content: center;
+}
+
+#annex-section .severity-item {
+    padding: 0.4rem;
+    /* Tighter padding */
+    min-width: 70px;
+    /* Allow shrink */
+    flex: 1 1 auto;
+}
+
+#annex-section .sev-dot {
+    margin-bottom: 0.2rem;
+}
+
+/* Override Variables Grid for Half-Width (2 Columns instead of 3) */
+.variable-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    /* Back to 2 cols for half-width */
+    gap: 0.5rem;
+    /* Tighter gap */
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.annex-card {
+    padding: 0.75rem;
+    /* Reduced padding */
+    margin-bottom: 0;
+}
+
+/* PRINT / PDF GENERATION STYLES (STRICT LANDSCAPE / FULL FULL) */
+@media print {
+    @page {
+        size: landscape;
+        margin: 0;
+    }
+
+    /* Force Full Page Background - SOLID COLOR NO GRADIENT */
+    html {
+        background-color: #0a0e27 !important;
+        background-image: none !important;
+        /* STRICT NO GRADIENT */
+        height: 100%;
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body,
+    body.theme-dark {
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #0a0e27 !important;
+        background-color: #0a0e27 !important;
+        background-image: none !important;
+        /* STRICT NO GRADIENT */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        overflow: hidden !important;
+    }
+
+    /* --- PHASE 1: HERO ISOLATION (.cover-wrapper) --- */
+
+    /* 1. Collapse all sections by default to remove extra pages */
+    .container>* {
+        display: none !important;
+    }
+
+    /* 2. Structural Parents */
+    html,
+    body,
+    .container {
+        display: block !important;
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        visibility: visible !important;
+    }
+
+    /* 3. Whitelist Target: Hero */
+    .container>.cover-wrapper {
+        display: flex !important;
+        /* Keep original flex layout */
+        visibility: visible !important;
+        position: relative !important;
+        /* FIXED: Relative to allow flow */
+        width: 100% !important;
+        height: 100vh !important;
+        /* page-break-after: always; <-- REMOVED to prevent blank page 2 */
+    }
+
+    /* 4. Nuclear Hiding - Revert IRD to Hidden */
+    /* REMOVED: #ird-section forced hidden rule */
+
+    /* 5. ADD PAGE 2 (REAL CONTENT) */
+    /* Remove Fake Page 2 Rule (.cover-wrapper::after) */
+
+    #ird-section {
+        display: flex !important;
+        /* Centering Container */
+        flex-direction: column !important;
+        justify-content: center !important;
+        /* Vertical Center */
+        align-items: center !important;
+        /* Horizontal Center */
+
+        height: 100vh !important;
+        width: 100vw !important;
+        page-break-before: always !important;
+        background-color: #0a0e27 !important;
+        visibility: visible !important;
+        overflow: hidden !important;
+        zoom: 0.9 !important;
+        /* Scale to fit as single slide */
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Unhide Content */
+    #ird-section * {
+        display: block;
+        /* Let flex/grid work naturally, don't force none */
+    }
+
+    /* Force .ird-container to be centered and contained */
+    .ird-container {
+        display: block !important;
+        width: 90% !important;
+        max-width: 1000px !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+
+    /* Center the Box and Card explicitly */
+    #irdBox,
+    .ird-box {
+        margin: 0 auto !important;
+    }
+
+    .description-card {
+        margin: 3rem auto !important;
+        /* Override inline style */
+        width: 100% !important;
+        max-width: 800px !important;
+        /* Prevent too wide reading line */
+    }
+
+    /* Clean up old unused rules */
+    .ird-page {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .report-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #vectors-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #timeline-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #exposure-value-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #attack-vector-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #business-impact-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #inaction-scenario-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #closing-window-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #remediation-route-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #annex-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .annex-page {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .annex-footer {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .privacy-link {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* Hide Navigation Buttons */
+    .nav-btn {
+        display: none !important;
+    }
+
+    #navUp {
+        display: none !important;
+    }
+
+    #navDown {
+        display: none !important;
+    }
+
+    .controls-layer {
+        display: none !important;
+    }
+
+    .slide-counter {
+        display: none !important;
+    }
+
+    /* 4. Whitelist Contents */
+    .cover-wrapper * {
+        visibility: visible !important;
+        /* Let inherited display properties work, or force if needed. 
+           Avoiding 'display: block' blanket to preserve internal flex structures. */
+    }
+
+    /* Force specific internal flex structures if lost */
+    .cover-wrapper .hero-top,
+    .cover-wrapper .tag,
+    .cover-wrapper .meta-block,
+    .cover-wrapper svg {
+        display: flex !important;
+    }
+}
+
+/* Custom Page Numbering Overlay - Start at 1 */
+/* Custom Page Numbering Overlay - REMOVED for Playwright Footer Template */
+/* @media print { body::after { ... } } */
+
+/* --- FIX: SCREEN LAYOUT RESTORATION --- */
+/* Restore Breakout Margins for Vectors Section (Screen Only) */
+@media screen {
+
+    .vectors-section,
+    #vectors-section {
+        width: 100vw !important;
+        margin-left: calc(-50vw + 50%) !important;
+        margin-right: calc(-50vw + 50%) !important;
+        left: 0 !important;
+        right: 0 !important;
+        max-width: 100vw !important;
+        position: relative !important;
+    }
+}
+
+/* --- HOMOLOGATED HEADERS (STANDARD LAYOUT) --- */
+.pdf-page,
+.vector-page,
+.attack-vector-page,
+.timeline-page,
+.exposure-page {
+    position: relative !important;
+}
+
+.vector-global-header {
+    position: absolute !important;
+    top: 2.5rem !important;
+    /* Unified Top Margin */
+    left: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 2rem !important;
+    z-index: 100 !important;
+}
+
+.vector-global-header h2 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.vector-global-header p {
+    font-size: 1.1rem !important;
+    color: var(--text-muted) !important;
+    font-weight: 400 !important;
+}
+
+/* Push content down to avoid overlap with fixed header */
+.vector-main-card,
+.chain-container,
+.timeline-container,
+.exposure-content {
+    margin-top: 6rem !important;
+}

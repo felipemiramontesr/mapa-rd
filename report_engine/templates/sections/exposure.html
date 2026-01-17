@@ -1,0 +1,78 @@
+<!-- PAGE: EXPOSURE VALUE -->
+<div class="pdf-page exposure-page">
+    <div class="vector-global-header">
+        <h2>Valor de Exposición</h2>
+        <p>Estimación de Impacto Financiero en Mercado Negro</p>
+    </div>
+
+    <div class="exposure-content">
+
+        <!-- LEFT: INVOICE -->
+        <div class="invoice-card">
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>CONCEPTO</th>
+                        <th>CANTIDAD</th>
+                        <th>PRECIO UNIT.</th>
+                        <th style="text-align: right;">SUBTOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic Data Injection to be handled by engine/Jinja loop ideally, but keeping static structure for now as per V2-PRINT state -->
+                    {% for row in (exposure.rows if exposure is defined else []) %}
+                    <tr>
+                        <td>{{ row.concept }}</td>
+                        <td>{{ row.count }}</td>
+                        <td>{{ row.unit_price }}</td>
+                        <td class="amount">{{ row.subtotal }}</td>
+                    </tr>
+                    {% else %}
+                    <!-- Fallback Static Data if Jinja fails matches exact V2-PRINT data -->
+                    <tr>
+                        <td>Datos Financieros/Identidad Crítica</td>
+                        <td>5</td>
+                        <td>$50 USD</td>
+                        <td class="amount">$250.00</td>
+                    </tr>
+                    <tr>
+                        <td>Credenciales Corporativas/Personales</td>
+                        <td>8</td>
+                        <td>$15 USD</td>
+                        <td class="amount">$120.00</td>
+                    </tr>
+                    <tr>
+                        <td>Datos de Perfil/Huella Digital</td>
+                        <td>3</td>
+                        <td>$5 USD</td>
+                        <td class="amount">$15.00</td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr class="invoice-total-row">
+                        <td colspan="3">TOTAL ESTIMADO</td>
+                        <td class="amount">{{ (exposure.total_value if exposure is defined else '$385.00 USD') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RIGHT: BIG NUMBER -->
+        <div class="total-display">
+            <div class="total-label">Valor Total en Mercado Negro</div>
+            <div class="total-value-huge">{{ (exposure.total_value if exposure is defined else '$385.00 USD') }}</div>
+            <div class="total-disclaimer">
+                *Esta cifra representa el valor potencial de reventa de sus activos comprometidos en foros de
+                cibercrimen, basado en índices de precios promedios de 2025. No refleja el costo de remediación
+                empresarial.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div
+        style="position: absolute; bottom: 1.0cm; left: 1.0cm; font-size: 10px; color: rgba(255, 255, 255, 0.4); font-family: 'Inter', sans-serif;">
+        Sin auditorías genéricas. Sin promesas vacías.
+    </div>
+</div>
