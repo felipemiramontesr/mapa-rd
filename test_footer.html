@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html style="margin:0; padding:0; height: 100vh; overflow:hidden;">
+
+<body style="margin:0; padding:0; height: 100vh; width: 100vw; background: #333; position: relative;">
+
+    <!-- Ruler for Visual Reference (1cm = 37.8px at 96dpi) -->
+    <div style="position: absolute; right: 0; bottom: 0; width: 1cm; height: 1cm; background: red; z-index: 0;"></div>
+
+    <!-- The Footer Template Candidate -->
+    <!-- We simulate the PDF footer environment: a container that fills the footer area? 
+         No, using absolute positioning, we simulate the 'page' context. -->
+    <div id="footer-container"
+        style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; pointer-events: none;">
+
+        <!-- TARGET CSS TO CALIBRATE -->
+        <div id="footer-text" style="
+            position: absolute; 
+            right: 1.0cm; 
+            bottom: 1.0cm; 
+            font-size: 12px; 
+            font-family: 'Arial Narrow', sans-serif; 
+            color: white; 
+            white-space: nowrap;
+            line-height: 1; /* Normalizing line-height is crucial */
+            background: rgba(0,0,255,0.3); /* For debug visibility */
+        ">
+            Página 1 de 1
+        </div>
+
+    </div>
+
+    <script>
+        function measure() {
+            const el = document.getElementById('footer-text');
+            const rect = el.getBoundingClientRect();
+            const winH = window.innerHeight;
+            const winW = window.innerWidth;
+
+            const distBottom = winH - rect.bottom;
+            const distRight = winW - rect.right;
+
+            console.log("Win Height:", winH);
+            console.log("Rect Bottom:", rect.bottom);
+            console.log("Distance from Bottom (px):", distBottom);
+            console.log("Distance from Right (px):", distRight);
+
+            // 1cm approx 37.8px
+            return {
+                bottomPx: distBottom,
+                rightPx: distRight,
+                bottomCm: distBottom / 37.8,
+                rightCm: distRight / 37.8
+            };
+        }
+    </script>
+</body>
+
+</html>

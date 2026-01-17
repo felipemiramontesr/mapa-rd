@@ -25,7 +25,8 @@ class PDFRenderer:
             # Strict PDF Options
             page.pdf(
                 path=output_path,
-                format="A4",
+                format="Letter",
+                landscape=True,
                 print_background=True,
                 prefer_css_page_size=True,
                 display_header_footer=False,

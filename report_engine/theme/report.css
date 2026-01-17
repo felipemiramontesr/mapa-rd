@@ -3082,13 +3082,231 @@ h3,
         overflow: hidden !important;
     }
 
-    /* --- PHASE 0: EMPTY CANVAS (ERASER) --- */
-    /* Hide everything EXCEPT body/html background */
-    body * {
+    /* --- PHASE 1: HERO ISOLATION (.cover-wrapper) --- */
+
+    /* 1. Collapse all sections by default to remove extra pages */
+    .container>* {
         display: none !important;
+    }
+
+    /* 2. Structural Parents */
+    html,
+    body,
+    .container {
+        display: block !important;
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        visibility: visible !important;
+    }
+
+    /* 3. Whitelist Target: Hero */
+    .container>.cover-wrapper {
+        display: flex !important;
+        /* Keep original flex layout */
+        visibility: visible !important;
+        position: relative !important;
+        /* FIXED: Relative to allow flow */
+        width: 100% !important;
+        height: 100vh !important;
+        /* page-break-after: always; <-- REMOVED to prevent blank page 2 */
+    }
+
+    /* 4. Nuclear Hiding - Revert IRD to Hidden */
+    /* REMOVED: #ird-section forced hidden rule */
+
+    /* 5. ADD PAGE 2 (REAL CONTENT) */
+    /* Remove Fake Page 2 Rule (.cover-wrapper::after) */
+
+    #ird-section {
+        display: flex !important;
+        /* Centering Container */
+        flex-direction: column !important;
+        justify-content: center !important;
+        /* Vertical Center */
+        align-items: center !important;
+        /* Horizontal Center */
+
+        height: 100vh !important;
+        width: 100vw !important;
+        page-break-before: always !important;
+        background-color: #0a0e27 !important;
+        visibility: visible !important;
+        overflow: hidden !important;
+        zoom: 0.9 !important;
+        /* Scale to fit as single slide */
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Unhide Content */
+    #ird-section * {
+        display: block;
+        /* Let flex/grid work naturally, don't force none */
+    }
+
+    /* Force .ird-container to be centered and contained */
+    .ird-container {
+        display: block !important;
+        width: 90% !important;
+        max-width: 1000px !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+
+    /* Center the Box and Card explicitly */
+    #irdBox,
+    .ird-box {
+        margin: 0 auto !important;
+    }
+
+    .description-card {
+        margin: 3rem auto !important;
+        /* Override inline style */
+        width: 100% !important;
+        max-width: 800px !important;
+        /* Prevent too wide reading line */
+    }
+
+    /* Clean up old unused rules */
+    .ird-page {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .report-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #vectors-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #timeline-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #exposure-value-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #attack-vector-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #business-impact-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #inaction-scenario-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #closing-window-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #remediation-route-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #annex-section {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .annex-page {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .annex-footer {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .privacy-link {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* Hide Navigation Buttons */
+    .nav-btn {
+        display: none !important;
+    }
+
+    #navUp {
+        display: none !important;
+    }
+
+    #navDown {
+        display: none !important;
+    }
+
+    .controls-layer {
+        display: none !important;
+    }
+
+    .slide-counter {
+        display: none !important;
+    }
+
+    /* 4. Whitelist Contents */
+    .cover-wrapper * {
+        visibility: visible !important;
+        /* Let inherited display properties work, or force if needed. 
+           Avoiding 'display: block' blanket to preserve internal flex structures. */
+    }
+
+    /* Force specific internal flex structures if lost */
+    .cover-wrapper .hero-top,
+    .cover-wrapper .tag,
+    .cover-wrapper .meta-block,
+    .cover-wrapper svg {
+        display: flex !important;
     }
 }
 
 /* Custom Page Numbering Overlay - Start at 1 */
 /* Custom Page Numbering Overlay - REMOVED for Playwright Footer Template */
 /* @media print { body::after { ... } } */
+
+/* --- FIX: SCREEN LAYOUT RESTORATION --- */
+/* Restore Breakout Margins for Vectors Section (Screen Only) */
+@media screen {
+
+    .vectors-section,
+    #vectors-section {
+        width: 100vw !important;
+        margin-left: calc(-50vw + 50%) !important;
+        margin-right: calc(-50vw + 50%) !important;
+        left: 0 !important;
+        right: 0 !important;
+        max-width: 100vw !important;
+        position: relative !important;
+    }
+}

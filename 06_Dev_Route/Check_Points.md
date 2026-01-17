@@ -63,7 +63,12 @@
 *   **V93:** Closing Window Section (Full-Slide Isolation, Premium Redesign, Aggressive Compaction).
 *   **V2.0 STABLE:** Annex Master Grid (Perfect Alignment), Vertical Fit (Slide View), 30px Footer Breathing Room. Stable Point Declared.
 *   **V2.1 PDF Prototype:** Generated Letter-Landscape PDF with Playwright. Solved zero-margins, fixed vector layout, and implemented CSS-based page numbering.
-*   **V2.2 PDF Refinement (Phase 0):** Achieved perfect "Empty Canvas" with solid Navy background (Gradient Removed). Implemented Playwright-native pagination with absolute positioning (1.0cm margins) and CSS reset to guarantee pixel-perfect symmetry. **Status: Phase 0 Complete. Ready for IRD Integration.**
+*   **V2.2 PDF Refinement (Phase 0):** Achieved perfect "Empty Canvas" with solid Navy background (Gradient Removed). Implemented Playwright-native pagination with absolute positioning (1.0cm margins) and CSS reset to guarantee pixel-perfect symmetry. **Status: Phase 0 Complete.**
+*   **V2.3 Timeline & Slides (Phase 4):**
+    *   **Timeline:** "Elegant" Visuals (Neon Light Beam + Tech Nodes). Content simplified (App Name Only).
+    *   **Layout:** Fixed Overflow in Exposure Table (switched to `width: 100%` + `border-box`).
+    *   **Order:** Corrected Sequence (Vectors -> Timeline -> Exposure).
+    *   **Status:** PDF Generation Stable. Ready for Phase 5.
 
 ---
 

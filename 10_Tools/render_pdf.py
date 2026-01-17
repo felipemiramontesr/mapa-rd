@@ -4,7 +4,7 @@ from playwright.sync_api import sync_playwright
 def render_pdf():
     # Define paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    html_path = os.path.join(base_dir, "report_engine", "out", "MAPA-RD-Template.html")
+    html_path = os.path.join(base_dir, "report_engine", "out", "MAPA-RD-V2-PRINT.html")
     output_path = os.path.join(base_dir, "04_Data", "reports", "MAPA-RD_V2.pdf")
     
     # Ensure output directory exists
@@ -34,8 +34,8 @@ def render_pdf():
                 <style>
                     * { margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; }
                 </style>
-                <div style="width: 100%; height: 100%; position: relative; background-color: #0a0e27; -webkit-print-color-adjust: exact;">
-                    <div style="position: absolute; right: 1.0cm; bottom: 1.0cm; font-size: 12px; line-height: 1; font-family: 'Arial Narrow', sans-serif; color: rgba(255, 255, 255, 0.5); white-space: nowrap;">
+                <div style="width: 100%; height: 100%; position: relative; background-color: transparent; -webkit-print-color-adjust: exact;">
+                    <div style="position: absolute; right: 1.0cm; bottom: 1.0cm; font-size: 10px; line-height: 1; font-family: sans-serif; color: rgba(255, 255, 255, 0.5); white-space: nowrap;">
                         Página <span class="pageNumber"></span> de <span class="totalPages"></span>
                     </div>
                 </div>
@@ -43,7 +43,7 @@ def render_pdf():
             margin={
                 "top": "0px",
                 "right": "0px",
-                "bottom": "1.5cm", # Safe Zone guarantees no overlap
+                "bottom": "0px", 
                 "left": "0px"
             }
         )

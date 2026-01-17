@@ -10,5 +10,9 @@
         "smtp_pass": "password",
         "smtp_tls": true,
         "sender_email": "noreply@example.com"
+    },
+    "google_cse": {
+        "api_key": "YOUR_GOOGLE_CSE_API_KEY",
+        "cx": "YOUR_GOOGLE_CSE_ID"
     }
 }
