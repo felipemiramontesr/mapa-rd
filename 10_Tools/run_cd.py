@@ -23,9 +23,10 @@ def verify_integrity():
     print("[CD] Verifying build integrity...")
     # Check essential files exist in build
     required = [
-        os.path.join(BUILD_DIR, 'src', 'orchestrator.py'),
-        os.path.join(BUILD_DIR, 'src', 'report_generator.py'),
-        os.path.join(BUILD_DIR, 'templates', 'mapa-rd.tex')
+        os.path.join(BUILD_DIR, '07_Src', 'orchestrator.py'),
+        os.path.join(BUILD_DIR, 'report_engine', 'run_report.py'),
+        os.path.join(BUILD_DIR, 'main.py'),
+        os.path.join(BUILD_DIR, 'requirements.txt')
     ]
     for r in required:
         if not os.path.exists(r):
@@ -34,16 +35,23 @@ def verify_integrity():
     return True
 
 def main():
-    print("\n[CD] STARTING CONTINUOUS DEPLOYMENT (SIMULATION)...")
+    print("\n[CD] STARTING CONTINUOUS DEPLOYMENT (BUILD PACKAGE)...")
     
     try:
         clean_build_dir()
         
         # Deploy Core Source
-        copy_artifacts('07_Src', 'src')
+        copy_artifacts('07_Src', '07_Src')
         
-        # Deploy Templates
-        copy_artifacts('08_Templates', 'templates')
+        # Deploy Report Engine (The new "Elite" engine)
+        copy_artifacts('report_engine', 'report_engine')
+        
+        # Deploy Config Scaffolding
+        copy_artifacts('03_Config', '03_Config')
+
+        # Deploy Root Files
+        shutil.copy(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'main.py'), BUILD_DIR)
+        shutil.copy(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'requirements.txt'), BUILD_DIR)
         
         # Verify
         if verify_integrity():
@@ -54,6 +62,8 @@ def main():
             
     except Exception as e:
         print(f"[CD] ERROR: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 if __name__ == "__main__":

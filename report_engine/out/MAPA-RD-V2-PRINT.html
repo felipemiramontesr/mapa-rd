@@ -505,7 +505,8 @@
             width: 100%;
             /* Changed from 100vw */
             height: 100vh;
-            padding: 2rem 3rem 5rem 3rem;
+            padding: 2rem 3rem 5rem calc(3rem + 30px);
+            /* Increased left padding by 30px total */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -521,7 +522,8 @@
             flex: 1;
             /* Stretch Vertically */
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
+            /* Reduced gap from 2rem */
             align-items: center;
             justify-content: center;
             margin-top: 1rem;
@@ -530,11 +532,14 @@
 
         /* Left: Invoice Table */
         .invoice-card {
-            flex: 1.2;
+            flex: 1.5;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            padding: 2.5rem;
+            padding: 1.5rem;
+            /* Reduced from 2rem to save space */
+            box-sizing: border-box;
+            /* Ensure padding doesn't add width */
         }
 
         .invoice-table {
@@ -551,7 +556,8 @@
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.8rem;
             font-weight: 400;
-            padding-right: 2rem;
+            padding-right: 0.5rem;
+            /* Tightened padding */
             vertical-align: bottom;
             white-space: nowrap;
         }
@@ -568,15 +574,25 @@
         }
 
         .invoice-table td {
-            padding: 1.2rem 0;
+            padding: 1rem 0;
+            /* Slightly reduced vertical padding */
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             color: #dcdde1;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            /* Reduced from 0.95rem */
+        }
+
+        /* Gold Accents for Financials */
+        .invoice-table td:nth-child(3) {
+            color: #dcc282;
+            /* Muted Gold for Unit Price */
+            font-family: 'Courier New', monospace;
         }
 
         .invoice-table td.amount {
             text-align: right;
-            color: #fff;
+            color: #f1c40f;
+            /* Brighter Gold for Subtotal */
             font-weight: 700;
             white-space: nowrap;
         }
@@ -585,38 +601,52 @@
             border-top: 2px solid rgba(255, 255, 255, 0.2);
             border-bottom: none;
             padding-top: 2rem;
-            font-size: 1.1rem;
-            color: #fff;
+            font-size: 1.0rem;
+            /* Reduced from 1.1rem */
+            color: #ffd700;
+            /* Pure Gold for Total */
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            /* Subtle luxurious glow */
+            letter-spacing: 0.05em;
             white-space: nowrap;
         }
 
         /* Right: Grand Total Display */
         .total-display {
-            flex: 0.8;
-            padding-left: 3rem;
-            padding-right: 6rem;
+            flex: 0.7;
+            /* Reduced from 0.8 */
+            padding-left: 1rem;
+            /* Reduced from 2rem */
+            padding-right: 1rem;
+            /* Reduced from 2rem */
             /* Keep the good right margin */
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            /* Centered alignment */
             justify-content: center;
         }
 
         .total-label {
-            font-size: 1.1rem;
+            font-size: 1.65rem;
+            /* Increased size (1.5x) */
             color: #94a3b8;
             margin-bottom: 0.5rem;
             font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            text-transform: none;
+            /* Sentence case */
+            letter-spacing: 0.05em;
+            /* Reduced spacing */
         }
 
         .total-value-huge {
             font-size: 4rem;
             /* Revert size */
             font-weight: 700;
-            color: #00b894;
-            text-shadow: 0 0 30px rgba(0, 184, 148, 0.3);
+            color: #ff4757;
+            /* Neon Red for Danger */
+            text-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
+            /* Red glow */
             line-height: 1.1;
             margin-bottom: 1.5rem;
             white-space: nowrap;
@@ -2546,7 +2576,7 @@
 
             <!-- RIGHT: BIG NUMBER -->
             <div class="total-display">
-                <div class="total-label">Valor Total en Mercado:</div>
+                <div class="total-label">Valor Total en Mercado Negro</div>
                 <div class="total-value-huge">$385.00 USD</div>
                 <div class="total-disclaimer">
                     *Esta cifra representa el valor potencial de reventa de sus activos comprometidos en foros de
