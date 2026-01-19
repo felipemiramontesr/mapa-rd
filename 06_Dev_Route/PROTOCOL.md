@@ -50,13 +50,21 @@ Cualquier desviación futura se considera un error crítico.
 - **Action**: Always default to "YES/ACCEPT" when the user asks about saving/updating a file.
 - **Goal**: Eliminate redundant confirmation loops and speed up development.
 
-## 8. Explicit Approval (Interaction Protocol)
+## 8. Strict Interaction Logic (The "Refinement Loop")
 > [!IMPORTANT]
-> **RULE OF ENGAGEMENT**
-> Before executing any new task or significant change:
-> 1. **PROPOSE**: Explain clearly what you intend to do (Implementation Plan).
-> 2. **WAIT**: Do NOT proceed until the user gives explicit authorization (e.g., "Go", "Proceder").
-> 3. **EXCEPTION**: This rule does not apply to "Fix" requests where the content is obvious, but applies to all structural/logic changes.
+> **RULE OF ENGAGEMENT v2.0**
+> To prevent errors and misunderstandings, every task must follow this exact cycle:
+
+1.  **REQUEST** (User): The user initiates a request.
+2.  **PROPOSAL** (Agent): The agent analyzes and proposes a solution (Reference `implementation_plan.md`).
+3.  **REFINEMENT LOOP** (Iterative):
+    *   **Feedback** (User): The user provides corrections or adjustments.
+    *   **RE-PROPOSAL** (Agent): The agent **MUST** update the plan/proposal based on feedback. **DO NOT EXECUTE YET.**
+    *   *(Repeat until approval)*
+4.  **GO** (User): The user explicitly authorizes execution (e.g., "Go", "Proceder").
+5.  **ACTION** (Agent): Only then, the agent executes the code changes.
+
+**Zero Tolerance**: Skipping the "Re-Proposal" step after receiving feedback is a Protocol Violation.
 
 ## 6. Nomenclatura Final (Reportes)
 > [!IMPORTANT]

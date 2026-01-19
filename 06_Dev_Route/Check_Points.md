@@ -75,6 +75,11 @@
     *   **Visuals:** Harmonized Vector Cards (Dynamic Risk Colors, Sentence Case Descriptions).
     *   **Refinements:** Timeline Spacing Optimized (4rem gap).
     *   **Status:** FULL CD DEPLOYMENT.
+*   **V3.0.15b Business Impact:**
+    *   **New Section:** "Impacto Directo al Negocio" added (translating technical risk to strategic impact).
+    *   **Visuals:** 2x2 Grid, Glassmorphism (Transparent), Circular Icons (50% Radius), Subtle RGBA Borders.
+    *   **Layout:** Extreme Spacing Optimized (8.75rem Header Margin) for clean print layout.
+    *   **Fixes:** Resolved `@media print` conflicts and Flexbox oval distortion.
 
 ---
 
