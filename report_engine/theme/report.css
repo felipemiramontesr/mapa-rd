@@ -3389,3 +3389,11 @@ h3,
         position: relative !important;
     }
 }
+
+/* Resilience Spacing Fix */
+.resilience-subtext {
+    margin-top: 1.5rem !important;
+    display: block;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}

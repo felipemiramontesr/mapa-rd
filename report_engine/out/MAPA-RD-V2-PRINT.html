@@ -17,7 +17,8 @@
     <style>
         @page {
             margin: 0 !important;
-            size: landscape;
+            size: 11in 8.5in;
+            /* Explicit Letter Landscape to prevent rotation issues */
         }
 
         body,
@@ -1797,8 +1798,273 @@
             width: 100%;
             text-align: left;
             font-size: 0.75rem;
+        }
+    </style>
+
+    <style>
+        /* APPENDIX STYLES (v3.0.19) */
+
+        /* Fix for unwanted border/line & Pagination */
+        .appendix-header,
+        .appendix-title,
+        .appendix-subtitle {
+            border: none !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Ensure H2 specifically has no border if global styles apply it */
+        .appendix-page h2,
+        .appendix-header h2 {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* Pagination Visibility on Dark Background */
+        .appendix-page .page-number {
+            color: rgba(255, 255, 255, 0.5) !important;
+            position: absolute;
+            bottom: 2rem;
+            right: 3rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            z-index: 100;
+        }
+
+        .appendix-page {
+            width: 100%;
+            height: 100vh;
+            background: #0a0e27;
+            color: #f8fafc;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            page-break-before: always;
+            position: relative;
+        }
+
+        .appendix-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .appendix-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            /* Standardized Header Style */
+            color: #fff;
+            background: none;
+            -webkit-text-fill-color: initial;
+            text-align: center;
+        }
+
+        .appendix-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
             color: #64748b;
-            margin-top: 0.8rem;
+        }
+
+        /* METHODOLOGY GRID (Page 27) */
+        .methodology-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            flex-grow: 1;
+        }
+
+        .method-section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+            /* text-transform: uppercase; REMOVED */
+            letter-spacing: 0.05em;
+            /* Border removed per visual cleanup request */
+            /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+            padding-bottom: 0.5rem;
+        }
+
+        .method-desc {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+            min-height: 4.5rem;
+            /* Strict Alignment: Approx 3 lines of text */
+        }
+
+        .formula-box {
+            background: rgba(162, 155, 254, 0.05);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem 0.5rem;
+            /* Reduced lateral padding to fit formula in one line */
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #ffd700;
+            /* Gold for formula */
+            min-height: 5rem;
+            /* Strict Alignment: Force equal height for boxes */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .formula-label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            text-transform: none;
+            /* Explicitly disabled uppercase */
+            letter-spacing: 0.05em;
+        }
+
+        /* Variables Grid */
+        .variables-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .var-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .var-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .var-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .var-multiplier {
+            background: rgba(162, 155, 254, 0.2);
+            color: #a29bfe;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .var-desc {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.3;
+        }
+
+        .matrix-header-title {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 0;
+            padding-top: 0.8rem;
+            /* Calibrated adjustment */
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Matrix Weights */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .matrix-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+        }
+
+        .matrix-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .matrix-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .matrix-value {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+
+        /* GLOSSARY & LEGAL (Page 28) */
+        .glossary-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            flex-grow: 1;
+        }
+
+        .term-item {
+            margin-bottom: 1.2rem;
+            /* Border removed per visual cleanup request */
+            /* border-bottom: 1px solid rgba(255, 255, 255, 0.05); */
+            padding-bottom: 1.2rem;
+        }
+
+        .term-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #a29bfe;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .term-def {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .legal-box {
+            margin-top: 2rem;
+            /* Border removed per visual cleanup request */
+            /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
+            padding-top: 1.5rem;
+        }
+
+        .legal-text {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        .appendix-footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #475569;
+            padding-top: 1rem;
         }
     </style>
 </head>
@@ -3946,6 +4212,202 @@
         </div>
         <div class="resilience-subtext">Nivel de protección estimado tras completar la ruta sugerida en este reporte.
         </div>
+    </div>
+
+    <!-- Page 27: Anexo Técnico Metodología -->
+    <div class="pdf-page appendix-page">
+        <div class="appendix-header">
+            <h2 class="appendix-title">Anexo Técnico</h2>
+            <p class="appendix-subtitle">Metodología, Definiciones y Estándares de Cálculo</p>
+        </div>
+
+        <div class="methodology-container">
+            <!-- Left: IRV -->
+            <div class="method-col">
+                <h3 class="method-section-title">Índice de Riesgo del Vector (IRV)</h3>
+                <p class="method-desc">
+                    El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la
+                    necesidad operativa de cierre. Se calcula internamente mediante un modelo ponderado de seis
+                    dimensiones.
+                </p>
+
+                <div class="formula-box">
+                    <span class="formula-label">Fórmula de cálculo</span>
+                    IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+                </div>
+
+                <div class="variables-grid">
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Criticidad (CA)</span>
+                            <span class="var-multiplier">x4</span>
+                        </div>
+                        <p class="var-desc">Importancia crítica del activo para la continuidad del negocio.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Exposición (ET)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Superficie (SE)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Facilidad de acceso desde redes públicas o privadas.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Impacto (IM)</span>
+                            <span class="var-multiplier">x4</span>
+                        </div>
+                        <p class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Explotación (FE)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Recursos y complejidad técnica requerida para el ataque.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Detección (DV)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: IRD -->
+            <div class="method-col">
+                <h3 class="method-section-title">Índice de Riesgo Digital (IRD)</h3>
+                <p class="method-desc">
+                    El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores
+                    activos
+                    mediante un promedio ponderado por severidad.
+                </p>
+
+                <div class="formula-box">
+                    <span class="formula-label">Agregación ponderada</span>
+                    IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
+                </div>
+
+                <h4 class="matrix-header-title">Matriz de pesos (severidad)</h4>
+
+                <div class="matrix-grid">
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #74b9ff;"></div>
+                        <span class="matrix-label">Bajo</span>
+                        <span class="matrix-value">x1</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #ffeaa7;"></div>
+                        <span class="matrix-label">Medio</span>
+                        <span class="matrix-value">x2</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #ff9f43;"></div>
+                        <span class="matrix-label">Alto</span>
+                        <span class="matrix-value">x3</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #ff7675;"></div>
+                        <span class="matrix-label">Crítico</span>
+                        <span class="matrix-value">x4</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #a29bfe;"></div>
+                        <span class="matrix-label">Máximo</span>
+                        <span class="matrix-value">x5</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 28: Anexo Técnico Glosario & Legal -->
+    <div class="pdf-page appendix-page">
+        <div class="appendix-header">
+            <h2 class="appendix-title">Anexo Técnico</h2>
+            <p class="appendix-subtitle">Referencias, Glosario y Aviso Legal</p>
+        </div>
+
+        <div class="glossary-container">
+            <!-- Col 1 -->
+            <div class="glossary-col">
+                <div class="term-item">
+                    <div class="term-title">Stealer Logs</div>
+                    <div class="term-def">
+                        Registros extraídos por malware ("infostealers") que infecta dispositivos personales o
+                        corporativos.
+                        Estos logs contienen contraseñas guardadas en navegadores, cookies de sesión y datos de
+                        autocompletado.
+                    </div>
+                </div>
+                <div class="term-item">
+                    <div class="term-title">Combo List</div>
+                    <div class="term-def">
+                        Compilaciones masivas de credenciales (usuario:contraseña) provenientes de múltiples brechas de
+                        seguridad antiguas y nuevas.
+                        Se utilizan para ataques automatizados de "Credential Stuffing" contra diversos servicios.
+                    </div>
+                </div>
+                <div class="term-item">
+                    <div class="term-title">PII (Personal Identifiable Information)</div>
+                    <div class="term-def">
+                        Cualquier dato que pueda identificar a un individuo específico, como RFC, CURP, dirección
+                        física,
+                        número de teléfono o huella biométrica. Su exposición facilita el robo de identidad.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Col 2 -->
+            <div class="glossary-col">
+                <div class="term-item">
+                    <div class="term-title">Botnet</div>
+                    <div class="term-def">
+                        Red de dispositivos infectados controlados remotamente por un atacante. Los dispositivos
+                        "zombis"
+                        se usan para robar datos, enviar spam o realizar ataques DDoS sin que el propietario lo sepa.
+                    </div>
+                </div>
+                <div class="term-item">
+                    <div class="term-title">Texto Plano (Plain Text)</div>
+                    <div class="term-def">
+                        Almacenamiento de contraseñas u otros datos sensibles sin ningún tipo de cifrado o protección
+                        matemática.
+                        Si la base de datos es vulnerada, los datos son legibles inmediatamente.
+                    </div>
+                </div>
+
+                <div class="legal-box">
+                    <h3 class="method-section-title" style="font-size: 0.9rem; border: none; margin-bottom: 0.5rem;">
+                        Aviso Legal y Limitación de Responsabilidad</h3>
+                    <p class="legal-text">
+                        Este reporte ha sido generado utilizando técnicas de Inteligencia de Fuentes Abiertas (OSINT) y
+                        análisis pasivo de datos públicamente accesibles en "Clear Web", "Deep Web" y "Dark Web".
+                        <br><br>
+                        <strong>Naturaleza No Intrusiva:</strong> En ningún momento se han realizado ataques activos,
+                        intentos de intrusión, ingeniería social o evasión de controles de seguridad contra la
+                        infraestructura del Cliente.
+                        <br><br>
+                        <strong>Propósito:</strong> La información contenida tiene fines estrictamente preventivos y de
+                        concienciación.
+                        El proveedor no se hace responsable del uso indebido de esta información por terceros.
+                        <br><br>
+                        <strong>Confidencialidad:</strong> Este documento contiene datos sensibles y está clasificado
+                        como ESTRICTAMENTE CONFIDENCIAL.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="appendix-footer">Report ID: RPT-2026-002-FINAL &middot; Integrity Hash: SHA256-VALIDATED</div>
     </div>
 
     <!-- Pagination Script -->

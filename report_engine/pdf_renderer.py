@@ -26,7 +26,7 @@ class PDFRenderer:
             page.pdf(
                 path=output_path,
                 format="Letter",
-                landscape=True,
+                landscape=False,
                 print_background=True,
                 prefer_css_page_size=True,
                 display_header_footer=False,
