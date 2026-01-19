@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAPA-RD | PDF PRINT v3.0 Stable</title>
+    <title>MAPA-RD | PDF PRINT v3.0.1</title>
 
     <!-- Load Inter Font Explicitly -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -315,6 +315,7 @@
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 1rem;
+            color: var(--risk-color);
         }
 
         .vec-id {
@@ -346,10 +347,7 @@
         .vec-row-meta {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 1rem;
-            border-radius: 6px;
+            gap: 1.5rem;
         }
 
         .vec-meta-box {
@@ -364,6 +362,7 @@
             font-weight: 700;
             letter-spacing: 0.05em;
         }
+
 
         .vec-meta-val {
             font-size: 0.9rem;
@@ -428,6 +427,13 @@
             justify-content: flex-start !important;
             /* Top align */
             box-sizing: border-box;
+        }
+
+        /* Timeline Header Spacing Override */
+        .timeline-page .vector-global-header {
+            margin-bottom: 4rem !important;
+            flex-shrink: 0;
+            /* Prevent shrinking */
         }
 
         .timeline-container {
@@ -890,26 +896,33 @@
         }
 
         .vec-id {
-            font-family: 'Courier New', monospace;
+            font-family: inherit;
             font-weight: 700;
-            color: #a29bfe;
-            /* Lavender accent */
-            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.05);
+            /* Match risk level badge transparency */
+            border: 1px solid currentColor;
+            color: inherit;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
             letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
         }
 
         .vec-title {
             font-size: 1.4rem;
-            font-weight: 600;
+            font-weight: 700;
             color: #fff;
             text-align: center;
             flex-grow: 1;
+            padding: 0 1rem;
         }
 
         .vec-badge {
-            background: rgba(162, 155, 254, 0.1);
-            border: 1px solid #a29bfe;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid currentColor;
+            color: inherit;
             padding: 0.4rem 0.8rem;
             border-radius: 4px;
             font-size: 0.9rem;
@@ -917,17 +930,19 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
 
         /* Row 2: Metadata Grid */
         .vec-row-meta {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .vec-meta-box {
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Unified border style */
             border-radius: 4px;
             padding: 1rem;
             text-align: center;
@@ -937,10 +952,9 @@
         .vec-meta-label {
             display: block;
             font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #94a3b8;
+            color: var(--risk-color);
             margin-bottom: 0.3rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.05em;
         }
 
@@ -958,7 +972,8 @@
         }
 
         .vec-detail-col {
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Unified border style */
             border-radius: 4px;
             padding: 1.5rem;
             background: rgba(0, 0, 0, 0.2);
@@ -967,15 +982,13 @@
 
         .vec-col-header {
             font-size: 0.8rem;
-            text-transform: uppercase;
-            color: #54a0ff;
-            /* Blue accent for headers */
+            color: var(--risk-color);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
             font-weight: 700;
             text-align: center;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.05em;
         }
 
         .vec-list {
@@ -1016,7 +1029,8 @@
 
         /* Row 4: Description Footer */
         .vec-row-desc {
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Unified border style */
             border-radius: 4px;
             padding: 1.5rem;
             background: rgba(0, 0, 0, 0.2);
@@ -1025,8 +1039,8 @@
 
         .vec-desc-header {
             font-size: 0.8rem;
-            text-transform: uppercase;
-            color: #94a3b8;
+            /* text-transform: uppercase; Removed for Sentence case */
+            color: var(--risk-color);
             margin-bottom: 0.5rem;
             font-weight: 600;
             letter-spacing: 0.05em;
@@ -1283,7 +1297,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #a29bfe;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -1298,15 +1312,15 @@
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Sector Financiero</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Identidad Bancaria</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Filtración Masiva (2024)</span>
                 </div>
             </div>
@@ -1315,7 +1329,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Activar alertas biométricas en banca móvil.</li>
                         <li>Revisar historial crediticio (Buró de Crédito).</li>
@@ -1325,7 +1339,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Robo de Identidad Bancaria y Fiscal (RFC).</li>
                         <li>Ingeniería Social dirigida de alta precisión.</li>
@@ -1336,7 +1350,7 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Exposición crítica de datos personales y financieros incluyendo saldos de cuenta, RFC, domicilio
                     físico y números de teléfono. Esta información facilita el robo de identidad y fraude bancario
@@ -1360,7 +1374,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #a29bfe;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -1375,15 +1389,15 @@
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Identidad Digital</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Botnet Logs</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Credential Stuffing (2025)</span>
                 </div>
             </div>
@@ -1392,7 +1406,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Cambio global de contraseñas de manera inmediata.</li>
                         <li>Uso gestor de contraseñas para evitar reutilización.</li>
@@ -1403,7 +1417,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Compromiso automatizado de cuentas en diversos servicios.</li>
                         <li>Evasión de controles de seguridad básicos.</li>
@@ -1415,7 +1429,7 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     El correo y contraseñas asociadas aparecen en listas de amenazas activas de 'Credential Stuffing'
                     (Synthient). Esto indica que los datos están siendo probados activamente contra múltiples servicios.
@@ -1438,7 +1452,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #a29bfe;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -1453,15 +1467,15 @@
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Hosting Web</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Servicio de Infraestructura</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Texto Plano (2015)</span>
                 </div>
             </div>
@@ -1470,7 +1484,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Abandonar el uso de esa contraseña específica definitivamente.</li>
                         <li>Verificar integridad de sitios web antiguos.</li>
@@ -1481,7 +1495,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Acceso inmediato a cuentas con la misma contraseña.</li>
                         <li>Rastreo de actividad por dirección IP.</li>
@@ -1493,7 +1507,7 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Filtración de base de datos completa exponiendo contraseñas almacenadas en texto plano, junto con
                     nombres y direcciones IP. Permite acceso directo sin necesidad de descifrado.
@@ -1508,7 +1522,7 @@
 
 
 
-    <!-- PAGE 6: VECTOR SLIDE (VEC-004) -->
+    <!-- PAGE 6: VECTOR SLIDE (VEC-007) -->
     <div class="pdf-page vector-page">
 
         <div class="vector-global-header">
@@ -1516,31 +1530,31 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #a29bfe;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
-                <div class="vec-id">VEC-004</div>
-                <div class="vec-title">Adobe: Compromiso de Credenciales</div>
+                <div class="vec-id">VEC-007</div>
+                <div class="vec-title">Nitro PDF: Documentos y Claves</div>
                 <div class="vec-badge">
-                    <span>75</span>
-                    <span>CRÍTICO</span>
+                    <span>82</span>
+                    <span>MÁXIMO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
-                    <span class="vec-meta-val">Cuenta Adobe ID</span>
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Productividad</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Software SaaS</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
-                    <span class="vec-meta-val">Base de Datos (2013)</span>
+                    <span class="vec-meta-label">Exposición:</span>
+                    <span class="vec-meta-val">Base de Datos (2020)</span>
                 </div>
             </div>
 
@@ -1548,21 +1562,21 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
-                        <li>Actualizar cuenta de Adobe si sigue activa.</li>
-                        <li>No utilizar pistas de contraseña que revelen información real.</li>
+                        <li>Revisar documentos almacenados en la nube de Nitro.</li>
+                        <li>Cambiar contraseña y desvincular sesiones.</li>
 
                     </ol>
                 </div>
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
-                        <li>Deducción de patrones de contraseñas personales.</li>
-                        <li>Ataques dirigidos a cuentas creativas/profesionales.</li>
-                        <li>Spam y phishing dirigido.</li>
+                        <li>Espionaje corporativo o personal.</li>
+                        <li>Acceso a documentos sensibles almacenados.</li>
+                        <li>Fraude documental.</li>
 
                     </ul>
                 </div>
@@ -1570,10 +1584,10 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
-                    Brecha histórica masiva exponiendo usuarios, contraseñas cifradas y, críticamente, las pistas de
-                    contraseña (password hints) en texto plano, lo que facilita la deducción de claves.
+                    Compromiso de servicio de gestión documental. Además de credenciales, existe riesgo sobre metadatos
+                    de documentos procesados.
                 </div>
             </div>
 
@@ -1585,7 +1599,7 @@
 
 
 
-    <!-- PAGE 7: VECTOR SLIDE (VEC-005) -->
+    <!-- PAGE 7: VECTOR SLIDE (VEC-006) -->
     <div class="pdf-page vector-page">
 
         <div class="vector-global-header">
@@ -1593,7 +1607,84 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #a29bfe;">
+
+            <!-- ROW 1: HEADER -->
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-006</div>
+                <div class="vec-title">Collection #1: Mega-Brecha</div>
+                <div class="vec-badge">
+                    <span>80</span>
+                    <span>MÁXIMO</span>
+                </div>
+            </div>
+
+            <!-- ROW 2: METADATA -->
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Múltiples Servicios</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Agregador de Brechas</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Exposición:</span>
+                    <span class="vec-meta-val">Data Dump Masivo (2019)</span>
+                </div>
+            </div>
+
+            <!-- ROW 3: SPLIT DETAILS -->
+            <div class="vec-row-details">
+                <!-- RUTA DE CIERRE (Ordered List) -->
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Ruta de cierre</div>
+                    <ol class="vec-list numbered">
+                        <li>Higiene digital completa: cambio masivo de claves.</li>
+                        <li>Uso estricto de gestor de contraseñas.</li>
+
+                    </ol>
+                </div>
+
+                <!-- IMPACTO (Unordered List) -->
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Impacto</div>
+                    <ul class="vec-list">
+                        <li>Exposición universal a actores de amenaza.</li>
+                        <li>Saturación de intentos de login.</li>
+                        <li>Venta de datos en lotes masivos.</li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ROW 4: DESCRIPTION -->
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción del evento</div>
+                <div class="vec-desc-text">
+                    Su correo forma parte de una de las colecciones más grandes de credenciales robadas (773 millones de
+                    registros Unique), distribuidas ampliamente en foros de hacking.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Manual Footer (Page 7) -->
+
+    </div>
+
+
+
+    <!-- PAGE 8: VECTOR SLIDE (VEC-005) -->
+    <div class="pdf-page vector-page">
+
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -1608,15 +1699,15 @@
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Identidad Digital</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Mercado Negro</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Agregador de Brechas (2016)</span>
                 </div>
             </div>
@@ -1625,7 +1716,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Eliminar cuentas en desuso.</li>
                         <li>Verificar actividad en correos secundarios.</li>
@@ -1635,7 +1726,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Alta probabilidad de intentos de acceso automatizados.</li>
                         <li>Reutilización de credenciales en servicios bancarios/correo.</li>
@@ -1646,87 +1737,10 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Aparición en 'Combo Lists' utilizadas por cibercriminales para ataques de fuerza bruta automatizados
                     contra múltiples plataformas.
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Manual Footer (Page 7) -->
-
-    </div>
-
-
-
-    <!-- PAGE 8: VECTOR SLIDE (VEC-006) -->
-    <div class="pdf-page vector-page">
-
-        <div class="vector-global-header">
-            <h2>Vectores de Vulnerabilidad</h2>
-            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
-        </div>
-
-        <div class="vector-main-card">
-
-            <!-- ROW 1: HEADER -->
-            <div class="vec-row-header">
-                <div class="vec-id">VEC-006</div>
-                <div class="vec-title">Collection #1: Mega-Brecha</div>
-                <div class="vec-badge">
-                    <span>80</span>
-                    <span>CRÍTICO</span>
-                </div>
-            </div>
-
-            <!-- ROW 2: METADATA -->
-            <div class="vec-row-meta">
-                <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
-                    <span class="vec-meta-val">Múltiples Servicios</span>
-                </div>
-                <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
-                    <span class="vec-meta-val">Agregador de Brechas</span>
-                </div>
-                <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
-                    <span class="vec-meta-val">Data Dump Masivo (2019)</span>
-                </div>
-            </div>
-
-            <!-- ROW 3: SPLIT DETAILS -->
-            <div class="vec-row-details">
-                <!-- RUTA DE CIERRE (Ordered List) -->
-                <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
-                    <ol class="vec-list numbered">
-                        <li>Higiene digital completa: cambio masivo de claves.</li>
-                        <li>Uso estricto de gestor de contraseñas.</li>
-
-                    </ol>
-                </div>
-
-                <!-- IMPACTO (Unordered List) -->
-                <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
-                    <ul class="vec-list">
-                        <li>Exposición universal a actores de amenaza.</li>
-                        <li>Saturación de intentos de login.</li>
-                        <li>Venta de datos en lotes masivos.</li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ROW 4: DESCRIPTION -->
-            <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
-                <div class="vec-desc-text">
-                    Su correo forma parte de una de las colecciones más grandes de credenciales robadas (773 millones de
-                    registros Unique), distribuidas ampliamente en foros de hacking.
                 </div>
             </div>
 
@@ -1738,7 +1752,7 @@
 
 
 
-    <!-- PAGE 9: VECTOR SLIDE (VEC-007) -->
+    <!-- PAGE 9: VECTOR SLIDE (VEC-004) -->
     <div class="pdf-page vector-page">
 
         <div class="vector-global-header">
@@ -1746,14 +1760,14 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
-                <div class="vec-id">VEC-007</div>
-                <div class="vec-title">Nitro PDF: Documentos y Claves</div>
+                <div class="vec-id">VEC-004</div>
+                <div class="vec-title">Adobe: Compromiso de Credenciales</div>
                 <div class="vec-badge">
-                    <span>82</span>
+                    <span>75</span>
                     <span>CRÍTICO</span>
                 </div>
             </div>
@@ -1761,16 +1775,16 @@
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
-                    <span class="vec-meta-val">Productividad</span>
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Cuenta Adobe ID</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Software SaaS</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
-                    <span class="vec-meta-val">Base de Datos (2020)</span>
+                    <span class="vec-meta-label">Exposición:</span>
+                    <span class="vec-meta-val">Base de Datos (2013)</span>
                 </div>
             </div>
 
@@ -1778,21 +1792,21 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
-                        <li>Revisar documentos almacenados en la nube de Nitro.</li>
-                        <li>Cambiar contraseña y desvincular sesiones.</li>
+                        <li>Actualizar cuenta de Adobe si sigue activa.</li>
+                        <li>No utilizar pistas de contraseña que revelen información real.</li>
 
                     </ol>
                 </div>
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
-                        <li>Espionaje corporativo o personal.</li>
-                        <li>Acceso a documentos sensibles almacenados.</li>
-                        <li>Fraude documental.</li>
+                        <li>Deducción de patrones de contraseñas personales.</li>
+                        <li>Ataques dirigidos a cuentas creativas/profesionales.</li>
+                        <li>Spam y phishing dirigido.</li>
 
                     </ul>
                 </div>
@@ -1800,10 +1814,10 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
-                    Compromiso de servicio de gestión documental. Además de credenciales, existe riesgo sobre metadatos
-                    de documentos procesados.
+                    Brecha histórica masiva exponiendo usuarios, contraseñas cifradas y, críticamente, las pistas de
+                    contraseña (password hints) en texto plano, lo que facilita la deducción de claves.
                 </div>
             </div>
 
@@ -1823,7 +1837,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -1838,15 +1852,15 @@
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Banco de Imágenes</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Servicio Web</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Base de Datos (2020)</span>
                 </div>
             </div>
@@ -1855,7 +1869,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Verificar privacidad en redes sociales.</li>
                         <li>Estar alerta ante correos/llamadas sospechosas.</li>
@@ -1865,7 +1879,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Doxing (publicación de datos privados).</li>
                         <li>Acoso o localización física.</li>
@@ -1877,7 +1891,7 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Filtración que incluye direcciones físicas, teléfonos y direcciones IP, combinados con datos de
                     cuenta. Aumenta la superficie para ataques de ingeniería social.
@@ -1892,7 +1906,7 @@
 
 
 
-    <!-- PAGE 11: VECTOR SLIDE (VEC-009) -->
+    <!-- PAGE 11: VECTOR SLIDE (VEC-010) -->
     <div class="pdf-page vector-page">
 
         <div class="vector-global-header">
@@ -1900,31 +1914,31 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
-                <div class="vec-id">VEC-009</div>
-                <div class="vec-title">MyFitnessPal: Datos de Perfil</div>
+                <div class="vec-id">VEC-010</div>
+                <div class="vec-title">Canva: Datos de Diseño y Geo</div>
                 <div class="vec-badge">
-                    <span>65</span>
-                    <span>ALTA</span>
+                    <span>68</span>
+                    <span>CRÍTICO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
-                    <span class="vec-meta-val">Salud / Lifestyle</span>
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Diseño Gráfico</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
-                    <span class="vec-meta-val">Aplicación Móvil</span>
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">SaaS</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
-                    <span class="vec-meta-val">Brecha Masiva (2018)</span>
+                    <span class="vec-meta-label">Exposición:</span>
+                    <span class="vec-meta-val">Base de Datos (2019)</span>
                 </div>
             </div>
 
@@ -1932,20 +1946,20 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
-                        <li>Cambiar contraseña si es compartida.</li>
-                        <li>Desvincular integraciones con redes sociales.</li>
+                        <li>Cambiar contraseña y activar MFA.</li>
+                        <li>Revisar actividad reciente en la cuenta.</li>
 
                     </ol>
                 </div>
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
-                        <li>Perflado de usuario para marketing o estafas.</li>
-                        <li>Acceso lateral a otras cuentas.</li>
+                        <li>Correlación geográfica.</li>
+                        <li>Ataques de phishing temáticos (diseño/marketing).</li>
 
                     </ul>
                 </div>
@@ -1953,10 +1967,9 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
-                    Exposición de correos, usuarios y contraseñas. Aunque no incluye datos financieros, permite
-                    correlacionar hábitos y rutinas del usuario.
+                    Exposición de datos de usuario, ubicación geográfica y hashes de contraseña.
                 </div>
             </div>
 
@@ -1968,7 +1981,7 @@
 
 
 
-    <!-- PAGE 12: VECTOR SLIDE (VEC-010) -->
+    <!-- PAGE 12: VECTOR SLIDE (VEC-009) -->
     <div class="pdf-page vector-page">
 
         <div class="vector-global-header">
@@ -1976,31 +1989,31 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
-                <div class="vec-id">VEC-010</div>
-                <div class="vec-title">Canva: Datos de Diseño y Geo</div>
+                <div class="vec-id">VEC-009</div>
+                <div class="vec-title">MyFitnessPal: Datos de Perfil</div>
                 <div class="vec-badge">
-                    <span>68</span>
-                    <span>ALTA</span>
+                    <span>65</span>
+                    <span>CRÍTICO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
-                    <span class="vec-meta-val">Diseño Gráfico</span>
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Salud / Lifestyle</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
-                    <span class="vec-meta-val">SaaS</span>
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Aplicación Móvil</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
-                    <span class="vec-meta-val">Base de Datos (2019)</span>
+                    <span class="vec-meta-label">Exposición:</span>
+                    <span class="vec-meta-val">Brecha Masiva (2018)</span>
                 </div>
             </div>
 
@@ -2008,20 +2021,20 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
-                        <li>Cambiar contraseña y activar MFA.</li>
-                        <li>Revisar actividad reciente en la cuenta.</li>
+                        <li>Cambiar contraseña si es compartida.</li>
+                        <li>Desvincular integraciones con redes sociales.</li>
 
                     </ol>
                 </div>
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
-                        <li>Correlación geográfica.</li>
-                        <li>Ataques de phishing temáticos (diseño/marketing).</li>
+                        <li>Perflado de usuario para marketing o estafas.</li>
+                        <li>Acceso lateral a otras cuentas.</li>
 
                     </ul>
                 </div>
@@ -2029,9 +2042,10 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
-                    Exposición de datos de usuario, ubicación geográfica y hashes de contraseña.
+                    Exposición de correos, usuarios y contraseñas. Aunque no incluye datos financieros, permite
+                    correlacionar hábitos y rutinas del usuario.
                 </div>
             </div>
 
@@ -2051,7 +2065,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -2059,22 +2073,22 @@
                 <div class="vec-title">Animoto: Datos Personales</div>
                 <div class="vec-badge">
                     <span>60</span>
-                    <span>ALTA</span>
+                    <span>CRÍTICO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Edición de Video</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">SaaS</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Base de Datos (2018)</span>
                 </div>
             </div>
@@ -2083,7 +2097,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Monitorear preguntas de seguridad en otros servicios.</li>
 
@@ -2092,7 +2106,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Uso de fecha de nacimiento para recuperar otras cuentas.</li>
                         <li>Suplantación de identidad básica.</li>
@@ -2103,10 +2117,87 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Inclusión de fechas de nacimiento y geolocalización junto a credenciales. La fecha de nacimiento es
                     un dato crítico para verificaciones de seguridad.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Manual Footer (Page 13) -->
+
+    </div>
+
+
+
+
+    <!-- PAGE 13: VECTOR SLIDE (VEC-013) -->
+    <div class="pdf-page vector-page">
+
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+
+        <div class="vector-main-card" style="--risk-color: #ff9f43;">
+
+            <!-- ROW 1: HEADER -->
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-013</div>
+                <div class="vec-title">Manipulated Caiman: Blanco de Phishing</div>
+                <div class="vec-badge">
+                    <span>58</span>
+                    <span>ALTO</span>
+                </div>
+            </div>
+
+            <!-- ROW 2: METADATA -->
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Email Personal</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Campaña de Amenaza</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Exposición:</span>
+                    <span class="vec-meta-val">Target List (2023)</span>
+                </div>
+            </div>
+
+            <!-- ROW 3: SPLIT DETAILS -->
+            <div class="vec-row-details">
+                <!-- RUTA DE CIERRE (Ordered List) -->
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Ruta de cierre</div>
+                    <ol class="vec-list numbered">
+                        <li>Extrema precaución con adjuntos y enlaces.</li>
+                        <li>Mejorar filtros de spam/seguridad en el correo.</li>
+
+                    </ol>
+                </div>
+
+                <!-- IMPACTO (Unordered List) -->
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Impacto</div>
+                    <ul class="vec-list">
+                        <li>Recepción de correos maliciosos altamente personalizados.</li>
+                        <li>Riesgo de infección por malware.</li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ROW 4: DESCRIPTION -->
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción del evento</div>
+                <div class="vec-desc-text">
+                    Su dirección de correo ha sido identificada en listas de objetivos de la campaña de phishing
+                    'Manipulated Caiman', enfocada en usuarios de México.
                 </div>
             </div>
 
@@ -2126,7 +2217,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff9f43;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -2134,22 +2225,22 @@
                 <div class="vec-title">Dropbox: Hash de Contraseñas</div>
                 <div class="vec-badge">
                     <span>55</span>
-                    <span>ALTA</span>
+                    <span>ALTO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Almacenamiento Cloud</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Infraestructura</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Base de Datos (2012)</span>
                 </div>
             </div>
@@ -2158,7 +2249,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Asegurar que la contraseña fue cambiada post-2016.</li>
                         <li>Activar 2FA en Dropbox obligatoriamente.</li>
@@ -2168,7 +2259,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Intento de descifrado de hashes antiguos.</li>
                         <li>Reutilización histórica.</li>
@@ -2179,91 +2270,16 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
-                    Brecha antigua pero relevante por la popularidad del servicio. Se filtraron hashes de contraseñas.
+                    Brecha antigua pero relevante por la popularidad del servicio. Se filtraron hashes de
+                    contraseñas.
                 </div>
             </div>
 
         </div>
 
         <!-- Manual Footer (Page 14) -->
-
-    </div>
-
-
-
-    <!-- PAGE 15: VECTOR SLIDE (VEC-013) -->
-    <div class="pdf-page vector-page">
-
-        <div class="vector-global-header">
-            <h2>Vectores de Vulnerabilidad</h2>
-            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
-        </div>
-
-        <div class="vector-main-card">
-
-            <!-- ROW 1: HEADER -->
-            <div class="vec-row-header">
-                <div class="vec-id">VEC-013</div>
-                <div class="vec-title">Manipulated Caiman: Blanco de Phishing</div>
-                <div class="vec-badge">
-                    <span>58</span>
-                    <span>ALTA</span>
-                </div>
-            </div>
-
-            <!-- ROW 2: METADATA -->
-            <div class="vec-row-meta">
-                <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
-                    <span class="vec-meta-val">Email Personal</span>
-                </div>
-                <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
-                    <span class="vec-meta-val">Campaña de Amenaza</span>
-                </div>
-                <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
-                    <span class="vec-meta-val">Target List (2023)</span>
-                </div>
-            </div>
-
-            <!-- ROW 3: SPLIT DETAILS -->
-            <div class="vec-row-details">
-                <!-- RUTA DE CIERRE (Ordered List) -->
-                <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
-                    <ol class="vec-list numbered">
-                        <li>Extrema precaución con adjuntos y enlaces.</li>
-                        <li>Mejorar filtros de spam/seguridad en el correo.</li>
-
-                    </ol>
-                </div>
-
-                <!-- IMPACTO (Unordered List) -->
-                <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
-                    <ul class="vec-list">
-                        <li>Recepción de correos maliciosos altamente personalizados.</li>
-                        <li>Riesgo de infección por malware.</li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ROW 4: DESCRIPTION -->
-            <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
-                <div class="vec-desc-text">
-                    Su dirección de correo ha sido identificada en listas de objetivos de la campaña de phishing
-                    'Manipulated Caiman', enfocada en usuarios de México.
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Manual Footer (Page 15) -->
 
     </div>
 
@@ -2277,7 +2293,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff9f43;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -2285,22 +2301,22 @@
                 <div class="vec-title">GeekedIn: Perfil Profesional</div>
                 <div class="vec-badge">
                     <span>45</span>
-                    <span>MEDIA</span>
+                    <span>ALTO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Desarrollo Profesional</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Scraping</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Base de Datos (2016)</span>
                 </div>
             </div>
@@ -2309,7 +2325,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Verificar legitimidad de reclutadores.</li>
 
@@ -2318,7 +2334,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Ofertas de trabajo falsas (Job Scams).</li>
                         <li>Ingeniería social basada en perfil laboral.</li>
@@ -2329,7 +2345,7 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Exposición de datos profesionales: habilidades, experiencia y ubicación. Útil para reclutadores
                     falsos o ingeniería social corporativa.
@@ -2352,7 +2368,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ff9f43;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -2360,22 +2376,22 @@
                 <div class="vec-title">Twitter (200M): Identidad Social</div>
                 <div class="vec-badge">
                     <span>40</span>
-                    <span>MEDIA</span>
+                    <span>ALTO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Red Social</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">Perfil Público</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Scraping/API (2021)</span>
                 </div>
             </div>
@@ -2384,7 +2400,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Desvincular teléfono/email de la búsqueda pública.</li>
                         <li>Usar alias de correo para redes sociales.</li>
@@ -2394,7 +2410,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Desanonimización de cuentas.</li>
                         <li>Acoso selectivo.</li>
@@ -2406,7 +2422,7 @@
 
             <!-- ROW 4: DESCRIPTION -->
             <div class="vec-row-desc">
-                <div class="vec-desc-header">DESCRIPCIÓN DEL EVENTO</div>
+                <div class="vec-desc-header">Descripción del evento</div>
                 <div class="vec-desc-text">
                     Asociación del correo electrónico con el perfil de Twitter (X). Permite vincular la identidad
                     seudónima con la real.
@@ -2429,7 +2445,7 @@
             <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
         </div>
 
-        <div class="vector-main-card">
+        <div class="vector-main-card" style="--risk-color: #ffeaa7;">
 
             <!-- ROW 1: HEADER -->
             <div class="vec-row-header">
@@ -2437,22 +2453,22 @@
                 <div class="vec-title">Trello: Enumeración de Usuarios</div>
                 <div class="vec-badge">
                     <span>35</span>
-                    <span>MEDIA</span>
+                    <span>MODERADO</span>
                 </div>
             </div>
 
             <!-- ROW 2: METADATA -->
             <div class="vec-row-meta">
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">ACTIVO:</span>
+                    <span class="vec-meta-label">Activo:</span>
                     <span class="vec-meta-val">Gestión de Proyectos</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">TIPO:</span>
+                    <span class="vec-meta-label">Tipo:</span>
                     <span class="vec-meta-val">SaaS</span>
                 </div>
                 <div class="vec-meta-box">
-                    <span class="vec-meta-label">EXPOSICIÓN:</span>
+                    <span class="vec-meta-label">Exposición:</span>
                     <span class="vec-meta-val">Scraping (2024)</span>
                 </div>
             </div>
@@ -2461,7 +2477,7 @@
             <div class="vec-row-details">
                 <!-- RUTA DE CIERRE (Ordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">RUTA DE CIERRE</div>
+                    <div class="vec-col-header">Ruta de cierre</div>
                     <ol class="vec-list numbered">
                         <li>Hacer tableros privados si contienen datos sensibles.</li>
                         <li>Ignorar correos genéricos de soporte de Trello.</li>
@@ -2471,7 +2487,7 @@
 
                 <!-- IMPACTO (Unordered List) -->
                 <div class="vec-detail-col">
-                    <div class="vec-col-header">IMPACTO</div>
+                    <div class="vec-col-header">Impacto</div>
                     <ul class="vec-list">
                         <li>Phishing temático de Atlassian/Trello.</li>
                         <li>Confirmación de cuenta activa.</li>
@@ -2846,7 +2862,8 @@
                 <div class="total-label">Valor Total en Mercado Negro</div>
                 <div class="total-value-huge">$385.00 USD</div>
                 <div class="total-disclaimer">
-                    <strong>Asimetría de Riesgo:</strong> Por una inversión trivial, el mercado negro ofrece las llaves
+                    <strong>Asimetría de Riesgo:</strong> Por una inversión trivial, el mercado negro ofrece las
+                    llaves
                     de su organización. Este monto no refleja el valor de sus activos, sino la alarmante facilidad y
                     bajo costo con el que un atacante puede iniciar un incidente catastrófico.
 
@@ -2857,6 +2874,102 @@
 
         <!-- Footer -->
 
+    </div>
+
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vector de ataque</h2>
+            <p>Cómo un atacante usaría esta información</p>
+        </div>
+
+        <div class="dossier-container">
+            <!-- Step 1 -->
+            <div class="dossier-step step-recon">
+                <div class="spine-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="dossier-branch"></div>
+                <div class="step-visual-col">
+                    <div class="dossier-icon">Target</div>
+                    <span class="dossier-phase-label">Fase 01</span>
+                </div>
+                <div class="step-content-col">
+                    <h3 class="dossier-title">Localización</h3>
+                    <p class="dossier-desc">El atacante utiliza bases de datos públicas para correlacionar tu
+                        <strong>Nombre Completo</strong> y <strong>Domicilio</strong> físico, creando un perfil
+                        base.
+                    </p>
+                </div>
+                <div class="step-evidence-col">
+                    <div class="evidence-badge">
+                        <span class="evidence-label">Fuente evidencial</span>
+                        <span class="evidence-value" style="color: #74b9ff;">Banorte Leak + SAT</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="dossier-step step-weapon">
+                <div class="spine-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <div class="dossier-branch"></div>
+                <div class="step-visual-col">
+                    <div class="dossier-icon">Key</div>
+                    <span class="dossier-phase-label">Fase 02</span>
+                </div>
+                <div class="step-content-col">
+                    <h3 class="dossier-title">Armado</h3>
+                    <p class="dossier-desc">Validación automatizada de tus credenciales contra servicios
+                        financieros. Se
+                        configuran scripts con tus <strong>Contraseñas Reales</strong>.</p>
+                </div>
+                <div class="step-evidence-col">
+                    <div class="evidence-badge">
+                        <span class="evidence-label">Log de malware</span>
+                        <span class="evidence-value" style="color: #ffeaa7;">Synthient Stealer</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="dossier-step step-impact">
+                <div class="spine-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                        </path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <div class="dossier-branch"></div>
+                <div class="step-visual-col">
+                    <div class="dossier-icon">Strike</div>
+                    <span class="dossier-phase-label">Fase 03</span>
+                </div>
+                <div class="step-content-col">
+                    <h3 class="dossier-title">Impacto</h3>
+                    <p class="dossier-desc">Ejecución del fraude. Acceso no autorizado a banca móvil, suplantación
+                        ante
+                        el SAT y extracción de recursos financieros.</p>
+                </div>
+                <div class="step-evidence-col">
+                    <div class="evidence-badge"
+                        style="background: rgba(255, 118, 117, 0.1); border-color: rgba(255, 118, 117, 0.3);">
+                        <span class="evidence-label">Estado de riesgo</span>
+                        <span class="evidence-value" style="color: #ff7675;">Ejecución inminente</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Pagination Script -->

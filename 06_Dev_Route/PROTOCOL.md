@@ -209,6 +209,8 @@ El reporte DEBE contener estrictamente las siguientes secciones en este orden ex
 1.  **Hero** (Portada)
 2.  **Índice de Riesgo Digital** (IRD)
 3.  **Vectores de Vulnerabilidad**
+    *   **Regla de Ordenamiento**: Los vectores DEBEN ordenarse estrictamente por **Puntaje de Riesgo Descendente** (Mayor a Menor).
+    *   En caso de empate en puntaje, el orden secundario es alfanumérico por ID o cronológico (reciente primero).
 4.  **Línea de Tiempo de Exposición**
 5.  **Valor de Exposición**
 6.  **Vector de Ataque**

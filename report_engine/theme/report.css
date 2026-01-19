@@ -1530,150 +1530,229 @@ h3,
 
 
 
-/* --- Dossier Section Layout (Restored) --- */
 /* --- Dossier Section Layout (Premium Refinement) --- */
+.vector-page {
+    justify-content: flex-start !important;
+    /* Move content up from center */
+    padding-top: 0.25rem;
+    /* Further reduced to pull content up */
+}
+
+.vector-global-header {
+    margin-bottom: 0.5rem !important;
+    /* Minimal gap between header and first card */
+}
+
+.vector-global-header h2 {
+    margin-bottom: 0.2rem !important;
+}
+
+.vector-global-header p {
+    margin-bottom: 0px !important;
+}
+
+.dossier-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.25rem;
+    opacity: 0.6;
+}
+
 .dossier-container {
     position: relative;
-    padding-left: 3rem;
-    max-width: 1000px;
-    /* Match Invoice Width */
-    margin: 0 auto;
+    padding-left: 5.5rem;
+    /* Increased to accommodate -60px axial shift */
+    max-width: 920px;
+    margin: 0px auto 0;
 }
 
+/* Fragmented Trunk removed central div and moved to pseudo-elements on wrapper */
 .dossier-spine {
-    position: absolute;
-    left: 1rem;
-    top: 20px;
-    bottom: 20px;
-    width: 2px;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    display: none;
 }
+
 
 .dossier-step {
-    background: var(--color-bg-panel);
-    border: 1px solid var(--color-border-strong);
-    backdrop-filter: var(--card-blur);
-    box-shadow: var(--card-shadow);
+    background: rgba(255, 255, 255, 0.03);
+    /* Pure Glass */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    /* Removed black shadow as requested */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: var(--card-radius);
-    padding: 3.5rem 2.5rem;
-    /* Increased height */
+    padding: 2.5rem 2.8rem;
+    /* Optimized height for elegance and air */
     display: flex;
     align-items: center;
     gap: 2rem;
     transition: all 0.3s ease;
-    margin-bottom: 2rem;
-    /* Increased spacing */
+    margin-bottom: 1.2rem;
+    /* Increased air between cards */
     position: relative;
-    /* For z-index context */
 }
 
 .dossier-step:hover {
-    transform: translateX(5px);
-    border-color: rgba(255, 215, 0, 0.3);
-    /* Gold highlight on hover */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transform: translateX(3px);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .spine-icon-wrapper {
     position: absolute;
-    left: -2rem;
-    /* Center on spine (3rem padding - 1rem spine = 2rem, so -2rem centers it) */
+    left: -82px;
+    /* Center locked at -60px (-82 + 22) */
     top: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background: #0a0e27;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 2px solid currentColor;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    z-index: 2;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 0 20px currentColor;
+    /* Vivid Glow */
+}
+
+/* Fragmented Trunk: vertical segments */
+.dossier-step::before,
+.dossier-step::after {
+    content: '';
+    position: absolute;
+    left: -60px;
+    /* SYNCHRONIZED AXIS WITH ICON CENTER */
+    width: 2px;
+    background: currentColor;
+    opacity: 0.4;
+    z-index: 5;
+    transform: translateX(-50%);
+}
+
+.dossier-step::before {
+    top: 0;
+    height: calc(50% - 24px);
+    /* Segment above icon */
+}
+
+.dossier-step::after {
+    bottom: -1.2rem;
+    /* Extend to next card gap */
+    height: calc(50% - 24px + 1.25rem);
+    /* Segment below icon + gap */
+}
+
+/* Cleanup: trunk stops at Phase 03 center */
+.step-recon::before {
+    display: none;
+}
+
+.step-impact::after {
+    display: none;
+}
+
+/* NO LINE BELOW PHASE 03 */
+
+
+/* Don't stick out below last card */
+
+/* Branch: horizontal from icon EDGE (-38px) to card edge */
+.dossier-branch {
+    position: absolute;
+    left: -38px;
+    /* Starts exactly at icon radius border (-60px center + 22px radius) */
+    top: 50%;
+    width: 38px;
+    /* Bridges exact gap to card edge */
+    height: 2px;
+    background: currentColor;
+    opacity: 0.4;
+    z-index: 5;
+    transform: translateY(-50%);
 }
 
 .spine-icon-wrapper svg {
     width: 20px;
     height: 20px;
-    color: #a8adc7;
+    color: currentColor;
     transition: all 0.3s ease;
 }
 
-/* Specific Hover Colors */
-/* Recon - Blue */
-.step-recon:hover {
-    border-color: rgba(116, 185, 255, 0.3);
-}
-
-.step-recon:hover .spine-icon-wrapper {
-    border-color: #74b9ff;
-    box-shadow: 0 0 20px rgba(116, 185, 255, 0.4);
-}
-
-.step-recon:hover .spine-icon-wrapper svg {
+/* Phase Specific Identities */
+.step-recon {
     color: #74b9ff;
+    border-color: rgba(116, 185, 255, 0.2);
 }
 
-/* Weapon - Yellow/Gold */
-.step-weapon:hover {
-    border-color: rgba(255, 234, 167, 0.3);
+.step-recon .dossier-phase-label {
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+    border-color: rgba(116, 185, 255, 0.2);
 }
 
-.step-weapon:hover .spine-icon-wrapper {
-    border-color: #ffeaa7;
-    box-shadow: 0 0 20px rgba(255, 234, 167, 0.4);
-}
-
-.step-weapon:hover .spine-icon-wrapper svg {
+.step-weapon {
     color: #ffeaa7;
+    border-color: rgba(255, 234, 167, 0.2);
 }
 
-/* Impact - Red */
-.step-impact:hover {
-    border-color: rgba(255, 118, 117, 0.3);
+.step-weapon .dossier-phase-label {
+    background: rgba(255, 234, 167, 0.1);
+    color: #ffeaa7;
+    border-color: rgba(255, 234, 167, 0.2);
 }
 
-.step-impact:hover .spine-icon-wrapper {
-    border-color: #ff7675;
-    box-shadow: 0 0 20px rgba(255, 118, 117, 0.4);
-}
-
-.step-impact:hover .spine-icon-wrapper svg {
+.step-impact {
     color: #ff7675;
+    border-color: rgba(255, 118, 117, 0.2);
 }
+
+.step-impact .dossier-phase-label {
+    background: rgba(255, 118, 117, 0.1);
+    color: #ff7675;
+    border-color: rgba(255, 118, 117, 0.2);
+}
+
+.dossier-step:hover {
+    border-color: currentColor;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
 
 /* Columns */
 .step-visual-col {
-    flex: 0 0 80px;
+    flex: 0 0 60px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
-    padding-right: 1.5rem;
+    padding-right: 1rem;
     margin-right: 0.5rem;
 }
 
 .dossier-icon {
     font-size: 0.7rem;
     font-weight: 700;
-    color: #a8adc7;
+    color: currentColor;
     margin-bottom: 0.5rem;
-    text-transform: uppercase;
     letter-spacing: 1px;
+    opacity: 0.8;
 }
 
 .dossier-phase-label {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: #5a6fa0;
     font-family: 'Courier New', monospace;
-    font-weight: 700;
-    padding: 0.2rem 0.6rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
     background: rgba(90, 111, 160, 0.1);
+    border: 1px solid rgba(90, 111, 160, 0.2);
     border-radius: 4px;
+    letter-spacing: 1px;
 }
 
 .step-content-col {
@@ -1681,15 +1760,16 @@ h3,
 }
 
 .dossier-title {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #fff;
-    margin-bottom: 0.75rem;
+    color: currentColor;
+    /* Inherit phase color */
+    margin-bottom: 0.6rem;
     letter-spacing: 1px;
 }
 
 .dossier-desc {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #b2bec3;
     line-height: 1.6;
 }
@@ -1700,8 +1780,7 @@ h3,
 }
 
 .step-evidence-col {
-    flex: 0 0 240px;
-    /* Slightly wider */
+    flex: 0 0 200px;
     display: flex;
     justify-content: flex-end;
 }
@@ -1709,8 +1788,8 @@ h3,
 .evidence-badge {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    border-radius: 6px;
+    padding: 0.9rem;
+    border-radius: 4px;
     width: 100%;
     text-align: right;
 }
@@ -1726,7 +1805,7 @@ h3,
 
 .evidence-value {
     font-family: 'Courier New', monospace;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
 }
 

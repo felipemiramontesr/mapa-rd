@@ -70,6 +70,11 @@
     *   **Refinements:** Exposure Section styling finalized (Gold Accents, Neon Red Total, +30px Margin).
     *   **Order:** Corrected Sequence (Vectors -> Timeline -> Exposure).
     *   **Status:** PDF Generation Stable & Polished. Ready for Deployment.
+*   **V3.0 (v3.0.14) Stable Release:**
+    *   **Protocol:** Mandatory "Descending Risk Sort" Rule implemented.
+    *   **Visuals:** Harmonized Vector Cards (Dynamic Risk Colors, Sentence Case Descriptions).
+    *   **Refinements:** Timeline Spacing Optimized (4rem gap).
+    *   **Status:** FULL CD DEPLOYMENT.
 
 ---
 
