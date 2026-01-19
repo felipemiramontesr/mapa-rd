@@ -94,6 +94,12 @@
     *   **Standards**: Global Sentence Case enforcement (Removed all-caps from labels and risk badges).
     *   **Status: FULL CI/CD DEPLOYMENT.**
 
+*   **V3.0.18f Ruta de cierre consolidada (Simple & Human):**
+    *   **Copywriting**: Replaced 100% of technical jargon (e.g., "OAuth", "Legacy") with plain-language actions.
+    *   **Accessibility**: "Human-First" approach focused on tangible user benefits rather than protocols.
+    *   **Fit**: Maintained perfect layout distribution despite text changes.
+    *   **Status: FULL CI/CD DEPLOYMENT.**
+
 ---
 
 ## 🗺️ Roadmap de Tareas

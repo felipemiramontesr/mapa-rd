@@ -1659,6 +1659,147 @@
         .phase-shielding .action-item::before {
             background: #e74c3c;
         }
+
+        /* RUTA DE CIERRE CONSOLIDADA (v3.0.18) */
+        .consolidated-page {
+            padding: 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            background: #0a0e27;
+        }
+
+        .consolidated-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .consolidated-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            flex-grow: 1;
+            /* Ensure cards fill grid height */
+            transition: all 0.3s ease;
+        }
+
+        .consolidated-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .consolidated-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.8rem;
+        }
+
+        .consolidated-icon {
+            width: 32px;
+            height: 32px;
+            color: #a29bfe;
+        }
+
+        .consolidated-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .remediation-checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Distribute items to fill space */
+            flex-grow: 1;
+            /* Take all available card height */
+        }
+
+        .remediation-item {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #94a3b8;
+            align-items: flex-start;
+        }
+
+        .remediation-item svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: #2ecc71;
+        }
+
+        /* RESILIENCE FOOTER (v3.0.18b) */
+        .resilience-footer {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 1.2rem;
+            background: rgba(162, 155, 254, 0.05);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resilience-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #a29bfe;
+            letter-spacing: 0.02em;
+        }
+
+        .resilience-target {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .resilience-bar-bg {
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 2rem;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .resilience-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 95%;
+            background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+            border-radius: 3px;
+        }
+
+        .resilience-subtext {
+            width: 100%;
+            text-align: left;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.8rem;
+        }
     </style>
 </head>
 
@@ -3634,6 +3775,176 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: RUTA DE CIERRE CONSOLIDADA (v3.0.18) -->
+    <div class="pdf-page consolidated-page">
+        <div class="vector-global-header">
+            <h2>Ruta de cierre consolidada</h2>
+            <p>Resumen ejecutivo de acciones prioritarias por dominio</p>
+        </div>
+
+        <div class="consolidated-grid">
+            <!-- Card 1: Identidad Digital -->
+            <div class="consolidated-card">
+                <div class="consolidated-header">
+                    <div class="consolidated-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="consolidated-title">Identidad digital</div>
+                </div>
+                <ul class="remediation-checklist">
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Cambio de contraseñas del correo principal.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Activar verificación en 2 pasos (WhatsApp/Email).
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Usar un gestor de claves seguro.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Revisar qué apps tienen acceso a tu cuenta.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Borrar cuentas de sitios que ya no usas.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Seguridad Financiera -->
+            <div class="consolidated-card">
+                <div class="consolidated-header">
+                    <div class="consolidated-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="consolidated-title">Seguridad financiera</div>
+                </div>
+                <ul class="remediation-checklist">
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Bloqueo de consultas en Buró de Crédito.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Activar notificaciones por cualquier gasto ($0).
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Solicitar reposición de tarjetas expuestas.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Bajar límites de gasto diario en la App.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Vincular huella/rostro en la app del banco.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Higiene & Privacidad -->
+            <div class="consolidated-card">
+                <div class="consolidated-header">
+                    <div class="consolidated-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <div class="consolidated-title">Higiene & privacidad</div>
+                </div>
+                <ul class="remediation-checklist">
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Cerrar sesión en todos los dispositivos.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Ocultar ubicación y datos en redes sociales.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Revisar estados de cuenta cada semana.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Imprimir y guardar códigos de recuperación.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Asegurar teléfono con PIN de 6 dígitos.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Resilience Anchor Footer -->
+        <div class="resilience-footer">
+            <div class="resilience-label">Meta de resiliencia</div>
+            <div class="resilience-bar-bg">
+                <div class="resilience-bar-fill"></div>
+            </div>
+            <div class="resilience-label">Nivel proyectado: <span class="resilience-target">95/100</span></div>
+        </div>
+        <div class="resilience-subtext">Nivel de protección estimado tras completar la ruta sugerida en este reporte.
         </div>
     </div>
 
