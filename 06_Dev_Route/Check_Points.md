@@ -88,12 +88,11 @@
     *   **Style:** Strict Sentence Case (No All-Caps), No quotation marks, 1px subtle borders, no shadows.
     *   **Optimization:** Ultra-compact spacing ensuring single-page fit without page-jump or paginator overlap.
     *   **Status:** FULL CI/CD DEPLOYMENT.
-*   **V3.0.17 Ventana de cierre (Stable):**
-    *   **New Section:** "Ventana de cierre" redesigned as a 3-phase actionable roadmap.
-    *   **Layout:** 3 Horizontal Cards (2-column internal: Phase/Time | Action List).
-    *   **Standards:** Strict Sentence Case, No quotes, 1px subtle accents, box-shadow removed.
-    *   **Fit:** Single-page optimization (Page 25).
-    *   **Alignment (v3.0.17e):** Unified 220px meta column for perfect vertical line alignment. Premium 2.5rem header spacing.
+*   **V3.0.17b Ventana de cierre (Stable Final):**
+    *   **Layout**: Redesigned 3-phase actionable roadmap with 100% background color consistency (`#0a0e27`).
+    *   **Fit**: Single-page optimization (0.8rem card padding + 10% inter-bullet line-height).
+    *   **Standards**: Global Sentence Case enforcement (Removed all-caps from labels and risk badges).
+    *   **Status: FULL CI/CD DEPLOYMENT.**
 
 ---
 
