@@ -1356,6 +1356,168 @@
                 break-inside: avoid;
                 /* Visuals inherited from main CSS */
             }
+
+            .inaction-page {
+                break-inside: avoid;
+            }
+        }
+
+        /* INACTION SCENARIO (v3.0.16b) */
+        .inaction-page {
+            padding: 3rem 3rem 1rem 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.5rem !important;
+        }
+
+        .inaction-container {
+            width: 100%;
+            display: block;
+        }
+
+        .inaction-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .inaction-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 0.8rem 1.75rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            margin-bottom: 0.5rem;
+            box-shadow: none !important;
+        }
+
+        .inaction-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 1.5rem;
+            text-align: center;
+        }
+
+        .inaction-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .inaction-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .inaction-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            /* text-transform: uppercase; REMOVED */
+            line-height: 1.2;
+        }
+
+        .inaction-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .highlight-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .inaction-body p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .inaction-footer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            /* text-transform: uppercase; REMOVED */
+        }
+
+        /* Category Accents */
+        .phrase-past {
+            border-left: 1px solid #3498db;
+        }
+
+        .phrase-past .inaction-icon svg {
+            stroke: #3498db;
+        }
+
+        .status-luck {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+
+        .phrase-present {
+            border-left: 1px solid #f1c40f;
+        }
+
+        .phrase-present .inaction-icon svg {
+            stroke: #f1c40f;
+        }
+
+        .status-warning {
+            background: rgba(241, 196, 15, 0.1);
+            color: #f1c40f;
+        }
+
+        .phrase-future {
+            border-left: 1px solid #e74c3c;
+        }
+
+        .phrase-future .inaction-icon svg {
+            stroke: #e74c3c;
+        }
+
+        .status-critical {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .inaction-connector {
+            display: none;
+            /* Removed for non-linear grid */
         }
     </style>
 </head>
@@ -3179,6 +3341,84 @@
                     <h3 class="impact-title">Regulatorio</h3>
                     <p class="impact-desc">Sanciones legales severas por violaciones a la LFPDPPP, GDPR y normativas de
                         protección.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: INACTION SCENARIO (v3.0.16b) -->
+    <div class="pdf-page inaction-page">
+        <div class="vector-global-header">
+            <h2>Escenario de inacción</h2>
+            <p>La trampa de latencia: por qué no ha pasado nada no significa seguridad</p>
+        </div>
+
+        <div class="inaction-container">
+            <div class="inaction-grid">
+                <!-- Phase 1: Past -->
+                <div class="inaction-card phrase-past">
+                    <div class="inaction-header">
+                        <div class="inaction-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="inaction-title">Deuda histórica</div>
+                    </div>
+                    <div class="inaction-body">
+                        <h4 class="highlight-text">13 años sin incidentes</h4>
+                        <p>Esto no es seguridad, es suerte operativa. La seguridad por oscuridad
+                            funcionaba cuando los ataques eran manuales y dirigidos.</p>
+                        <div class="inaction-footer">
+                            <span>Estado:</span> <span class="status-badge status-luck">Obsoleto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Present -->
+                <div class="inaction-card phrase-present">
+                    <div class="inaction-header">
+                        <div class="inaction-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="inaction-title">Nueva visibilidad</div>
+                    </div>
+                    <div class="inaction-body">
+                        <h4 class="highlight-text">Automatización e IA</h4>
+                        <p>Hoy, escáneres masivos y bots de IA encuentran vulnerabilidades en segundos. Lo que antes era
+                            invisible, ahora es un blanco automático.</p>
+                        <div class="inaction-footer">
+                            <span>Estado:</span> <span class="status-badge status-warning">Expuesto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Future -->
+                <div class="inaction-card phrase-future">
+                    <div class="inaction-header">
+                        <div class="inaction-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                </path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="inaction-title">Colapso inevitable</div>
+                    </div>
+                    <div class="inaction-body">
+                        <h4 class="highlight-text">Costo exponencial</h4>
+                        <p>Sistemas legados sin soporte no se pueden parchar. Una brecha hoy obliga a una
+                            reconstrucción total (10x costo) en lugar de remediación.</p>
+                        <div class="inaction-footer">
+                            <span>Estado:</span> <span class="status-badge status-critical">Crítico</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

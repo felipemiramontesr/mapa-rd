@@ -80,6 +80,14 @@
     *   **Visuals:** 2x2 Grid, Glassmorphism (Transparent), Circular Icons (50% Radius), Subtle RGBA Borders.
     *   **Layout:** Extreme Spacing Optimized (8.75rem Header Margin) for clean print layout.
     *   **Fixes:** Resolved `@media print` conflicts and Flexbox oval distortion.
+*   **V3.0.16 Inaction Scenario (Stable):**
+    *   **New Section:** "Escenario de inacción" added to address the "Latency Trap".
+    *   **Logic:** Dynamic calculation of "years without incident" (2026 - Oldest Vector Year).
+    *   **Narration:** 3 Conceptual Cards: "Deuda histórica" (Suerte), "Nueva visibilidad" (IA), "Colapso inevitable" (Costo 10x).
+    *   **Visuals:** Horizontal 2-column layout (Icon/Phase | Narrative/Status).
+    *   **Style:** Strict Sentence Case (No All-Caps), No quotation marks, 1px subtle borders, no shadows.
+    *   **Optimization:** Ultra-compact spacing ensuring single-page fit without page-jump or paginator overlap.
+    *   **Status:** FULL CI/CD DEPLOYMENT.
 
 ---
 
