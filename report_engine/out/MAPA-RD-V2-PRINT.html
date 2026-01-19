@@ -1519,6 +1519,146 @@
             display: none;
             /* Removed for non-linear grid */
         }
+
+        /* VENTANA DE CIERRE (v3.0.17) */
+        .closing-page {
+            padding: 2.0rem 3rem 1.0rem 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            background: #0a0a1a;
+        }
+
+        .closing-page .vector-global-header {
+            margin-bottom: 2.2rem !important;
+            transform: scale(0.95);
+        }
+
+        .closing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            width: 100%;
+            page-break-inside: avoid !important;
+        }
+
+        .closing-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            box-shadow: none !important;
+            margin-bottom: 0.2rem;
+        }
+
+        .closing-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 2rem;
+            text-align: right;
+            width: 180px !important;
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+
+        .closing-phase {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            line-height: 1.2;
+        }
+
+        .closing-time {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #f8fafc;
+            line-height: 1;
+            margin: 0.1rem 0;
+            white-space: nowrap;
+        }
+
+        .closing-label {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .action-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .action-item {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #94a3b8;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .action-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .action-bold {
+            display: block;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 0.1rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .action-item strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        /* Phase Accents */
+        .phase-containment {
+            border-left: 1px solid #3498db;
+        }
+
+        .phase-containment .action-item::before {
+            background: #3498db;
+        }
+
+        .phase-sanitization {
+            border-left: 1px solid #f1c40f;
+        }
+
+        .phase-sanitization .action-item::before {
+            background: #f1c40f;
+        }
+
+        .phase-shielding {
+            border-left: 1px solid #e74c3c;
+        }
+
+        .phase-shielding .action-item::before {
+            background: #e74c3c;
+        }
     </style>
 </head>
 
@@ -1579,7 +1719,7 @@
                 <div class="ird-desc-block">
                     <h3>Diagnóstico Operativo</h3>
                     <p>
-                        <strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un <strong>MÁXIMO riesgo
+                        <strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un <strong>Máximo riesgo
                             sistémico</strong>.
                         Datos sensibles (financieros/accesos) están expuestos activamente. Se requiere
                         <strong>contención de emergencia</strong> para evitar fraude inminente.
@@ -1610,7 +1750,7 @@
                 <div class="vec-title">Banorte: Fuga de Datos Bancarios y PII</div>
                 <div class="vec-badge">
                     <span>95</span>
-                    <span>MÁXIMO</span>
+                    <span>Máximo</span>
                 </div>
             </div>
 
@@ -1687,7 +1827,7 @@
                 <div class="vec-title">Synthient: Credenciales Activas</div>
                 <div class="vec-badge">
                     <span>90</span>
-                    <span>MÁXIMO</span>
+                    <span>Máximo</span>
                 </div>
             </div>
 
@@ -1765,7 +1905,7 @@
                 <div class="vec-title">000webhost: Contraseñas en Texto Plano</div>
                 <div class="vec-badge">
                     <span>88</span>
-                    <span>MÁXIMO</span>
+                    <span>Máximo</span>
                 </div>
             </div>
 
@@ -3418,6 +3558,79 @@
                         <div class="inaction-footer">
                             <span>Estado:</span> <span class="status-badge status-critical">Crítico</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: VENTANA DE CIERRE (v3.0.17) -->
+    <div class="pdf-page closing-page">
+        <div class="vector-global-header">
+            <h2>Ventana de cierre</h2>
+            <p>Plan de acción recomendado para la mitigación de riesgos</p>
+        </div>
+
+        <div class="closing-grid">
+            <!-- Fase 1: Contención -->
+            <div class="closing-card phase-containment">
+                <div class="closing-meta">
+                    <span class="closing-phase">Fase 1</span>
+                    <span class="closing-time">0-24 h</span>
+                    <span class="closing-label">Contención inmediata</span>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-bold">Cambio inteligente de credenciales</span>
+                        Implementa una frase de seguridad robusta (ej. MiPerroComeCereal2024) en tu cuenta de correo
+                        principal para detener el acceso inmediato.
+                    </div>
+                    <div class="action-item">
+                        <span class="action-bold">Doble candado (2FA)</span>
+                        Activa la verificación en 2 pasos en WhatsApp y banca móvil. Prioriza el uso de una app
+                        autenticadora sobre los mensajes SMS.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 2: Saneamiento -->
+            <div class="closing-card phase-sanitization">
+                <div class="closing-meta">
+                    <span class="closing-phase">Fase 2</span>
+                    <span class="closing-time">24-72 h</span>
+                    <span class="closing-label">Ventana táctica</span>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-bold">Cierre global de sesiones</span>
+                        Accede a la configuración de seguridad de Google, Facebook y bancos para forzar el cierre de
+                        sesión en todos los dispositivos no reconocidos.
+                    </div>
+                    <div class="action-item">
+                        <span class="action-bold">Alertas transaccionales totales</span>
+                        Configura tu banca móvil para recibir notificaciones por cargos de cualquier monto para detectar
+                        intentos de validación de tarjeta.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 3: Blindaje -->
+            <div class="closing-card phase-shielding">
+                <div class="closing-meta">
+                    <span class="closing-phase">Fase 3</span>
+                    <span class="closing-time">30 días</span>
+                    <span class="closing-label">Estrategia a largo plazo</span>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-bold">Candado crediticio (Buró)</span>
+                        Solicita el servicio de bloqueo en Buró de Crédito para impedir consultas no autorizadas o
+                        apertura de créditos sin tu consentimiento.
+                    </div>
+                    <div class="action-item">
+                        <span class="action-bold">Higiene digital recurrente</span>
+                        Establece una rutina de revisión semanal de estados de cuenta para detectar cargos hormiga antes
+                        de un fraude mayor.
                     </div>
                 </div>
             </div>
