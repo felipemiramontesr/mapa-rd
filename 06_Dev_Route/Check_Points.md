@@ -2,10 +2,10 @@
 
 > **Propósito:** Este documento es el "punto de retorno" para entender rápidamente el estado del proyecto, qué se ha logrado y qué sigue.
 
-## 🏁 Estado al: 10 de Enero, 2026
-**Estado Global:** 🟢 **EN CURSO (Lógica de Negocio)**
-**Última Versión:** 1.1.0 (Elite Engineering)
-**Última Versión:** 1.0.0 (Beta Stabilization)
+## 🏁 Estado al: 20 de Enero, 2026
+**Estado Global:** 🟡 **INESTABLE (Reporte v3.1.0)**
+**Última Versión:** 3.1.0 Inestible (HIBP Orchestration)
+**Última Versión Stable:** 3.0.19 (Resilience Fixes)
 
 ---
 
@@ -110,9 +110,9 @@
 ## 🗺️ Roadmap de Tareas
 
 ### 🔥 Por Hacer (Alta Prioridad)
-- [ ] **DATA-01: Inversión HIBP:** Adquirir API Key de Provide HaveIBeenPwned ($4.50). Sin esto, el reporte no detecta lo más valioso (leaks).
-- [ ] **CONFIG-01: Google OSINT:** Configurar la API de Google Custom Search (Capa gratuita) para detectar perfiles sociales.
-- [ ] **TEST-01: Validación Ana Flores:** Re-ejecutar el pipeline para el usuario de prueba una vez activas las llaves.
+- [x] **DATA-01: Inversión HIBP:** API Key Adquirida ($3.50/mo) y Configurada en `config.json`. Validada con reporte comparativo.
+- [ ] **CONFIG-01: Google OSINT:** API Key y CX configurados. **Estado: Pendiente de Propagación (403)**.
+- [ ] **TEST-01: Validación Ana Flores:** Re-ejecutar pipeline (Pendiente de Google).
 
 ### 🔮 Próximos Pasos (Media Prioridad)
 - [ ] **INTAKE-01:** Implementar `IntakeManager` para validación estricta de Textos/Imágenes.

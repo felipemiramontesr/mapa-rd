@@ -1,0 +1,16 @@
+{
+    "next_global_client_id": 2,
+    "clients": {
+        "C001": {
+            "id": "C001",
+            "name": "Felipe de Jesus Miramontes Romero",
+            "normalized_name": "Felipe_de_Jesus_Miramontes_Romero",
+            "folder_name": "MAPA-RD-Felipe_de_Jesus_Miramontes_Romero-C001",
+            "next_report_id": 2,
+            "meta": {
+                "email": "felipemiramontesr@gmail.com",
+                "created_at": "2026-01-20T21:40:35.655368"
+            }
+        }
+    }
+}

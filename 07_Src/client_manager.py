@@ -1,99 +1,173 @@
 import os
 import json
-from state_manager import StateManager
+import re
+from datetime import datetime
+from pathlib import Path
 
 class ClientManager:
-    """Manages client lifecycle and onboarding workflows.
-    
-    This module handles the initial registration of clients, including directory
-    setup, intake generation, and onboarding document creation.
     """
+    Manages client onboarding, ID generation, and directory structures.
+    Follows the nomenclature: MAPA-RD-[ClientName]-[ID]
+    """
+    
+    BASE_PATH = r"c:\Felipe\Projects\Mapa-rd\04_Data\reports"
+    REGISTRY_PATH = r"c:\Felipe\Projects\Mapa-rd\04_Data\client_registry.json"
 
-    def __init__(self) -> None:
-        """Initialize with a StateManager instance."""
-        self.state_manager = StateManager()
+    def __init__(self):
+        self._ensure_infrastructure()
+        self.registry = self._load_registry()
 
-    def create_client_from_request(self, client_name: str, email: str) -> str:
-        """Handle the initial client capture flow (Flow 5.1).
-        
-        Args:
-            client_name: Full name of the client.
-            email: Primary contact email.
-            
-        Returns:
-            The unique client_id.
+    def _ensure_infrastructure(self):
+        """Ensures base report directory exists."""
+        if not os.path.exists(self.BASE_PATH):
+            os.makedirs(self.BASE_PATH)
+
+    def _load_registry(self):
+        """Loads the registry JSON. Creates a default one if missing."""
+        if not os.path.exists(self.REGISTRY_PATH):
+            default_registry = {
+                "next_global_client_id": 1,
+                "clients": {}
+            }
+            with open(self.REGISTRY_PATH, 'w', encoding='utf-8') as f:
+                json.dump(default_registry, f, indent=4)
+            return default_registry
+        else:
+            with open(self.REGISTRY_PATH, 'r', encoding='utf-8') as f:
+                return json.load(f)
+
+    def _save_registry(self):
+        """Saves current state to registry JSON."""
+        with open(self.REGISTRY_PATH, 'w', encoding='utf-8') as f:
+            json.dump(self.registry, f, indent=4)
+
+    def _normalize_name(self, name):
         """
-        client_id = self.state_manager._get_or_create_client_id(client_name)
-        self.state_manager.update_client(client_id, name=client_name, email=email, intake_status="GENERADO")
+        Normalizes client name for folder usage.
+        'Felipe de Jesús' -> 'Felipe_de_Jesus'
+        """
+        import unicodedata
         
-        # Save DATOS_CLIENTE file
-        # Naming: MAPA-RD - DATOS_CLIENTE - IDCLIENTE - NOMBRE - IDREPORTE - FECHA
-        from datetime import datetime
-        now = datetime.now()
-        date_str = now.strftime("%Y-%m-%d")
+        # Replace spaces with underscores
+        name = name.replace(" ", "_")
         
-        safe_name = self.state_manager.sanitize_filename(client_name)
-        datos_filename = f"MAPA-RD - DATOS_CLIENTE - {client_id} - {safe_name} - C-0001 - {date_str}.json"
-        datos_path = os.path.join(self.state_manager.TRACKING_DIR, datos_filename)
+        # Normalize unicode characters (NFD) and strip accents (combining chars)
+        name = unicodedata.normalize('NFKD', name)
+        name = "".join([c for c in name if not unicodedata.combining(c)])
         
-        datos = {
-            "client_id": client_id,
-            "name": client_name,
-            "email": email,
-            "created_at": now.isoformat()
+        # Remove any remaining special chars (keep only alphanumeric and underscores)
+        name = re.sub(r'[^a-zA-Z0-9_]', '', name)
+        
+        return name
+
+    def create_client(self, full_name, email):
+        """
+        Onboards a new client.
+        1. Generates ID (C00X)
+        2. Creates Directory
+        3. Creates Metadata File
+        """
+        normalized_name = self._normalize_name(full_name)
+        
+        # Check if client already exists (by email to avoid duplicates)
+        for cid, data in self.registry["clients"].items():
+            if data["meta"].get("email") == email:
+                print(f"Client already exists: {cid} ({data['folder_name']})")
+                return cid
+
+        # Generate ID
+        numeric_id = self.registry["next_global_client_id"]
+        client_id = f"C{numeric_id:03d}"
+        
+        # Folder Name: MAPA-RD-Nombre-ID
+        folder_name = f"MAPA-RD-{normalized_name}-{client_id}"
+        client_dir = os.path.join(self.BASE_PATH, folder_name)
+
+        # Create Directory
+        if not os.path.exists(client_dir):
+            os.makedirs(client_dir)
+
+        # Create Onboarding Directory
+        # Nomenclature: MAPA-RD-[ClientName]-[ID]-ONBOARDING
+        onboarding_folder = f"{folder_name}-ONBOARDING"
+        os.makedirs(os.path.join(client_dir, onboarding_folder), exist_ok=True)
+
+        # Metadata
+        metadata = {
+            "id": client_id,
+            "name": full_name,
+            "normalized_name": normalized_name,
+            "folder_name": folder_name,
+            "next_report_id": 1,
+            "meta": {
+                "email": email,
+                "created_at": datetime.now().isoformat()
+            }
         }
-        
-        with open(datos_path, 'w', encoding='utf-8') as f:
-            json.dump(datos, f, indent=4, ensure_ascii=False)
-            
-        print(f"[+] DATOS_CLIENTE generated: {datos_filename}")
+
+        # Save Client Metadata File
+        meta_path = os.path.join(client_dir, f"{folder_name}.json")
+        with open(meta_path, 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, indent=4)
+
+        # Update Registry
+        self.registry["clients"][client_id] = metadata
+        self.registry["next_global_client_id"] += 1
+        self._save_registry()
+
+        print(f"Client Created: {client_id} -> {client_dir}")
         return client_id
 
-    def generate_onboarding(self, client_id: str) -> bool:
-        """Generate the Welcome Kit/Onboarding PDF (Flow 5.2).
-        
-        Args:
-            client_id: The ID of the client.
-            
-        Returns:
-            True if generation initiated successfully.
+    def create_report(self, client_id):
         """
-        client = self.state_manager.get_client(client_id)
-        if not client: return False
-        
-        # Logic to generate ONBOARDING PDF would go here
-        # For now, we update status and simulate the file creation
-        print(f"[*] Generating ONBOARDING for {client['name']}...")
-        return True
+        Creates a new report structure for a client.
+        1. Generates Report ID (R00X)
+        2. Creates Subdirectories (raw, PDF)
+        """
+        if client_id not in self.registry["clients"]:
+            raise ValueError(f"Client ID {client_id} not found.")
 
-    def generate_intake_base(self, client_id: str, identity_data: dict) -> bool:
-        """Create the initial Intake JSON baseline (Flow 5.3).
+        client_data = self.registry["clients"][client_id]
         
-        Args:
-            client_id: The ID of the client.
-            identity_data: Dictionary of known identity assets (emails, domains).
-            
-        Returns:
-            True if intake created successfully.
-        """
-        client = self.state_manager.get_client(client_id)
-        if not client: return False
+        # Generate Report ID
+        numeric_rid = client_data["next_report_id"]
+        report_id = f"R{numeric_rid:03d}"
         
-        # Identity data includes emails, phones, etc.
-        # This is a baseline setup
-        intake_data = {
-            "client_info": client,
-            "identity": identity_data,
-            "report_type": "baseline",
-            "status": "GENERADO"
-        }
+        # Date (ISO)
+        today_iso = datetime.now().strftime('%Y-%m-%d')
         
-        # Save INTAKE file
-        intake_path = os.path.join(os.path.dirname(self.state_manager.TRACKING_DIR), 'intake', f"{client_id}.json")
-        os.makedirs(os.path.dirname(intake_path), exist_ok=True)
+        # Folder Name: MAPA-RD-Nombre-CID-RID-Date
+        report_folder_name = f"{client_data['folder_name']}-{report_id}-{today_iso}"
         
-        with open(intake_path, 'w', encoding='utf-8') as f:
-            json.dump(intake_data, f, indent=4, ensure_ascii=False)
-            
-        print(f"[+] INTAKE_BASE generated for {client_id}")
-        return True
+        # Full Path
+        client_dir = os.path.join(self.BASE_PATH, client_data['folder_name'])
+        report_dir = os.path.join(client_dir, report_folder_name)
+        
+        # Create Structure
+        os.makedirs(os.path.join(report_dir, "raw"), exist_ok=True)
+        os.makedirs(os.path.join(report_dir, "PDF"), exist_ok=True)
+        
+        # Update Registry
+        self.registry["clients"][client_id]["next_report_id"] += 1
+        self._save_registry()
+        
+        print(f"Report Infrastructure Created: {report_id} -> {report_dir}")
+        return report_dir
+
+if __name__ == "__main__":
+    # Test Execution
+    manager = ClientManager()
+    
+    # 1. Create Pilot Client
+    print("--- Creating Client ---")
+    cid = manager.create_client(
+        full_name="Felipe de Jesus Miramontes Romero", 
+        email="felipemiramontesr@gmail.com"
+    )
+    
+    # 2. Create First Report (Disabled for Onboarding Test)
+    # print("\n--- Creating Report ---")
+    # report_path = manager.create_report(cid)
+    
+    # print("\nSUCCESS. Infrastructure ready.")
+    print(f"\nSUCCESS. Client Onboarded: {cid}")

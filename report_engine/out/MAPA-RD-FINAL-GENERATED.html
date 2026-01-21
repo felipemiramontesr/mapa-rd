@@ -1,0 +1,3968 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPA-RD | RPT-2026-020</title>
+
+    <!-- Load Inter Font Explicitly -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Use relative path to main CSS -->
+    <link rel="stylesheet" href="../theme/report.css">
+
+    <style>
+        @page {
+            margin: 0 !important;
+            size: 11in 8.5in;
+            /* Explicit Letter Landscape to prevent rotation issues */
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0e27;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            font-family: 'Inter', sans-serif !important;
+            color: #fff;
+        }
+
+        .pdf-page {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            page-break-after: always;
+            overflow: hidden;
+            background-color: #0a0e27;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            -webkit-print-color-adjust: exact;
+            box-sizing: border-box;
+            background-image: none;
+            /* STRICT SOLID */
+        }
+
+        .pdf-page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Allow footer bleed */
+        .pdf-page {
+            overflow: visible !important;
+        }
+
+        /* --- COVER PAGE --- */
+        .pdf-page .cover-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .pdf-page .cover-wrapper .lock-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .pdf-page .cover-wrapper h1 {
+            font-size: 2.8rem;
+            /* Reduced from 3.5rem */
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        /* Fix orphaned words in description */
+        .pdf-page .cover-wrapper .description {
+            max-width: 900px !important;
+            text-wrap: balance;
+        }
+
+        /* --- IRD PAGE DESIGN (SPLIT / SOBER) --- */
+        .ird-slide-content {
+            width: 85%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            /* Spacing between Header and Content */
+        }
+
+        .ird-header-group {
+            width: 100%;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            /* Subtle divider */
+            padding-bottom: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .ird-header-group h2 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            /* Lighter weight */
+            letter-spacing: -0.01em;
+            margin-bottom: 0.25rem;
+            color: #fff;
+        }
+
+        .ird-header-group p {
+            font-size: 1rem;
+            color: #94a3b8;
+            font-weight: 400;
+            /* text-transform: uppercase; Removed */
+            letter-spacing: 0.05em;
+            /* Slightly reduced spacing for mixed case */
+        }
+
+        /* Split Layout Container */
+        .ird-split-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 4rem;
+            /* Breathable gap */
+            height: 400px;
+            /* Fixed visual anchor height */
+        }
+
+        /* LEFT: The Gauge (Smaller, Cleaner) */
+        .ird-hero-score {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            /* Very subtle fill */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Thin sober border */
+            /* No massive blur or shadow */
+            flex-shrink: 0;
+        }
+
+        /* Ring Animation (Subtle) */
+        .ird-hero-score::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 50%;
+            border: 2px solid var(--risk-max);
+            opacity: 0.6;
+        }
+
+        .score-val {
+            font-size: 5rem;
+            /* Reduced from 8rem */
+            font-weight: 600;
+            line-height: 1;
+            color: #fff;
+            /* No text shadow */
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: var(--risk-max);
+        }
+
+        /* RIGHT: Description (Clean Text Block) */
+        .ird-desc-block {
+            background: transparent;
+            /* No boxiness */
+            border: none;
+            padding: 0;
+            max-width: 600px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ird-desc-block h3 {
+            font-size: 0.95rem;
+            /* text-transform: uppercase; Removed */
+            letter-spacing: 0.05em;
+            /* Reduced logic */
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ird-desc-block h3::after {
+            content: '';
+            width: 40px;
+            /* Short accent line */
+            height: 1px;
+            background: var(--risk-max);
+            opacity: 0.5;
+        }
+
+        .ird-desc-block p {
+            font-size: 1.25rem;
+            /* Legible body text */
+            line-height: 1.7;
+            color: #e2e8f0;
+            font-weight: 300;
+        }
+
+        .ird-desc-block strong {
+            font-weight: 600;
+            /* Highlight keywords */
+            color: #fff;
+        }
+
+        /* Hide elements from original CSS that conflict */
+        .nav-btn,
+        .controls-layer,
+        .slide-counter {
+            display: none !important;
+        }
+
+        /* RISK VARIABLES (Hardcoded for Prototype but should match Token) */
+        :root {
+            --risk-max: #a29bfe;
+            /* Purple */
+            --risk-crit: #ff7675;
+            --risk-high: #ff9f43;
+        }
+
+        /* --- VECTOR PAGE DESIGN --- */
+        /* --- VECTOR PAGE DESIGN --- */
+        /* --- VECTOR PAGE DESIGN --- */
+        .vector-page {
+            width: 100%;
+            height: 100vh;
+            padding: 3rem 3rem 4rem 3rem !important;
+            /* Reduced top/bottom padding */
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.5rem !important;
+            /* Reduced gap */
+            box-sizing: border-box;
+        }
+
+        .vector-global-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .vector-global-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .vector-global-header p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            letter-spacing: 0.05em;
+        }
+
+        .vector-main-card {
+            width: 100%;
+            max-width: none;
+            /* Full Width */
+            flex: 1;
+            /* Stretch Vertically */
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem !important;
+            /* Reduced internal padding */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            /* Distribute Vertical Space */
+            margin-bottom: 0.5rem;
+            /* Tiny bottom buffer */
+            gap: 1rem !important;
+            /* Force smaller gap */
+        }
+
+        .vec-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            color: var(--risk-color);
+        }
+
+        .vec-id {
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        .vec-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            flex: 1;
+            margin-left: 1rem;
+        }
+
+        .vec-badge {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--risk-max);
+        }
+
+        .vec-row-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .vec-meta-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .vec-meta-label {
+            font-size: 0.65rem;
+            color: #636e72;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+
+        .vec-meta-val {
+            font-size: 0.9rem;
+            color: #dfe6e9;
+        }
+
+        .vec-row-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .vec-col-header {
+            font-size: 0.75rem;
+            color: #a29bfe;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .vec-list {
+            margin: 0;
+            padding-left: 1.2rem;
+            font-size: 0.85rem;
+            color: #b2bec3;
+            line-height: 1.5;
+        }
+
+        .vec-list.numbered {
+            list-style-type: decimal;
+        }
+
+        .vec-row-desc {
+            background: rgba(255, 255, 255, 0.01);
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #6c5ce7;
+        }
+
+        .vec-desc-header {
+            font-size: 0.7rem;
+            color: #636e72;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .vec-desc-text {
+            font-size: 0.9rem;
+            color: #dfe6e9;
+            line-height: 1.6;
+        }
+
+        /* --- TIMELINE PAGE DESIGN (HORIZON) --- */
+        .timeline-page {
+            width: 100%;
+            height: 100vh;
+            padding: 4rem 3rem 5rem 3rem !important;
+            /* Maximized vertical space with clearance */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start !important;
+            /* Top align */
+            box-sizing: border-box;
+        }
+
+        /* Timeline Header Spacing Override */
+        .timeline-page .vector-global-header {
+            margin-bottom: 4rem !important;
+            flex-shrink: 0;
+            /* Prevent shrinking */
+        }
+
+        .timeline-container {
+            width: 100%;
+            max-width: 100%;
+            /* Fill the padded area */
+            height: auto;
+            /* Remove fixed height */
+            flex-grow: 1;
+            /* Expand to fill available space */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Glass Panel Style with Cosmic Background */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.02);
+            /* Natural Star Field Effect
+               Using multiple gradients with prime-number sizes to create pseudo-randomness
+               and avoid the "grid" look.
+            */
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(162, 155, 254, 0.05) 0%, transparent 60%),
+                /* Nebula */
+                radial-gradient(1.5px 1.5px at 10% 10%, rgba(255, 255, 255, 0.7) 50%, transparent),
+                radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.6) 50%, transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255, 255, 255, 0.8) 50%, transparent),
+                radial-gradient(2.5px 2.5px at 60% 20%, rgba(255, 255, 255, 0.6) 50%, transparent),
+                radial-gradient(1px 1px at 80% 40%, rgba(255, 255, 255, 0.5) 50%, transparent),
+                radial-gradient(2px 2px at 90% 80%, rgba(255, 255, 255, 0.75) 50%, transparent),
+                radial-gradient(1.5px 1.5px at 50% 50%, rgba(255, 255, 255, 0.6) 50%, transparent);
+            background-size: 100% 100%, 550px 550px, 350px 350px, 250px 250px, 150px 150px, 450px 450px, 600px 600px, 400px 400px;
+            background-position: center, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+            background-repeat: repeat;
+        }
+
+        /* The Neon Horizon Line */
+        /* The Neon Horizon Line - ELEGANT STYLE */
+        .timeline-axis {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            /* Thinner, sharper line */
+            background: rgba(255, 255, 255, 0.05);
+            /* Subtle track */
+            z-index: 1;
+        }
+
+        .timeline-axis::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            /* Center glow */
+            left: 5%;
+            /* Fade in start */
+            width: 90%;
+            /* Fade out end */
+            height: 3px;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(162, 155, 254, 0.4) 20%,
+                    rgba(162, 155, 254, 1) 50%,
+                    rgba(162, 155, 254, 0.4) 80%,
+                    transparent 100%);
+            border-radius: 100%;
+            box-shadow: 0 0 15px rgba(162, 155, 254, 0.6);
+            opacity: 1;
+        }
+
+        /* The Year Marker on the Axis - TECH NODE STYLE */
+        .year-marker {
+            width: 14px;
+            height: 14px;
+            background: #0a0e27;
+            /* Dark center */
+            border: 2px solid #a29bfe;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(162, 155, 254, 0.8), inset 0 0 4px rgba(162, 155, 254, 0.5);
+        }
+
+        .year-marker::after {
+            /* Inner glowing dot */
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+
+        /* --- EXPOSURE PAGE DESIGN (INVOICE) --- */
+        .exposure-page {
+            width: 100%;
+            /* Changed from 100vw */
+            height: 100vh;
+            padding: 2rem 3rem 5rem calc(3rem + 30px);
+            /* Increased left padding by 30px total */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            /* Explicit safety */
+        }
+
+        .exposure-content {
+            width: 100%;
+            max-width: none;
+            /* Full Width */
+            flex: 1;
+            /* Stretch Vertically */
+            display: flex;
+            gap: 1rem;
+            /* Reduced gap from 2rem */
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Left: Invoice Table */
+        .invoice-card {
+            flex: 1.5;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            /* Reduced from 2rem to save space */
+            box-sizing: border-box;
+            /* Ensure padding doesn't add width */
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .invoice-table th {
+            text-align: left;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            font-weight: 400;
+            padding-right: 0.5rem;
+            /* Tightened padding */
+            vertical-align: bottom;
+            white-space: nowrap;
+        }
+
+        .invoice-table th:nth-child(2),
+        .invoice-table td:nth-child(2),
+        .invoice-table th:nth-child(3),
+        .invoice-table td:nth-child(3) {
+            text-align: center;
+        }
+
+        .invoice-table th:last-child {
+            text-align: right;
+        }
+
+        .invoice-table td {
+            padding: 1rem 0;
+            /* Slightly reduced vertical padding */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #dcdde1;
+            font-size: 0.85rem;
+            /* Reduced from 0.95rem */
+        }
+
+        /* Gold Accents for Financials */
+        .invoice-table td:nth-child(3) {
+            color: #dcc282;
+            /* Muted Gold for Unit Price */
+            font-family: 'Courier New', monospace;
+        }
+
+        .invoice-table td.amount {
+            text-align: right;
+            color: #f1c40f;
+            /* Brighter Gold for Subtotal */
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .invoice-total-row td {
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            border-bottom: none;
+            padding-top: 2rem;
+            font-size: 1.0rem;
+            /* Reduced from 1.1rem */
+            color: #ffd700;
+            /* Pure Gold for Total */
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            /* Subtle luxurious glow */
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        /* Right: Grand Total Display */
+        .total-display {
+            flex: 0.7;
+            /* Reduced from 0.8 */
+            padding-left: 1rem;
+            /* Reduced from 2rem */
+            padding-right: 1rem;
+            /* Reduced from 2rem */
+            /* Keep the good right margin */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Centered alignment */
+            justify-content: center;
+        }
+
+        .total-label {
+            font-size: 1.65rem;
+            /* Increased size (1.5x) */
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            text-transform: none;
+            /* Sentence case */
+            letter-spacing: 0.05em;
+            /* Reduced spacing */
+        }
+
+        .total-value-huge {
+            font-size: 4rem;
+            /* Revert size */
+            font-weight: 700;
+            color: #ff4757;
+            /* Neon Red for Danger */
+            text-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
+            /* Red glow */
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            white-space: nowrap;
+            padding-right: 20px;
+        }
+
+        .total-disclaimer {
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 400px;
+            line-height: 1.5;
+            border-left: 2px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            text-align: justify;
+            /* Keep justification */
+        }
+
+        /* Grid of Years */
+        .timeline-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .year-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            flex: 1;
+        }
+
+        /* The Year Marker on the Axis */
+        .year-marker {
+            width: 12px;
+            height: 12px;
+            background: #0a0e27;
+            border: 2px solid #a29bfe;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .year-label {
+            position: absolute;
+            top: calc(50% + 15px);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Event Stacks (Top/Bottom) */
+        .event-stack-top {
+            position: absolute;
+            bottom: 50%;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column-reverse;
+            /* Grow upwards */
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .event-stack-bottom {
+            position: absolute;
+            top: 50%;
+            margin-top: 3.5rem;
+            /* Space for year label */
+            display: flex;
+            flex-direction: column;
+            /* Grow downwards */
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        /* Event Cards (Pips) */
+        .event-pip {
+            background: rgba(162, 155, 254, 0.1);
+            border: 1px solid rgba(162, 155, 254, 0.3);
+            padding: 0.4rem 0.6rem;
+            /* Reduced padding */
+            border-radius: 4px;
+            width: 110px;
+            /* Reduced width */
+            text-align: center;
+            backdrop-filter: blur(4px);
+            position: relative;
+            /* For connectors */
+        }
+
+        /* Connector Lines */
+        .event-stack-top .event-pip::before {
+            content: '';
+            position: absolute;
+            bottom: -2rem;
+            /* Reach down towards axis */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 2rem;
+            background: linear-gradient(to bottom, rgba(162, 155, 254, 0.5), transparent);
+            z-index: -1;
+        }
+
+        /* Specific fix for top stack immediate connector */
+        .event-stack-top .event-pip:first-child::before {
+            bottom: -2rem;
+            height: 2rem;
+            background: rgba(162, 155, 254, 0.3);
+        }
+
+        .event-stack-bottom .event-pip::before {
+            content: '';
+            position: absolute;
+            top: -2rem;
+            /* Reach up towards axis */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 2rem;
+            background: linear-gradient(to top, rgba(162, 155, 254, 0.5), transparent);
+            z-index: -1;
+        }
+
+        /* Specific fix for bottom stack immediate connector */
+        .event-stack-bottom .event-pip:first-child::before {
+            top: -2rem;
+            height: 2rem;
+            background: rgba(162, 155, 254, 0.3);
+        }
+
+        .event-pip.critical {
+            border-color: var(--risk-crit);
+            background: rgba(255, 118, 117, 0.1);
+        }
+
+        .event-pip .pip-title {
+            font-size: 0.7rem;
+            /* Smaller text */
+            color: #fff;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .event-pip .pip-meta {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 2px;
+            /* text-transform: uppercase; Removed */
+        }
+
+
+
+        .vector-global-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .vector-global-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-transform: capitalize;
+            /* "Vectores de Vulnerabilidad" */
+        }
+
+        .vector-global-header p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            /* text-transform: uppercase; Removed */
+            letter-spacing: 0.05em;
+        }
+
+        /* Main Card Container */
+        .vector-main-card {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem !important;
+            /* Reduced here too */
+            display: flex;
+            flex-direction: column;
+            gap: 1rem !important;
+            /* Reduced gap */
+        }
+
+        /* Row 1: Header */
+        .vec-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
+        }
+
+        .vec-id {
+            font-family: inherit;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.05);
+            /* Match risk level badge transparency */
+            border: 1px solid currentColor;
+            color: inherit;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+        }
+
+        .vec-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 1rem;
+        }
+
+        .vec-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid currentColor;
+            color: inherit;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        /* Row 2: Metadata Grid */
+        .vec-row-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .vec-meta-box {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Unified border style */
+            border-radius: 4px;
+            padding: 1rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .vec-meta-label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--risk-color);
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .vec-meta-val {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Row 3: Details Split */
+        .vec-row-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .vec-detail-col {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Unified border style */
+            border-radius: 4px;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            height: 100%;
+        }
+
+        .vec-col-header {
+            font-size: 0.8rem;
+            color: var(--risk-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .vec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .vec-list li {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .vec-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #94a3b8;
+        }
+
+        .vec-list.numbered {
+            list-style-type: none !important;
+            /* Forces removal of default numbers */
+            counter-reset: item;
+        }
+
+        .vec-list.numbered li::before {
+            content: counter(item) ".";
+            counter-increment: item;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Row 4: Description Footer */
+        .vec-row-desc {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Unified border style */
+            border-radius: 4px;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .vec-desc-header {
+            font-size: 0.8rem;
+            /* text-transform: uppercase; Removed for Sentence case */
+            color: var(--risk-color);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .vec-desc-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        /* Pagination Style */
+        .page-number {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 3rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Courier New', monospace;
+            /* Tech feel to match vector IDs */
+            z-index: 100;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- EXPOSURE VALUE PAGE (VERTICAL STACK) --- */
+        .exposure-page {
+            width: 100%;
+            height: 100vh;
+            padding: 4rem 6rem 5rem 6rem !important;
+            /* Increased bottom padding to clear paginator */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start !important;
+            /* Top align */
+            box-sizing: border-box;
+        }
+
+        .exposure-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* Vertical Stack */
+            align-items: center;
+            justify-content: space-between;
+            /* Distributors space */
+            flex-grow: 1;
+            /* Takes remaining height */
+            gap: 1rem;
+            padding-bottom: 0;
+            /* Removed bottom padding to maximize fill */
+        }
+
+        /* Invoice Card (Top) */
+        .invoice-card {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            flex-grow: 1;
+            /* Expands to fill space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Center content vertically if needed, or flex-start */
+            padding: 2rem;
+            /* Restore perception of space */
+            box-sizing: border-box;
+        }
+
+        .invoice-table {
+            width: 100%;
+            height: 100%;
+            /* Occupy full card height */
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .invoice-table th {
+            text-align: left;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .invoice-table td {
+            padding: 1rem 0;
+            /* Restore padding for breathing room */
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .invoice-table .amount {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            color: #FFD700 !important;
+            /* VIBRANT GOLD */
+            text-shadow: none !important;
+            font-weight: 700;
+        }
+
+        .invoice-total-row td {
+            padding-top: 1rem;
+            /* Compacted from 1.5rem */
+            border-bottom: none;
+            font-weight: 700;
+            color: #94a3b8 !important;
+            /* STRICT GREY */
+            text-shadow: none !important;
+            font-size: 1.1rem;
+        }
+
+        .invoice-total-row .amount {
+            color: #FFD700 !important;
+            /* VIBRANT GOLD */
+            text-shadow: none !important;
+            font-size: 1.3rem;
+        }
+
+        /* Total Display (Bottom) */
+        .total-display {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            /* Compacted from 2rem */
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            /* Tightened from 2.5rem */
+            font-weight: 700;
+            /* Bold */
+        }
+
+        .total-value-huge {
+            font-size: 6rem;
+            /* Increased from 4.5rem as requested */
+            font-weight: 800;
+            color: #ff7675;
+            /* Critical Red */
+            text-shadow: none;
+            /* No Glow */
+            margin-bottom: 1.5rem;
+            /* Tightened from 2.5rem to reduce gap */
+            line-height: 1;
+        }
+
+        .total-disclaimer {
+            font-size: 0.8rem;
+            color: #64748b;
+            line-height: 1.4;
+            max-width: 900px;
+            /* Widened to allow text to flow in 2 lines */
+            margin: 0 auto;
+            border-left: 2px solid #64748b;
+            padding-left: 1rem;
+            text-align: left;
+        }
+
+        /* BUSINESS IMPACT (v3.0.15) */
+        .impact-business-page {
+            /* STRICT ALIGNMENT WITH .vector-page */
+            padding: 3rem 3rem 4rem 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.5rem !important;
+        }
+
+        .impact-business-page .vector-global-header {
+            margin-bottom: 3rem !important;
+        }
+
+        .impact-grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 0.5rem 1rem;
+            /* row-gap: 0.5rem, col-gap: 1rem */
+            flex-grow: 1;
+            /* Fill remaining vertical space */
+            width: 100%;
+            max-width: 100%;
+            /* Matches vector-main-card */
+            padding-bottom: 0;
+        }
+
+        .impact-card {
+            background: rgba(255, 255, 255, 0.02);
+            /* Vector Style */
+            border-radius: 8px;
+            /* Match System Standard */
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            box-shadow: none;
+            /* No shadow */
+            backdrop-filter: none;
+            /* No blur */
+        }
+
+        /* Full Colored Borders (Subtle RGBA) */
+        /* Full Colored Borders (Subtle RGBA) */
+        .impact-card.financial {
+            border: 1px solid rgba(241, 196, 15, 0.3);
+        }
+
+        .impact-card.financial .impact-icon-wrapper {
+            border: 1px solid #f1c40f;
+        }
+
+        .impact-card.financial .impact-icon-wrapper svg {
+            stroke: #f1c40f;
+        }
+
+        .impact-card.operational {
+            border: 1px solid rgba(0, 210, 211, 0.3);
+        }
+
+        .impact-card.operational .impact-icon-wrapper {
+            border: 1px solid #00d2d3;
+        }
+
+        .impact-card.operational .impact-icon-wrapper svg {
+            stroke: #00d2d3;
+        }
+
+        .impact-card.reputational {
+            border: 1px solid rgba(95, 39, 205, 0.3);
+        }
+
+        .impact-card.reputational .impact-icon-wrapper {
+            border: 1px solid #5f27cd;
+        }
+
+        .impact-card.reputational .impact-icon-wrapper svg {
+            stroke: #5f27cd;
+        }
+
+        .impact-card.regulatory {
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .impact-card.regulatory .impact-icon-wrapper {
+            border: 1px solid #ff6b6b;
+        }
+
+        .impact-card.regulatory .impact-icon-wrapper svg {
+            stroke: #ff6b6b;
+        }
+
+        .impact-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            /* Force Perfect Circle Dimensions */
+            min-width: 48px;
+            min-height: 48px;
+            flex-shrink: 0;
+
+            margin-bottom: 1.5rem;
+            /* transparent circle with border */
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .impact-icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+            stroke-width: 1.5;
+        }
+
+        .impact-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            /* text-transform: uppercase; REMOVED */
+        }
+
+        .impact-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #94a3b8;
+        }
+
+        /* PRINT-SPECIFIC OVERRIDES */
+        @media print {
+            .impact-card {
+                break-inside: avoid;
+                /* Visuals inherited from main CSS */
+            }
+
+            .inaction-page {
+                break-inside: avoid;
+            }
+        }
+
+        /* INACTION SCENARIO (v3.0.16b) */
+        .inaction-page {
+            padding: 3rem 3rem 1rem 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.5rem !important;
+        }
+
+        .inaction-container {
+            width: 100%;
+            display: block;
+        }
+
+        .inaction-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .inaction-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 0.8rem 1.75rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            margin-bottom: 0.5rem;
+            box-shadow: none !important;
+        }
+
+        .inaction-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 1.5rem;
+            text-align: center;
+        }
+
+        .inaction-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .inaction-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .inaction-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            /* text-transform: uppercase; REMOVED */
+            line-height: 1.2;
+        }
+
+        .inaction-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .highlight-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .inaction-body p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .inaction-footer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            /* text-transform: uppercase; REMOVED */
+        }
+
+        /* Category Accents */
+        .phrase-past {
+            border-left: 1px solid #3498db;
+        }
+
+        .phrase-past .inaction-icon svg {
+            stroke: #3498db;
+        }
+
+        .status-luck {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+
+        .phrase-present {
+            border-left: 1px solid #f1c40f;
+        }
+
+        .phrase-present .inaction-icon svg {
+            stroke: #f1c40f;
+        }
+
+        .status-warning {
+            background: rgba(241, 196, 15, 0.1);
+            color: #f1c40f;
+        }
+
+        .phrase-future {
+            border-left: 1px solid #e74c3c;
+        }
+
+        .phrase-future .inaction-icon svg {
+            stroke: #e74c3c;
+        }
+
+        .status-critical {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .inaction-connector {
+            display: none;
+            /* Removed for non-linear grid */
+        }
+
+        /* VENTANA DE CIERRE (v3.0.17) */
+        .closing-page {
+            padding: 2.0rem 3rem 1.0rem 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            background: #0a0e27;
+        }
+
+        .closing-page .vector-global-header {
+            margin-bottom: 2.2rem !important;
+            transform: scale(0.95);
+        }
+
+        .closing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            width: 100%;
+            page-break-inside: avoid !important;
+        }
+
+        .closing-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            box-shadow: none !important;
+            margin-bottom: 0.2rem;
+        }
+
+        .closing-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 2rem;
+            text-align: right;
+            width: 180px !important;
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+
+        .closing-phase {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            line-height: 1.2;
+        }
+
+        .closing-time {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #f8fafc;
+            line-height: 1;
+            margin: 0.1rem 0;
+            white-space: nowrap;
+        }
+
+        .closing-label {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .action-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .action-item {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #94a3b8;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .action-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .action-bold {
+            display: block;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 0.1rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .action-item strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        /* Phase Accents */
+        .phase-containment {
+            border-left: 1px solid #3498db;
+        }
+
+        .phase-containment .action-item::before {
+            background: #3498db;
+        }
+
+        .phase-sanitization {
+            border-left: 1px solid #f1c40f;
+        }
+
+        .phase-sanitization .action-item::before {
+            background: #f1c40f;
+        }
+
+        .phase-shielding {
+            border-left: 1px solid #e74c3c;
+        }
+
+        .phase-shielding .action-item::before {
+            background: #e74c3c;
+        }
+
+        /* RUTA DE CIERRE CONSOLIDADA (v3.0.18) */
+        .consolidated-page {
+            padding: 3rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            background: #0a0e27;
+        }
+
+        .consolidated-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .consolidated-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            flex-grow: 1;
+            /* Ensure cards fill grid height */
+            transition: all 0.3s ease;
+        }
+
+        .consolidated-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .consolidated-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.8rem;
+        }
+
+        .consolidated-icon {
+            width: 32px;
+            height: 32px;
+            color: #a29bfe;
+        }
+
+        .consolidated-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .remediation-checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Distribute items to fill space */
+            flex-grow: 1;
+            /* Take all available card height */
+        }
+
+        .remediation-item {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #94a3b8;
+            align-items: flex-start;
+        }
+
+        .remediation-item svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: #2ecc71;
+        }
+
+        /* RESILIENCE FOOTER (v3.0.18b) */
+        .resilience-footer {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 1.2rem;
+            background: rgba(162, 155, 254, 0.05);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resilience-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #a29bfe;
+            letter-spacing: 0.02em;
+        }
+
+        .resilience-target {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .resilience-bar-bg {
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 2rem;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .resilience-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 95%;
+            background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+            border-radius: 3px;
+        }
+
+        .resilience-subtext {
+            width: 100%;
+            text-align: left;
+            font-size: 0.75rem;
+        }
+    </style>
+
+    <style>
+        /* APPENDIX STYLES (v3.0.19) */
+
+        /* Fix for unwanted border/line & Pagination */
+        .appendix-header,
+        .appendix-title,
+        .appendix-subtitle {
+            border: none !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Ensure H2 specifically has no border if global styles apply it */
+        .appendix-page h2,
+        .appendix-header h2 {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* Pagination Visibility on Dark Background */
+        .appendix-page .page-number {
+            color: rgba(255, 255, 255, 0.5) !important;
+            position: absolute;
+            bottom: 2rem;
+            right: 3rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            z-index: 100;
+        }
+
+        .appendix-page {
+            width: 100%;
+            height: 100vh;
+            background: #0a0e27;
+            color: #f8fafc;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            page-break-before: always;
+            position: relative;
+        }
+
+        .appendix-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .appendix-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            /* Standardized Header Style */
+            color: #fff;
+            background: none;
+            -webkit-text-fill-color: initial;
+            text-align: center;
+        }
+
+        .appendix-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #64748b;
+        }
+
+        /* METHODOLOGY GRID (Page 27) */
+        .methodology-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            flex-grow: 1;
+        }
+
+        .method-section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+            /* text-transform: uppercase; REMOVED */
+            letter-spacing: 0.05em;
+            /* Border removed per visual cleanup request */
+            /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+            padding-bottom: 0.5rem;
+        }
+
+        .method-desc {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+            min-height: 4.5rem;
+            /* Strict Alignment: Approx 3 lines of text */
+        }
+
+        .formula-box {
+            background: rgba(162, 155, 254, 0.05);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem 0.5rem;
+            /* Reduced lateral padding to fit formula in one line */
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #ffd700;
+            /* Gold for formula */
+            min-height: 5rem;
+            /* Strict Alignment: Force equal height for boxes */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .formula-label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            text-transform: none;
+            /* Explicitly disabled uppercase */
+            letter-spacing: 0.05em;
+        }
+
+        /* Variables Grid */
+        .variables-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .var-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .var-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .var-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .var-multiplier {
+            background: rgba(162, 155, 254, 0.2);
+            color: #a29bfe;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .var-desc {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.3;
+        }
+
+        .matrix-header-title {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 0;
+            padding-top: 0.8rem;
+            /* Calibrated adjustment */
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Matrix Weights */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .matrix-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+        }
+
+        .matrix-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .matrix-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .matrix-value {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+
+        /* GLOSSARY & LEGAL (Page 28) */
+        .glossary-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            flex-grow: 1;
+        }
+
+        .term-item {
+            margin-bottom: 1.2rem;
+            /* Border removed per visual cleanup request */
+            /* border-bottom: 1px solid rgba(255, 255, 255, 0.05); */
+            padding-bottom: 1.2rem;
+        }
+
+        .term-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #a29bfe;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .term-def {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .legal-box {
+            margin-top: 2rem;
+            /* Border removed per visual cleanup request */
+            /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
+            padding-top: 1.5rem;
+        }
+
+        .legal-text {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        .appendix-footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #475569;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+
+<body class="pdf-mode">
+
+    <!-- PAGE 1: COVER -->
+    <div class="pdf-page">
+        <div id="hero-section" class="cover-wrapper">
+            <div class="hero-top">
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <div class="tag">OSINT + ARCO + PROTECCIÓN DE DATOS</div>
+            </div>
+
+            <h1>MAPA-RD: Exposición y Ruta de Cierre</h1>
+            <div class="divider"></div>
+            <p class="subtitle">
+                Así se ve tu entorno digital desde fuera. Esto es lo que hay que cerrar primero.
+            </p>
+            <p class="description">
+                MAPA-RD identifica exposición real (visible públicamente), prioriza riesgos y entrega una ruta de cierre
+                ejecutable.<br>
+                Incluye base operativa para gestión ARCO y un esquema mensual de control continuo.
+                <br><br>
+                <strong>Sin auditorías genéricas. Sin promesas vacías.</strong>
+            </p>
+
+            <div class="meta-block" style="margin-top: 2rem;">
+                <div class="meta-line-primary">
+                    Felipe de Jesús Miramontes Romero &middot; Reporte RPT-2026-020 &middot; 2026-01-20
+                </div>
+                <div class="meta-line-secondary">
+                    Reporte Ejecutivo de Seguridad &middot; Exposición pública &middot; Estrictamente Confidencial
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: IRD (REDESIGNED - SPLIT/SOBER) -->
+    <div class="pdf-page">
+        <div class="ird-slide-content">
+
+            <div class="ird-header-group">
+                <h2>Índice de Riesgo Digital</h2>
+                <p>Evaluación Cuantitativa de Postura (Estado Global)</p>
+            </div>
+
+            <div class="ird-split-layout">
+                <!-- Left: Gauge/Score (Clean) -->
+                <div class="ird-hero-score">
+                    <span class="score-val" style="color: #ff7675">95</span>
+                    <span class="score-label" style="color: #ff7675">Crítico</span>
+                </div>
+
+                <!-- Right: Interpretation (Clean Text) -->
+                <div class="ird-desc-block">
+                    <h3>Diagnóstico Operativo</h3>
+                    <p>
+                        <strong>Urgencia Inmediata:</strong> Un IRD de 94 señala un <strong>Máximo riesgo
+                            sistémico</strong>.
+                        Datos sensibles (financieros/accesos) están expuestos activamente. Se requiere
+                        <strong>contención de emergencia</strong> para evitar fraude inminente.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Manual Footer Slogan (Page 2 Only) -->
+
+        </div>
+    </div>
+
+
+
+    
+    <!-- VECTOR SLIDE VEC-001 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-001</div>
+                <div class="vec-title">Adobe</div>
+                <div class="vec-badge">
+                    <span>89</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2013-10-04</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Password hints, Passwords, Usernames</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In October 2013, 153 million Adobe accounts were breached with each containing an internal ID, username, email, <em>encrypted</em> password and a password hint in plain text. The password cryptography was poorly done and many were quickly resolved back to plain text. The unencrypted hints also <a hr...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-002 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-002</div>
+                <div class="vec-title">000webhost</div>
+                <div class="vec-badge">
+                    <span>89</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2015-03-01</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, IP addresses, Names, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In approximately March 2015, the free web hosting provider <a href="http://www.troyhunt.com/2015/10/breaches-traders-plain-text-passwords.html" target="_blank" rel="noopener">000webhost suffered a major data breach</a> that exposed almost 15 million customer records. The data was sold and traded bef...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-003 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-003</div>
+                <div class="vec-title">Dropbox</div>
+                <div class="vec-badge">
+                    <span>87</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2012-07-01</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In mid-2012, Dropbox suffered a data breach which exposed the stored credentials of tens of millions of their customers. In August 2016, <a href="https://motherboard.vice.com/read/dropbox-forces-password-resets-after-user-credentials-exposed" target="_blank" rel="noopener">they forced password reset...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-004 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #e67e22;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-004</div>
+                <div class="vec-title">GeekedIn</div>
+                <div class="vec-badge">
+                    <span>70</span>
+                    <span>ALTO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2016-08-15</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Geographic locations, Names, Professional skills, Usernames</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In August 2016, the technology recruitment site GeekedIn left a MongoDB database exposed and over 8M records were extracted by an unknown third party. The breached data was originally scraped from GitHub in violation of their terms of use and contained information exposed in public profiles, includi...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-005 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-005</div>
+                <div class="vec-title">ExploitIn</div>
+                <div class="vec-badge">
+                    <span>87</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2016-10-13</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In late 2016, a huge list of email address and password pairs appeared in a "combo list" referred to as "Exploit.In". The list contained 593 million unique email addresses, many with multiple different passwords hacked from various online systems. The list was broadly circulated and used for "creden...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-006 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-006</div>
+                <div class="vec-title">Collection1</div>
+                <div class="vec-badge">
+                    <span>87</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2019-01-07</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In January 2019, a large collection of credential stuffing lists (combinations of email addresses and passwords used to hijack accounts on other services) was discovered being distributed on a popular hacking forum. The data contained almost 2.7 <em>billion</em> records including 773 million unique ...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-007 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-007</div>
+                <div class="vec-title">MyFitnessPal</div>
+                <div class="vec-badge">
+                    <span>89</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2018-02-01</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, IP addresses, Passwords, Usernames</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In February 2018, the diet and exercise service <a href="https://content.myfitnesspal.com/security-information/FAQ.html" target="_blank" rel="noopener">MyFitnessPal suffered a data breach</a>. The incident exposed 144 million unique email addresses alongside usernames, IP addresses and passwords sto...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-008 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-008</div>
+                <div class="vec-title">Animoto</div>
+                <div class="vec-badge">
+                    <span>90</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2018-07-10</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Dates of birth, Email addresses, Geographic locations, Names, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In July 2018, the cloud-based video making service <a href="https://techcrunch.com/2018/08/20/animoto-hack-exposes-personal-information-geolocation-data/" target="_blank" rel="noopener">Animoto suffered a data breach</a>. The breach exposed 22 million unique email addresses alongside names, dates of...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-009 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-009</div>
+                <div class="vec-title">Canva</div>
+                <div class="vec-badge">
+                    <span>90</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2019-05-24</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Geographic locations, Names, Passwords, Usernames</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In May 2019, the graphic design tool website <a href="https://support.canva.com/contact/customer-support/may-24-security-incident-faqs/" target="_blank" rel="noopener">Canva suffered a data breach</a> that impacted 137 million subscribers. The exposed data included email addresses, usernames, names,...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-010 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-010</div>
+                <div class="vec-title">123RF</div>
+                <div class="vec-badge">
+                    <span>92</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2020-03-22</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, IP addresses, Names, Passwords, Phone numbers</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In March 2020, the stock photo site <a href="https://www.bleepingcomputer.com/news/security/popular-stock-photo-service-hit-by-data-breach-83m-records-for-sale/" target="_blank" rel="noopener">123RF suffered a data breach</a> which impacted over 8 million subscribers and was subsequently sold online...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-011 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-011</div>
+                <div class="vec-title">Nitro</div>
+                <div class="vec-badge">
+                    <span>88</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2020-09-28</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Names, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In September 2020, <a href="https://www.bleepingcomputer.com/news/security/massive-nitro-data-breach-impacts-microsoft-google-apple-more/" target="_blank" rel="noopener">the Nitro PDF service suffered a massive data breach which exposed over 70 million unique email addresses</a>. The breach also exp...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-012 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #e67e22;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-012</div>
+                <div class="vec-title">Banorte</div>
+                <div class="vec-badge">
+                    <span>70</span>
+                    <span>ALTO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2014-08-18</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Account balances, Email addresses, Genders, Government issued IDs, Names</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In August 2022, <a href="https://krebsonsecurity.com/2022/08/when-efforts-to-contain-a-data-breach-backfire/" target="_blank" rel="noopener">millions of records from Mexican bank "Banorte" were publicly dumped on a popular hacking forum</a> including 2.1M unique email addresses, physical addresses, ...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-013 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #e67e22;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-013</div>
+                <div class="vec-title">Twitter200M</div>
+                <div class="vec-badge">
+                    <span>70</span>
+                    <span>ALTO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2021-01-01</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Names, Social media profiles, Usernames</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In early 2023, <a href="https://www.bleepingcomputer.com/news/security/200-million-twitter-users-email-addresses-allegedly-leaked-online/" target="_blank" rel="noopener">over 200M records scraped from Twitter appeared on a popular hacking forum</a>. The data was obtained sometime in 2021 by abusing ...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-014 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #e67e22;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-014</div>
+                <div class="vec-title">ManipulatedCaiman</div>
+                <div class="vec-badge">
+                    <span>70</span>
+                    <span>ALTO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2023-07-16</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In July 2023, <a href="https://perception-point.io/blog/manipulated-caiman-the-sophisticated-snare-of-mexicos-banking-predators-technical-edition/" target="_blank" rel="noopener">Perception Point reported on a phishing operation dubbed "Manipulated Caiman"</a>. Targeting primarily the citizens of Me...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-015 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #e67e22;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-015</div>
+                <div class="vec-title">Trello</div>
+                <div class="vec-badge">
+                    <span>70</span>
+                    <span>ALTO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2024-01-16</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Names, Usernames</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    In January 2024, <a href="https://twitter.com/H4ckManac/status/1747527579559411959" target="_blank" rel="noopener">data was scraped from Trello and posted for sale on a popular hacking forum</a>. Containing over 15M email addresses, names and usernames, the data was obtained by enumerating a publicl...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- VECTOR SLIDE VEC-016 -->
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vectores de Vulnerabilidad</h2>
+            <p>Evidencia Técnica y Ruta de Cierre Priorizada</p>
+        </div>
+        <div class="vector-main-card" style="--risk-color: #ff7675;">
+            <div class="vec-row-header">
+                <div class="vec-id">VEC-016</div>
+                <div class="vec-title">SynthientCredentialStuffingThreatData</div>
+                <div class="vec-badge">
+                    <span>87</span>
+                    <span>CRÍTICO</span>
+                </div>
+            </div>
+            <div class="vec-row-meta">
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Activo:</span>
+                    <span class="vec-meta-val">Identidad Digital</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Tipo:</span>
+                    <span class="vec-meta-val">Brecha de Datos</span>
+                </div>
+                <div class="vec-meta-box">
+                    <span class="vec-meta-label">Fecha:</span>
+                    <span class="vec-meta-val">2025-04-11</span>
+                </div>
+            </div>
+            <div class="vec-row-details">
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Acciones Recomendadas</div>
+                    <ul class="vec-list">
+                        <li>Cambiar contraseñas asociadas inmediatamente.</li>
+                        <li>Activar 2FA donde sea posible.</li>
+                        <li>Verificar actividad sospechosa recientes.</li>
+                    </ul>
+                </div>
+                <div class="vec-detail-col">
+                    <div class="vec-col-header">Datos Comprometidos</div>
+                    <ul class="vec-list">
+                        <li>Email addresses, Passwords</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="vec-row-desc">
+                <div class="vec-desc-header">Descripción</div>
+                <div class="vec-desc-text">
+                    During 2025, <a href="https://www.troyhunt.com/2-billion-email-addresses-were-exposed-and-we-indexed-them-all-in-have-i-been-pwned" target="_blank" rel="noopener">the threat-intelligence firm Synthient aggregated 2 billion unique email addresses disclosed in credential-stuffing lists found across mu...
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+    <!-- TIMELINE SLIDE 1 -->
+    
+    <div class="pdf-page timeline-page">
+        <div class="vector-global-header">
+            <h2>Horizonte de Exposición</h2>
+            <p>Cronología de Incidentes Identificados</p>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-axis"></div>
+            <div class="timeline-grid">
+                
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2012</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">Dropbox</div>
+                            <div class="pip-meta">2012-07-01</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2013</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">Adobe</div>
+                            <div class="pip-meta">2013-10-04</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2014</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip">
+                            <div class="pip-title">Banorte</div>
+                            <div class="pip-meta">2014-08-18</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2015</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">000webhost</div>
+                            <div class="pip-meta">2015-03-01</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">ExploitIn</div>
+                            <div class="pip-meta">2016-10-13</div>
+                        </div>
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2016</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip">
+                            <div class="pip-title">GeekedIn</div>
+                            <div class="pip-meta">2016-08-15</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">Animoto</div>
+                            <div class="pip-meta">2018-07-10</div>
+                        </div>
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2018</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">MyFitnessPal</div>
+                            <div class="pip-meta">2018-02-01</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">Canva</div>
+                            <div class="pip-meta">2019-05-24</div>
+                        </div>
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2019</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">Collection1</div>
+                            <div class="pip-meta">2019-01-07</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">Nitro</div>
+                            <div class="pip-meta">2020-09-28</div>
+                        </div>
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2020</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">123RF</div>
+                            <div class="pip-meta">2020-03-22</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2021</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip">
+                            <div class="pip-title">Twitter200M</div>
+                            <div class="pip-meta">2021-01-01</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2023</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip">
+                            <div class="pip-title">ManipulatedCaiman</div>
+                            <div class="pip-meta">2023-07-16</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2024</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip">
+                            <div class="pip-title">Trello</div>
+                            <div class="pip-meta">2024-01-16</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="year-column">
+                    <div class="event-stack-top">
+                        
+                    </div>
+                    <div class="year-marker"></div>
+                    <div class="year-label">2025</div>
+                    <div class="event-stack-bottom">
+                        
+                        <div class="event-pip critical">
+                            <div class="pip-title">SynthientCredentialStuffingThreatData</div>
+                            <div class="pip-meta">2025-04-11</div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- PAGE: EXPOSURE VALUE -->
+    <div class="pdf-page exposure-page">
+        <div class="vector-global-header">
+            <h2>Valor de Exposición</h2>
+            <p>Estimación de Impacto Financiero en Mercado Negro</p>
+        </div>
+
+        <div class="exposure-content">
+
+            <!-- LEFT: INVOICE -->
+            <div class="invoice-card">
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>CONCEPTO</th>
+                            <th>CANTIDAD</th>
+                            <th>PRECIO UNIT.</th>
+                            <th style="text-align: right;">SUBTOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Credenciales</td><td>12</td><td>$15</td><td class="amount">$180.00</td></tr><tr><td>Datos Personales</td><td>49</td><td>$5</td><td class="amount">$245.00</td></tr>
+                        <tr class="invoice-total-row">
+                            <td colspan="3">TOTAL ESTIMADO</td>
+                            <td class="amount">$425.00 USD</td>
+                        </tr>
+                    </tbody>>
+                </table>
+            </div>
+
+            <!-- RIGHT: BIG NUMBER -->
+            <div class="total-display">
+                <div class="total-label">Valor Total en Mercado Negro</div>
+                <div class="total-value-huge">$425.00 USD</div>
+                <div class="total-disclaimer">
+                    <strong>Asimetría de Riesgo:</strong> Por una inversión trivial, el mercado negro ofrece las
+                    llaves
+                    de su organización. Este monto no refleja el valor de sus activos, sino la alarmante facilidad y
+                    bajo costo con el que un atacante puede iniciar un incidente catastrófico.
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+
+    </div>
+
+    <div class="pdf-page vector-page">
+        <div class="vector-global-header">
+            <h2>Vector de ataque</h2>
+            <p>Cómo un atacante usaría esta información</p>
+        </div>
+
+        <div class="dossier-container">
+            <!-- Step 1 -->
+            <div class="dossier-step step-recon">
+                <div class="spine-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="dossier-branch"></div>
+                <div class="step-visual-col">
+                    <div class="dossier-icon">Target</div>
+                    <span class="dossier-phase-label">Fase 01</span>
+                </div>
+                <div class="step-content-col">
+                    <h3 class="dossier-title">Localización</h3>
+                    <p class="dossier-desc">El atacante utiliza bases de datos públicas para correlacionar tu
+                        <strong>Nombre Completo</strong> y <strong>Domicilio</strong> físico, creando un perfil
+                        base.
+                    </p>
+                </div>
+                <div class="step-evidence-col">
+                    <div class="evidence-badge">
+                        <span class="evidence-label">Fuente evidencial</span>
+                        <span class="evidence-value" style="color: #74b9ff;">No Public PDF Found</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="dossier-step step-weapon">
+                <div class="spine-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <div class="dossier-branch"></div>
+                <div class="step-visual-col">
+                    <div class="dossier-icon">Key</div>
+                    <span class="dossier-phase-label">Fase 02</span>
+                </div>
+                <div class="step-content-col">
+                    <h3 class="dossier-title">Armado</h3>
+                    <p class="dossier-desc">Validación automatizada de tus credenciales contra servicios
+                        financieros. Se
+                        configuran scripts con tus <strong>Contraseñas Reales</strong>.</p>
+                </div>
+                <div class="step-evidence-col">
+                    <div class="evidence-badge">
+                        <span class="evidence-label">Log de malware</span>
+                        <span class="evidence-value" style="color: #ffeaa7;">No LinkedIn Profile Public</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="dossier-step step-impact">
+                <div class="spine-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                        </path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <div class="dossier-branch"></div>
+                <div class="step-visual-col">
+                    <div class="dossier-icon">Strike</div>
+                    <span class="dossier-phase-label">Fase 03</span>
+                </div>
+                <div class="step-content-col">
+                    <h3 class="dossier-title">Impacto</h3>
+                    <p class="dossier-desc">Ejecución del fraude. Acceso no autorizado a banca móvil, suplantación
+                        ante
+                        el SAT y extracción de recursos financieros.</p>
+                </div>
+                <div class="step-evidence-col">
+                    <div class="evidence-badge"
+                        style="background: rgba(255, 118, 117, 0.1); border-color: rgba(255, 118, 117, 0.3);">
+                        <span class="evidence-label">Estado de riesgo</span>
+                        <span class="evidence-value" style="color: #ff7675;">Ejecución inminente</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NEW SECTION: BUSINESS IMPACT (v3.0.15) -->
+    <div class="pdf-page impact-business-page">
+        <div class="vector-global-header">
+            <h2>Impacto Directo al Negocio</h2>
+            <p>Traducción de Riesgo Técnico a Estratégico</p>
+        </div>
+
+        <div class="impact-grid-container">
+            <!-- 1. Financiero -->
+            <div class="impact-card financial">
+                <div class="impact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <div class="impact-content">
+                    <h3 class="impact-title">Financiero</h3>
+                    <p class="impact-desc">Pérdida directa por fraude bancario, costos elevados de remediación y
+                        posibles multas por incumplimiento.</p>
+                </div>
+            </div>
+
+            <!-- 2. Operativo -->
+            <div class="impact-card operational">
+                <div class="impact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <div class="impact-content">
+                    <h3 class="impact-title">Operativo</h3>
+                    <p class="impact-desc">Interrupción de servicios críticos, parálisis de sistemas y pérdida de
+                        productividad empresarial.</p>
+                </div>
+            </div>
+
+            <!-- 3. Reputacional -->
+            <div class="impact-card reputational">
+                <div class="impact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="impact-content">
+                    <h3 class="impact-title">Reputacional</h3>
+                    <p class="impact-desc">Pérdida catastrófica de confianza del cliente y daño irreversible a la imagen
+                        de marca.</p>
+                </div>
+            </div>
+
+            <!-- 4. Regulatorio -->
+            <div class="impact-card regulatory">
+                <div class="impact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <div class="impact-content">
+                    <h3 class="impact-title">Regulatorio</h3>
+                    <p class="impact-desc">Sanciones legales severas por violaciones a la LFPDPPP, GDPR y normativas de
+                        protección.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: INACTION SCENARIO (v3.0.16b) -->
+    <div class="pdf-page inaction-page">
+        <div class="vector-global-header">
+            <h2>Escenario de inacción</h2>
+            <p>La trampa de latencia: por qué no ha pasado nada no significa seguridad</p>
+        </div>
+
+        <div class="inaction-container">
+            <div class="inaction-grid">
+                <!-- Phase 1: Past -->
+                <div class="inaction-card phrase-past">
+                    <div class="inaction-header">
+                        <div class="inaction-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="inaction-title">Deuda histórica</div>
+                    </div>
+                    <div class="inaction-body">
+                        <h4 class="highlight-text">13 años sin incidentes</h4>
+                        <p>Esto no es seguridad, es suerte operativa. La seguridad por oscuridad
+                            funcionaba cuando los ataques eran manuales y dirigidos.</p>
+                        <div class="inaction-footer">
+                            <span>Estado:</span> <span class="status-badge status-luck">Obsoleto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Present -->
+                <div class="inaction-card phrase-present">
+                    <div class="inaction-header">
+                        <div class="inaction-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="inaction-title">Nueva visibilidad</div>
+                    </div>
+                    <div class="inaction-body">
+                        <h4 class="highlight-text">Automatización e IA</h4>
+                        <p>Hoy, escáneres masivos y bots de IA encuentran vulnerabilidades en segundos. Lo que antes era
+                            invisible, ahora es un blanco automático.</p>
+                        <div class="inaction-footer">
+                            <span>Estado:</span> <span class="status-badge status-warning">Expuesto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Future -->
+                <div class="inaction-card phrase-future">
+                    <div class="inaction-header">
+                        <div class="inaction-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                </path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="inaction-title">Colapso inevitable</div>
+                    </div>
+                    <div class="inaction-body">
+                        <h4 class="highlight-text">Costo exponencial</h4>
+                        <p>Sistemas legados sin soporte no se pueden parchar. Una brecha hoy obliga a una
+                            reconstrucción total (10x costo) en lugar de remediación.</p>
+                        <div class="inaction-footer">
+                            <span>Estado:</span> <span class="status-badge status-critical">Crítico</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: VENTANA DE CIERRE (v3.0.17) -->
+    <div class="pdf-page closing-page">
+        <div class="vector-global-header">
+            <h2>Ventana de cierre</h2>
+            <p>Plan de acción recomendado para la mitigación de riesgos</p>
+        </div>
+
+        <div class="closing-grid">
+            <!-- Fase 1: Contención -->
+            <div class="closing-card phase-containment">
+                <div class="closing-meta">
+                    <span class="closing-phase">Fase 1</span>
+                    <span class="closing-time">0-24 h</span>
+                    <span class="closing-label">Contención inmediata</span>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-bold">Cambio inteligente de credenciales</span>
+                        Implementa una frase de seguridad robusta (ej. MiPerroComeCereal2024) en tu cuenta de correo
+                        principal para detener el acceso inmediato.
+                    </div>
+                    <div class="action-item">
+                        <span class="action-bold">Doble candado (2FA)</span>
+                        Activa la verificación en 2 pasos en WhatsApp y banca móvil. Prioriza el uso de una app
+                        autenticadora sobre los mensajes SMS.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 2: Saneamiento -->
+            <div class="closing-card phase-sanitization">
+                <div class="closing-meta">
+                    <span class="closing-phase">Fase 2</span>
+                    <span class="closing-time">24-72 h</span>
+                    <span class="closing-label">Ventana táctica</span>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-bold">Cierre global de sesiones</span>
+                        Accede a la configuración de seguridad de Google, Facebook y bancos para forzar el cierre de
+                        sesión en todos los dispositivos no reconocidos.
+                    </div>
+                    <div class="action-item">
+                        <span class="action-bold">Alertas transaccionales totales</span>
+                        Configura tu banca móvil para recibir notificaciones por cargos de cualquier monto para detectar
+                        intentos de validación de tarjeta.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 3: Blindaje -->
+            <div class="closing-card phase-shielding">
+                <div class="closing-meta">
+                    <span class="closing-phase">Fase 3</span>
+                    <span class="closing-time">30 días</span>
+                    <span class="closing-label">Estrategia a largo plazo</span>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-bold">Candado crediticio (Buró)</span>
+                        Solicita el servicio de bloqueo en Buró de Crédito para impedir consultas no autorizadas o
+                        apertura de créditos sin tu consentimiento.
+                    </div>
+                    <div class="action-item">
+                        <span class="action-bold">Higiene digital recurrente</span>
+                        Establece una rutina de revisión semanal de estados de cuenta para detectar cargos hormiga antes
+                        de un fraude mayor.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: RUTA DE CIERRE CONSOLIDADA (v3.0.18) -->
+    <div class="pdf-page consolidated-page">
+        <div class="vector-global-header">
+            <h2>Ruta de cierre consolidada</h2>
+            <p>Resumen ejecutivo de acciones prioritarias por dominio</p>
+        </div>
+
+        <div class="consolidated-grid">
+            <!-- Card 1: Identidad Digital -->
+            <div class="consolidated-card">
+                <div class="consolidated-header">
+                    <div class="consolidated-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="consolidated-title">Identidad digital</div>
+                </div>
+                <ul class="remediation-checklist">
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Cambio de contraseñas del correo principal.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Activar verificación en 2 pasos (WhatsApp/Email).
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Usar un gestor de claves seguro.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Revisar qué apps tienen acceso a tu cuenta.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Borrar cuentas de sitios que ya no usas.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Seguridad Financiera -->
+            <div class="consolidated-card">
+                <div class="consolidated-header">
+                    <div class="consolidated-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="consolidated-title">Seguridad financiera</div>
+                </div>
+                <ul class="remediation-checklist">
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Bloqueo de consultas en Buró de Crédito.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Activar notificaciones por cualquier gasto ($0).
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Solicitar reposición de tarjetas expuestas.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Bajar límites de gasto diario en la App.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Vincular huella/rostro en la app del banco.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Higiene & Privacidad -->
+            <div class="consolidated-card">
+                <div class="consolidated-header">
+                    <div class="consolidated-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <div class="consolidated-title">Higiene & privacidad</div>
+                </div>
+                <ul class="remediation-checklist">
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Cerrar sesión en todos los dispositivos.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Ocultar ubicación y datos en redes sociales.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Revisar estados de cuenta cada semana.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Imprimir y guardar códigos de recuperación.
+                    </li>
+                    <li class="remediation-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Asegurar teléfono con PIN de 6 dígitos.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Resilience Anchor Footer -->
+        <div class="resilience-footer">
+            <div class="resilience-label">Meta de resiliencia</div>
+            <div class="resilience-bar-bg">
+                <div class="resilience-bar-fill"></div>
+            </div>
+            <div class="resilience-label">Nivel proyectado: <span class="resilience-target">95/100</span></div>
+        </div>
+        <div class="resilience-subtext">Nivel de protección estimado tras completar la ruta sugerida en este reporte.
+        </div>
+    </div>
+
+    <!-- Page 27: Anexo Técnico Metodología -->
+    <div class="pdf-page appendix-page">
+        <div class="appendix-header">
+            <h2 class="appendix-title">Anexo Técnico</h2>
+            <p class="appendix-subtitle">Metodología, Definiciones y Estándares de Cálculo</p>
+        </div>
+
+        <div class="methodology-container">
+            <!-- Left: IRV -->
+            <div class="method-col">
+                <h3 class="method-section-title">Índice de Riesgo del Vector (IRV)</h3>
+                <p class="method-desc">
+                    El <strong>IRV</strong> es la métrica fundamental de urgencia. No mide el riesgo teórico, sino la
+                    necesidad operativa de cierre. Se calcula internamente mediante un modelo ponderado de seis
+                    dimensiones.
+                </p>
+
+                <div class="formula-box">
+                    <span class="formula-label">Fórmula de cálculo</span>
+                    IRV = [ Σ(Componente × Peso) / Σ(Peso Máximo) ] × 100
+                </div>
+
+                <div class="variables-grid">
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Criticidad (CA)</span>
+                            <span class="var-multiplier">x4</span>
+                        </div>
+                        <p class="var-desc">Importancia crítica del activo para la continuidad del negocio.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Exposición (ET)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Ventana de tiempo y vigencia actual del hallazgo.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Superficie (SE)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Facilidad de acceso desde redes públicas o privadas.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Impacto (IM)</span>
+                            <span class="var-multiplier">x4</span>
+                        </div>
+                        <p class="var-desc">Suma de impactos (Financiero, Legal, Operativo, Reputacional).</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Explotación (FE)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Recursos y complejidad técnica requerida para el ataque.</p>
+                    </div>
+                    <div class="var-card">
+                        <div class="var-header">
+                            <span class="var-name">Detección (DV)</span>
+                            <span class="var-multiplier">x3</span>
+                        </div>
+                        <p class="var-desc">Probabilidad de evasión de sistemas de monitoreo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: IRD -->
+            <div class="method-col">
+                <h3 class="method-section-title">Índice de Riesgo Digital (IRD)</h3>
+                <p class="method-desc">
+                    El <strong>IRD</strong> es el indicador de postura global. Se deriva dinámicamente de los vectores
+                    activos
+                    mediante un promedio ponderado por severidad.
+                </p>
+
+                <div class="formula-box">
+                    <span class="formula-label">Agregación ponderada</span>
+                    IRD = Σ(IRV × Peso Severidad) / Σ(Pesos Severidad)
+                </div>
+
+                <h4 class="matrix-header-title">Matriz de pesos (severidad)</h4>
+
+                <div class="matrix-grid">
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #74b9ff;"></div>
+                        <span class="matrix-label">Bajo</span>
+                        <span class="matrix-value">x1</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #ffeaa7;"></div>
+                        <span class="matrix-label">Medio</span>
+                        <span class="matrix-value">x2</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #ff9f43;"></div>
+                        <span class="matrix-label">Alto</span>
+                        <span class="matrix-value">x3</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #ff7675;"></div>
+                        <span class="matrix-label">Crítico</span>
+                        <span class="matrix-value">x4</span>
+                    </div>
+                    <div class="matrix-item">
+                        <div class="matrix-dot" style="background: #a29bfe;"></div>
+                        <span class="matrix-label">Máximo</span>
+                        <span class="matrix-value">x5</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 28: Anexo Técnico Glosario & Legal -->
+    <div class="pdf-page appendix-page">
+        <div class="appendix-header">
+            <h2 class="appendix-title">Anexo Técnico</h2>
+            <p class="appendix-subtitle">Referencias, Glosario y Aviso Legal</p>
+        </div>
+
+        <div class="glossary-container">
+            <!-- Col 1 -->
+            <div class="glossary-col">
+                <div class="term-item">
+                    <div class="term-title">Stealer Logs</div>
+                    <div class="term-def">
+                        Registros extraídos por malware ("infostealers") que infecta dispositivos personales o
+                        corporativos.
+                        Estos logs contienen contraseñas guardadas en navegadores, cookies de sesión y datos de
+                        autocompletado.
+                    </div>
+                </div>
+                <div class="term-item">
+                    <div class="term-title">Combo List</div>
+                    <div class="term-def">
+                        Compilaciones masivas de credenciales (usuario:contraseña) provenientes de múltiples brechas de
+                        seguridad antiguas y nuevas.
+                        Se utilizan para ataques automatizados de "Credential Stuffing" contra diversos servicios.
+                    </div>
+                </div>
+                <div class="term-item">
+                    <div class="term-title">PII (Personal Identifiable Information)</div>
+                    <div class="term-def">
+                        Cualquier dato que pueda identificar a un individuo específico, como RFC, CURP, dirección
+                        física,
+                        número de teléfono o huella biométrica. Su exposición facilita el robo de identidad.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Col 2 -->
+            <div class="glossary-col">
+                <div class="term-item">
+                    <div class="term-title">Botnet</div>
+                    <div class="term-def">
+                        Red de dispositivos infectados controlados remotamente por un atacante. Los dispositivos
+                        "zombis"
+                        se usan para robar datos, enviar spam o realizar ataques DDoS sin que el propietario lo sepa.
+                    </div>
+                </div>
+                <div class="term-item">
+                    <div class="term-title">Texto Plano (Plain Text)</div>
+                    <div class="term-def">
+                        Almacenamiento de contraseñas u otros datos sensibles sin ningún tipo de cifrado o protección
+                        matemática.
+                        Si la base de datos es vulnerada, los datos son legibles inmediatamente.
+                    </div>
+                </div>
+
+                <div class="legal-box">
+                    <h3 class="method-section-title" style="font-size: 0.9rem; border: none; margin-bottom: 0.5rem;">
+                        Aviso Legal y Limitación de Responsabilidad</h3>
+                    <p class="legal-text">
+                        Este reporte ha sido generado utilizando técnicas de Inteligencia de Fuentes Abiertas (OSINT) y
+                        análisis pasivo de datos públicamente accesibles en "Clear Web", "Deep Web" y "Dark Web".
+                        <br><br>
+                        <strong>Naturaleza No Intrusiva:</strong> En ningún momento se han realizado ataques activos,
+                        intentos de intrusión, ingeniería social o evasión de controles de seguridad contra la
+                        infraestructura del Cliente.
+                        <br><br>
+                        <strong>Propósito:</strong> La información contenida tiene fines estrictamente preventivos y de
+                        concienciación.
+                        El proveedor no se hace responsable del uso indebido de esta información por terceros.
+                        <br><br>
+                        <strong>Confidencialidad:</strong> Este documento contiene datos sensibles y está clasificado
+                        como ESTRICTAMENTE CONFIDENCIAL.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="appendix-footer">Report ID: RPT-2026-002-FINAL &middot; Integrity Hash: SHA256-VALIDATED</div>
+    </div>
+
+    <!-- Pagination Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const pages = document.querySelectorAll('.pdf-page');
+            const totalPages = pages.length;
+            pages.forEach((page, index) => {
+                const pageNumDiv = document.createElement('div');
+                pageNumDiv.className = 'page-number';
+                pageNumDiv.textContent = `${index + 1} / ${totalPages}`;
+                page.appendChild(pageNumDiv);
+            });
+        });
+    </script>
+</body>
+
+</html>
