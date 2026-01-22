@@ -2,16 +2,13 @@
 
 > **Propósito:** Este documento es el "punto de retorno" para entender rápidamente el estado del proyecto, qué se ha logrado y qué sigue.
 
-## 🏁 Estado al: 20 de Enero, 2026
+## 🏁 Estado al: 21 de Enero, 2026
 **Estado Global:** 🟡 **INESTABLE (Reporte v3.1.0)**
-**Última Versión:** 3.1.0 Inestible (HIBP Orchestration)
-**Última Versión Stable:** 3.0.19 (Resilience Fixes)
-
----
-
-## 🔙 De dónde venimos (Logros)
-- [x] **Fase 1: Testing & Bug Fixing (COMPLETADA):** Notifier reparado. suite de 7 tests pasando al 100%.
-- [x] **Fase 2: Refactorización Core (COMPLETADA):**
+- **V3.1.0 Inestible** (HIBP Orchestration - 100% / Google OSINT - Config)
+- **Última actualización:** 2026-01-21 19:55
+- **Estado:** 🟡 **En Pruebas (Google 403 Bloqueo / HIBP Listo)**
+- **Meta actual:** Habilitar API Google en Cloud Console e integrar datos en Reporte V90.
+- **Última Versión Stable:** 3.0.19 (Resilience Fixes)
     - [x] **StateManager**: Migrado a arquitectura basada en tipos, Google Docstrings y validaciones robustas.
     - [x] **Orchestrator**: Lógica de pipeline profesionalizada con manejo de errores y rutas deterministas.
     - [x] **Normalizer/Scorer/Deduper**: Documentados y tipados bajo estándares PEP 484.
@@ -48,8 +45,8 @@
 ---
 
 ## 🏃 En qué estamos (Haciendo / Sprint Actual)
-*   **Estado Global:** 🟢 **COMPLETADO (Reporte V91 Finalizado)**
-*   **Foco Actual:** Implementación final de secciones de Impacto y Localización al 100%.
+*   **Estado Global:**  **EN DESARROLLO (V3.1.0 - HIBP UI)**
+*   **Foco Actual:** Orquestación de datos de Have I Been Pwned (HIBP) y refinamiento de la UI (Cálculo de criticidad y visualización de brechas).
 
 ### 🏆 Logros de la Sesión (V80 -> V90+):
 *   **V83:** Restauración Premium UI & Datos Dinámicos.
@@ -105,14 +102,22 @@
     *   **Refinement:** Adjusted spacing for "Meta de resiliencia" caption (1.5rem margin).
     *   **Status: FULL CI/CD DEPLOYMENT.**
 
+*   **V3.1.0 HIBP Orchestration (In Progress):**
+    *   **Orchestration:** Integrated HIBP API into the main pipeline with robust error handling.
+    *   **UI (40%):** Started dynamic injection of breach results into the Master Template.
+    *   **Logic:** Implemented risk scoring based on breach sensitivity (Passwords = Critical).
+    *   **Verification:** Created `test_hibp_safe.py` for API validation without data leak risk.
+    *   **Status: IN DEVELOPMENT / UNSTABLE.**
+
 ---
 
 ## 🗺️ Roadmap de Tareas
 
 ### 🔥 Por Hacer (Alta Prioridad)
-- [x] **DATA-01: Inversión HIBP:** API Key Adquirida ($3.50/mo) y Configurada en `config.json`. Validada con reporte comparativo.
-- [ ] **CONFIG-01: Google OSINT:** API Key y CX configurados. **Estado: Pendiente de Propagación (403)**.
-- [ ] **TEST-01: Validación Ana Flores:** Re-ejecutar pipeline (Pendiente de Google).
+- [x] **DATA-01: Inversión HIBP:** API Key Adquirida ($3.50/mo) y Configurada en `config.json`. **Validada con Éxito (Synthient 2025, UnderArmour 2025)**.
+- [x] **CLEANUP-01: Google OSINT:** Eliminación de scripts legacy y config. **Completado**.
+- [x] **DATA-02: HIBP Orchestration:** Integrado en `orchestrator.py`. Funcional al 100%.
+- [ ] **DATA-03: DuckDuckGo OSINT:** Pendiente de implementación (Sustituto de Google).
 
 ### 🔮 Próximos Pasos (Media Prioridad)
 - [ ] **INTAKE-01:** Implementar `IntakeManager` para validación estricta de Textos/Imágenes.

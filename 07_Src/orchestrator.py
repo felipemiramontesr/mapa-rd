@@ -1,6 +1,8 @@
 import os
 import json
 import subprocess
+import requests
+import time
 from datetime import datetime
 from typing import List, Dict, Any, Tuple, Optional
 
@@ -79,6 +81,44 @@ class Orchestrator:
             print(f"[!] Scan Exception: {e}")
             return []
 
+    def run_hibp_scan(self, email: str) -> List[Dict[str, Any]]:
+        """Fetch breaches for a target email using HIBP API.
+        
+        Args:
+            email: Target email address.
+            
+        Returns:
+            List of breach dictionaries.
+        """
+        api_key = self.cm.get("hibp_api_key", "")
+        if not api_key:
+            print("[!] HIBP API Key missing in config. Skipping HIBP scan.")
+            return []
+
+        url = f"https://haveibeenpwned.com/api/v3/breachedaccount/{email}?truncateResponse=false"
+        headers = {
+            "hibp-api-key": api_key,
+            "user-agent": "MAPA-RD-Orchestrator"
+        }
+        
+        print(f"[*] Fetching HIBP breaches for {email}...")
+        try:
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                return response.json()
+            elif response.status_code == 404:
+                return []
+            elif response.status_code == 429:
+                print("[!] HIBP Rate limit hit. Waiting 10s...")
+                time.sleep(10)
+                return self.run_hibp_scan(email)
+            else:
+                print(f"[!] HIBP Error: {response.status_code}")
+                return []
+        except Exception as e:
+            print(f"[!] HIBP Exception: {e}")
+            return []
+
     def orchestrate(self, client_id: str, analysis_type: str = "monthly") -> Tuple[str, str]:
         """Ad-hoc entry point for CLI-driven scans.
         
@@ -96,6 +136,14 @@ class Orchestrator:
              self.sm.create_client(client_id, client_id)
 
         intake_id = self.sm.create_intake(client_id, intake_type, requested_by="CLI_USER")
+        
+        # Populate identity from client record for HIBP scan
+        client = self.sm.get_client(client_id)
+        if client and client.get("email"):
+            self.sm.data["intakes"][intake_id]["identity"] = {
+                "emails": [client["email"]]
+            }
+
         self.sm.update_intake(intake_id, "AUTORIZADO", actor="CLI_USER")
         
         self.execute_pipeline(intake_id)
@@ -142,7 +190,33 @@ class Orchestrator:
         
         scored = Scorer().score_findings(deduped)
         
-        # 4. Artifact Generation
+        # 4. HIBP Enrichment
+        targets = intake.get("identity", {}).get("emails", [])
+        hibp_data = []
+        for email in targets:
+            breaches = self.run_hibp_scan(email)
+            for b in breaches:
+                # Basic normalization for HIBP
+                finding = {
+                    "finding_id": f"HIBP-{b['Name']}",
+                    "category": "Data Leak",
+                    "entity": "Compromised Credentials",
+                    "value": email,
+                    "breach_title": b['Name'],
+                    "breach_classes": b['DataClasses'],
+                    "breach_date": b['BreachDate'],
+                    "breach_desc": b['Description'],
+                    "risk_score": "P0" if "Passwords" in b['DataClasses'] else "P1",
+                    "risk_rationale": f"Filtración confirmada en {b['Name']}. Clases: {', '.join(b['DataClasses'])}"
+                }
+                hibp_data.append(finding)
+            # Avoid rate limits
+            if len(targets) > 1: time.sleep(1.5)
+
+        # Merge results
+        scored.extend(hibp_data)
+        
+        # 5. Artifact Generation
         report_id = self.sm.create_report(client_id, intake_id, intake["intake_type"])
         art = self.rg.generate_report(
             client_name=client["client_name_full"],

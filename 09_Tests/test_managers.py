@@ -26,11 +26,11 @@ class TestClientManager(unittest.TestCase):
         shutil.rmtree(self.test_dir)
         
     def test_create_client(self):
-        self.cm.state_manager._get_or_create_client_id.return_value = "101"
-        cid = self.cm.create_client_from_request("Juan Perez", "juan@test.com")
-        
-        self.assertEqual(cid, "101")
-        self.cm.state_manager.update_client.assert_called_once()
+        # Mocking registry to avoid disk usage
+        self.cm.registry = {"next_global_client_id": 101, "clients": {}}
+        with patch.object(self.cm, '_save_registry'):
+            cid = self.cm.create_client("Juan Perez", "juan@test.com")
+            self.assertEqual(cid, "C101")
 
 class TestQCManager(unittest.TestCase):
     def setUp(self):
