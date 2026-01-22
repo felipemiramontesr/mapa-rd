@@ -15,23 +15,23 @@ class TestOrchestrator(unittest.TestCase):
             self.orchestrator = Orchestrator()
             self.orchestrator.sm = MockSM.return_value
 
-    def test_resolve_target_domain(self):
-        intake = {"identity": {"domains": ["example.com"], "emails": []}}
-        client = {"client_name_slug": "example-co"}
+    def test_resolve_target_name(self):
+        intake = {"identity": {"emails": []}}
+        client = {"client_name_full": "Felipe Miramontes", "client_dir": "C001"}
         target = self.orchestrator._resolve_target(intake, client)
-        self.assertEqual(target, "example.com")
+        self.assertEqual(target, "Felipe Miramontes")
 
     def test_resolve_target_email(self):
-        intake = {"identity": {"domains": [], "emails": ["user@example.com"]}}
-        client = {"client_name_slug": "example-co"}
+        intake = {"identity": {"emails": ["user@example.com"]}}
+        client = {"client_name_full": "Test User", "client_dir": "C101"}
         target = self.orchestrator._resolve_target(intake, client)
         self.assertEqual(target, "user@example.com")
 
-    def test_resolve_target_slug(self):
-        intake = {"identity": {"domains": [], "emails": []}}
-        client = {"client_name_slug": "example-co"}
+    def test_resolve_target_dir(self):
+        intake = {"identity": {"emails": []}}
+        client = {"client_name_full": "", "client_dir": "example-dir"}
         target = self.orchestrator._resolve_target(intake, client)
-        self.assertEqual(target, "example-co")
+        self.assertEqual(target, "example-dir")
 
     @patch('subprocess.run')
     def test_run_spiderfoot_scan_missing_script(self, mock_subprocess):
