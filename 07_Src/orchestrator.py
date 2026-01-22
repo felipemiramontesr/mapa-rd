@@ -11,9 +11,11 @@ from config_manager import ConfigManager
 from state_manager import StateManager
 from qc_manager import QCManager
 from normalizer import Normalizer
+from deduper import Deduper
 from scorer import Scorer
 from report_generator import ReportGenerator
 from notifier import Notifier
+from duck_search import DuckSearch
 
 class Orchestrator:
     """The central brain of MAPA-RD.
@@ -36,9 +38,8 @@ class Orchestrator:
         self.rg: ReportGenerator = ReportGenerator(self.sm)
         self.notifier: Notifier = Notifier()
         
-        # Default infrastructure settings
-        # Default infrastructure settings
         self.cm = ConfigManager()
+        self.ds = DuckSearch()  # New DDG Engine
         self.spiderfoot_path = self.cm.get("spiderfoot_path", ".")
         self.python_exe = self.cm.get("python_exe", "python")
         
@@ -103,7 +104,7 @@ class Orchestrator:
         
         print(f"[*] Fetching HIBP breaches for {email}...")
         try:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=10)
             if response.status_code == 200:
                 return response.json()
             elif response.status_code == 404:
@@ -118,6 +119,18 @@ class Orchestrator:
         except Exception as e:
             print(f"[!] HIBP Exception: {e}")
             return []
+
+    def run_osint_scan(self, target: str) -> List[Dict[str, Any]]:
+        """Performs public web intelligence search via DuckDuckGo.
+        
+        Args:
+            target: The search query (email, domain, name).
+            
+        Returns:
+            List of normalized web findings.
+        """
+        print(f"[*] Running DuckDuckGo OSINT search for {target}...")
+        return self.ds.search(target)
 
     def orchestrate(self, client_id: str, analysis_type: str = "monthly") -> Tuple[str, str]:
         """Ad-hoc entry point for CLI-driven scans.
@@ -172,22 +185,15 @@ class Orchestrator:
         # 1. Start execution
         self.sm.update_intake(intake_id, "EJECUTADO")
         
-        # 2. Intel Gathering
+        # 2. Intel Gathering (SpiderFoot)
         target = self._resolve_target(intake, client)
-        raw_data = self.run_spiderfoot_scan(target, intake_id)
+        raw_findings = self.run_spiderfoot_scan(target, intake_id)
+        self._persist_raw_data(client["client_dir"], intake_id, raw_findings)
         
-        # Persistence
-        raw_path = self._persist_raw_data(client["client_dir"], intake_id, raw_data)
-        
-        from deduper import Deduper # Lazy import to ensure availability or use self.deduper if init
-        
-        # 3. Processing
+        # 3. Processing (Normalize, Deduplicate, Score)
         print("[*] Processing intelligence...")
-        norm = Normalizer().normalize_scan(raw_data)
-        
-        # Deduplication Step (New)
+        norm = Normalizer().normalize_scan(raw_findings)
         deduped = Deduper().deduplicate(norm)
-        
         scored = Scorer().score_findings(deduped)
         
         # 4. HIBP Enrichment
@@ -212,11 +218,15 @@ class Orchestrator:
                 hibp_data.append(finding)
             # Avoid rate limits
             if len(targets) > 1: time.sleep(1.5)
-
-        # Merge results
-        scored.extend(hibp_data)
         
-        # 5. Artifact Generation
+        # 5. DuckDuckGo OSINT Enrichment
+        osint_data = self.run_osint_scan(target)
+
+        # 6. Consolidation
+        scored.extend(hibp_data)
+        scored.extend(osint_data)
+        
+        # 7. Artifact Generation
         report_id = self.sm.create_report(client_id, intake_id, intake["intake_type"])
         art = self.rg.generate_report(
             client_name=client["client_name_full"],
@@ -239,7 +249,7 @@ class Orchestrator:
             self._handle_qc_failure(client_id, report_id)
 
     def _resolve_target(self, intake: Dict[str, Any], client: Dict[str, Any]) -> str:
-        """Pick the best target (Domain > Email > Slug) for scanning.
+        """Pick the best target (Email > Name > Slug) for scanning.
         
         Args:
             intake: The intake dictionary.
@@ -248,10 +258,17 @@ class Orchestrator:
         Returns:
             str: The target string to scan.
         """
-        ident = intake.get("identity", {})
-        if ident.get("domains"): return ident["domains"][0]
-        if ident.get("emails"): return ident["emails"][0]
-        return client["client_name_slug"]
+        # 1. Email (Best for OSINT)
+        emails = intake.get("identity", {}).get("emails", [])
+        if emails:
+            return emails[0]
+            
+        # 2. Full Name
+        if client.get("client_name_full"):
+            return client["client_name_full"]
+            
+        # 3. Fallback to Slug/ID
+        return client.get("client_dir", "unknown_target")
 
     def _persist_raw_data(self, client_dir: str, intake_id: str, data: List[Dict[str, Any]]) -> str:
         """Save raw findings to the data directory.
@@ -282,7 +299,9 @@ class Orchestrator:
             bool: True if QC is approved, False otherwise.
         """
         res = self.qc.run_qc_checklist(report_id, artifacts["pdf_path"])
-        qc_file = artifacts["pdf_path"].replace("REPORTE", "QC").replace(".pdf", ".json")
+        # Fix: Use safer suffix replacement to avoid overwriting the report if extensions match or are missing
+        base_path = os.path.splitext(artifacts["pdf_path"])[0]
+        qc_file = f"{base_path}_QC.json"
         with open(qc_file, 'w', encoding='utf-8') as f:
             json.dump(res, f, indent=4)
         

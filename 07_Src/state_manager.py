@@ -149,6 +149,13 @@ class StateManager:
              return self.ensure_client_defaults(client)
         return None
 
+    def get_client_by_slug(self, slug: str) -> Optional[Dict[str, Any]]:
+        """Find a client by their normalized name slug."""
+        for client in self.data["clients"].values():
+            if client.get("client_name_slug") == slug:
+                return self.ensure_client_defaults(client)
+        return None
+
     def update_client(self, client_id: str, **kwargs: Any) -> None:
         """Update client attributes with automatic default enforcement."""
         if client_id not in self.data["clients"]:

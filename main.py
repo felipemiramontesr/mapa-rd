@@ -108,11 +108,9 @@ def main() -> None:
              
              if found_id:
                  client_id = found_id
-                 logger.info(f"Target identified: {client_id}")
+                 logger.info(f"Target identified via slug: {client_id}")
              else:
-                 logger.error(f"Execution Aborted: No registry found for target '{args.client}'.")
-                 print("[!] Error: El cliente no existe. Registre al cliente primero en StateManager.")
-                 sys.exit(1)
+                 logger.info(f"ID '{client_id}' not found in registry. Proceeding to create new record...")
 
         # 3. TRIGGER LIFECYCLE
         # orchestrate() is the atomic entry point for the entire backend flow.

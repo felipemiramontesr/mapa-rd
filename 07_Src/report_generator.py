@@ -303,10 +303,13 @@ class ReportGenerator:
         }
 
         for i, f in enumerate(findings):
-            default_name = f.get('data', 'Desconocido').replace('Breach: ', '')
-            name = f.get('breach_title', default_name)
+            # Resolve Name (Breach Title > Title > Value > ID)
+            name = f.get('breach_title') or f.get('title') or f.get('value') or f.get('finding_id', 'Desconocido')
+            name = name.replace('Breach: ', '')
+            
             data_classes = f.get('breach_classes', [])
-            b_date = f.get('breach_date', 'Fecha Desconocida')
+            b_date = f.get('breach_date') or f.get('captured_at', 'Fecha Desconocida')
+            if 'T' in b_date: b_date = b_date.split('T')[0] # ISO to Date
             
             # --- Timeline Data ---
             if b_date and b_date != 'Fecha Desconocida':
@@ -383,9 +386,9 @@ class ReportGenerator:
             if len(steps) < 2:
                 steps.append("<strong>Higiene Digital:</strong> Monitorea tu correo en busca de actividad inusual.")
 
-            raw_desc = f.get('breach_desc', '')
+            raw_desc = f.get('breach_desc') or f.get('snippet') or f.get('risk_rationale', '')
             if not raw_desc:
-                raw_desc = f"Exposición detectada en {name}. Los datos incluyen: {', '.join(f.get('breach_classes', ['Datos Generales']))}."
+                raw_desc = f"Hallazgo detectado en {name}. Entidad: {f.get('entity', 'Desconocida')}."
             
             steps_html = "".join([f"<li>{s}</li>" for s in steps])
 
